@@ -1,5 +1,6 @@
 package com.example.smartmedicalsystem.ui.theme.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,8 +13,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.FilePresent
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
@@ -38,13 +42,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.smartmedicalsystem.navigation.ROUTE_DASHBOARD
+import com.example.smartmedicalsystem.navigation.ROUTE_MAIN_DASHBOARD
 import kotlinx.coroutines.launch
 
 
@@ -53,7 +57,7 @@ import kotlinx.coroutines.launch
 fun DashboardScreen(navController: NavController){
                 val selectedItem = remember { mutableStateOf(0) }
 //                val authViewModel: AuthViewModel = viewModel()
-                val context = LocalContext.current
+//                val context = LocalContext.current
 
 
 
@@ -150,22 +154,34 @@ fun DashboardScreen(navController: NavController){
                             NavigationBarItem(
                                 selected = selectedItem.value == 1,
                                 onClick = {selectedItem.value = 1},
-                                icon = {Icon(Icons.Filled.Email,
-                                    contentDescription = "Settings")},
-                                label = {Text(text = "Email") })
+                                icon = {Icon(Icons.Filled.FilePresent,
+                                    contentDescription = "Records")},
+                                label = {Text(text = "Records") })
 
                             NavigationBarItem(
                                 selected = selectedItem.value == 2,
                                 onClick = {selectedItem.value = 2},
-                                icon = {Icon(Icons.Filled.Person,
+                                icon = {Icon(Icons.Filled.CalendarToday,
+                                    contentDescription = "Appointments")},
+                                label = {Text(text = "Appointments") },
+                            )
+                            NavigationBarItem(
+                                selected = selectedItem.value == 2,
+                                onClick = {selectedItem.value = 2},
+                                icon = {Icon(Icons.Filled.AccountBox,
                                     contentDescription = "Profile")},
                                 label = {Text(text = "Profile") },
-                            )} }
+                            )
+
+
+                        } }
 
                     )
 
                     { innerPadding ->
-                        Column(modifier = Modifier.padding(innerPadding)) {
+                        Column(modifier = Modifier.padding(innerPadding)
+//                            .background(Color(0xFFF3F5F9))
+                        ) {
                             Text(text = "Welcome to Smart Medical System",
                                 fontSize = 25.sp,
                                 color = Color.Blue)
@@ -238,20 +254,18 @@ fun DashboardScreen(navController: NavController){
                                     verticalAlignment = Alignment.CenterVertically) {
                                     //Icon
                                     Icon(Icons.Filled.Person,
-                                        contentDescription = "Add Patients",
+                                        contentDescription = "Today`s Medications",
                                         tint = Color.Black,
                                         modifier = Modifier.size(40.dp)
                                     )
                                     Spacer(modifier = Modifier.width(16.dp))
                                     //Text content
                                     Column() {
-                                        Text(text= "Add Patients",
+                                        Text(text= "Today`s Medications",
                                             fontSize = 20.sp,
                                             color = Color.Black)
-                                        Text("Add patient", fontSize = 18.sp, color = Color.Black)
-                                        Text("Register new patient details",
-                                            fontSize = 14.sp,
-                                            color = Color.Black)
+                                        Text("Here Are Today`s Medications", fontSize = 18.sp, color = Color.Black)
+
                                     }
                                 }
 
@@ -272,17 +286,17 @@ fun DashboardScreen(navController: NavController){
                                     verticalAlignment = Alignment.CenterVertically) {
                                     //Icon
                                     Icon(Icons.Filled.Person,
-                                        contentDescription = "Add Patients",
+                                        contentDescription = "Upcoming Appointment",
                                         tint = Color.Black,
                                         modifier = Modifier.size(40.dp)
                                     )
                                     Spacer(modifier = Modifier.width(16.dp))
                                     //Text content
                                     Column() {
-                                        Text(text= "Add New Staff",
+                                        Text(text= "Upcoming Appointment",
                                             fontSize = 20.sp,
                                             color = Color.Black)
-                                        Text("Register New Staff Details",
+                                        Text(" View Upcoming Appointment",
                                             fontSize = 14.sp,
                                             color = Color.Black)
                                     }
@@ -305,24 +319,24 @@ fun DashboardScreen(navController: NavController){
                                     //Icon
                                     Icon(
                                         Icons.Filled.Person,
-                                        contentDescription = "View Patients List",
+                                        contentDescription = "View Health Summaries",
                                         tint = Color.Black,
                                         modifier = Modifier.size(40.dp)
                                     )
                                     Spacer(modifier = Modifier.width(16.dp))
                                     //Text content
                                     Column() {
-                                        Text(text= "View Patient List",
+                                        Text(text= "Patient`s History Records",
                                             fontSize = 20.sp,
                                             color = Color.Black)
-                                        Text("Registered  Patient`s Details",
+                                        Text("View Patient`s History Records",
                                             fontSize = 14.sp,
                                             color = Color.Black)
                                     }
                                 }
 
                             }
-                            Card(onClick = { navController.navigate(ROUTE_DASHBOARD)
+                            Card(onClick = { navController.navigate(ROUTE_MAIN_DASHBOARD)
                             },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -336,17 +350,17 @@ fun DashboardScreen(navController: NavController){
                                     verticalAlignment = Alignment.CenterVertically) {
                                     //Icon
                                     Icon(Icons.Filled.Person,
-                                        contentDescription = "Add Patients",
+                                        contentDescription = "Reminders",
                                         tint = Color.Black,
                                         modifier = Modifier.size(40.dp)
                                     )
                                     Spacer(modifier = Modifier.width(16.dp))
                                     //Text content
                                     Column() {
-                                        Text(text= "Add Nurses",
+                                        Text(text= "Reminders",
                                             fontSize = 20.sp,
                                             color = Color.Black)
-                                        Text("Register New Nurse Details",
+                                        Text("View Patient`s Reminders",
                                             fontSize = 14.sp,
                                             color = Color.Black)
                                     }
@@ -359,12 +373,6 @@ fun DashboardScreen(navController: NavController){
                     }
                 }
 
-
-}
-
-@Composable
-fun NavigationBarItem(selected: Boolean, onClick: () -> Unit, icon: @Composable () -> Unit, label: @Composable () -> Unit) {
-    TODO("Not yet implemented")
 }
 
 

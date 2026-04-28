@@ -4,6 +4,7 @@ package com.example.smartmedicalsystem.ui.theme.screens
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -44,6 +46,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.RadioButton
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.smartmedicalsystem.data.AuthViewModel
+import com.example.smartmedicalsystem.navigation.ROUTE_LOGIN
 
 @Composable
 fun RegisterScreen(navController: NavController) {
@@ -57,11 +65,14 @@ fun RegisterScreen(navController: NavController) {
     var confirmPasswordVisible by remember { mutableStateOf(false) }
 
     val scrollState = rememberScrollState()
+    val authViewModel: AuthViewModel = viewModel()
+    val context = LocalContext.current
 
     Card(
         modifier = Modifier
             .padding(20.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+        .verticalScroll(scrollState),
         shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(10.dp)
     ) {
@@ -69,10 +80,9 @@ fun RegisterScreen(navController: NavController) {
             modifier = Modifier
            .background(Color(0xFFF3F5F9))
                 .padding(20.dp)
-                .fillMaxWidth()
-                .verticalScroll(scrollState),
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        ) {Spacer(modifier = Modifier.height(26.dp))
 
             Text(text = "Create Account", fontSize = 20.sp, color = Color.Black)
             Text(text = "Please fill in your clinical profile details", color = Color.Black)
@@ -179,32 +189,67 @@ fun RegisterScreen(navController: NavController) {
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
-       OutlinedTextField(
-           value = gender,
-           onValueChange = {gender = it},
-           label = {Text(text= "Male/Female")},
-           placeholder = {Text(text = "Male/Female")}
-       )
+//       OutlinedTextField(
+//           value = gender,
+//           onValueChange = {gender = it},
+//           label = {Text(text= "Male/Female")},
+//           placeholder = {Text(text = "Male/Female")})
+                   // GENDER SELECTION (RADIO BUTTONS)
+                   Column(modifier = Modifier.fillMaxWidth()) {
+               Text(text = "Gender", fontWeight = FontWeight.SemiBold, fontSize = 16.sp)
+               Row(verticalAlignment = Alignment.CenterVertically) {
+                   RadioButton(
+                       selected = gender == "Male",
+                       onClick = { gender = "Male" }
+                   )
+                   Text("Male", modifier = Modifier.clickable { gender = "Male" })
+
+                   Spacer(modifier = Modifier.width(20.dp))
+
+                   RadioButton(
+                       selected = gender == "Female",
+                       onClick = { gender = "Female" }
+                   )
+                   Text("Female", modifier = Modifier.clickable { gender = "Female" })
+               }
+           }
+
+                   Spacer(modifier = Modifier.height(12.dp))
+
+            Spacer(modifier = Modifier.height(12.dp))
         }
         // REGISTER BUTTON
         Button(
             onClick = {
-//                authViewModel.signup(
-//                    firstname = firstname,
-//                      lastname = lastname,
-//                    email = email,
-//                    password = password,
-//                    confirmpassword = confirmPassword,
-//                      gender = gender,
-//                    navController = navController,
-//                    context = context
-//                )
+                authViewModel.signup(
+                    firstname = firstName,
+                    lastname = lastName,
+                    email = email,
+                    password = password,
+                    confirmpassword = confirmPassword,
+                      gender = gender,
+                    navController = navController,
+                    context = context
+                )
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp)
         ) {
             Text("Create Account")
+            Spacer(modifier = Modifier.width(20.dp))
+        }
+        Row() {
+            Text(text="Already Have an Account?")
+            Spacer(modifier = Modifier.width(20.dp))
+
+            Text(
+                text = "Sign In",
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.clickable {
+                    navController.navigate(ROUTE_LOGIN)
+                })
         }
     }
 }
