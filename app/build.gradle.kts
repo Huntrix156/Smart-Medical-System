@@ -104,6 +104,10 @@ dependencies {
     // ── Room ────────────────────────────────────────────────────────────────
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.foundation.layout)
+    implementation(libs.androidx.material3)
     annotationProcessor("androidx.room:room-compiler:2.6.1")  // use kapt or ksp if using Kotlin
 
     // ── Image loading ───────────────────────────────────────────────────────

@@ -39,7 +39,7 @@ fun LoginScreen(navController: NavController){
     var passwordVisible by remember { mutableStateOf(false) }
     Box(){
         Column() {
-//            Text(text = "Welcome Back",fontSize = 26.dp, fontWeight = FontWeight.Bold)
+            Text(text = "Welcome Back",fontSize = 26.sp, fontWeight = FontWeight.Bold)
             Text(text = "Please enter your credentials to access your account")
 
 
