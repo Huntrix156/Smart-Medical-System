@@ -39,8 +39,9 @@ fun LoginScreen(navController: NavController){
     var passwordVisible by remember { mutableStateOf(false) }
     Box(){
         Column() {
-            Text(text = "Welcome Back",fontSize = 26.dp, fontWeight = FontWeight.Bold)
+//            Text(text = "Welcome Back",fontSize = 26.dp, fontWeight = FontWeight.Bold)
             Text(text = "Please enter your credentials to access your account")
+
 
 
             // EMAIL
@@ -87,12 +88,12 @@ fun LoginScreen(navController: NavController){
             // LOGIN BUTTON
             Button(
                 onClick = {
-                    authViewModel.login(
-                        email = email,
-                        password = password,
-                        navController = navController,
-                        context = context
-                    )
+//                    authViewModel.login(
+//                        email = email,
+//                        password = password,
+//                        navController = navController,
+//                        context = context
+//                    )
                 },
                 modifier = Modifier
                     .fillMaxWidth()

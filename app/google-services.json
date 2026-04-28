@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "494707331924",
+    "firebase_url": "https://nexora-77a96-default-rtdb.firebaseio.com",
+    "project_id": "nexora-77a96",
+    "storage_bucket": "nexora-77a96.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494707331924:android:f7467cf0827a99cc436ec1",
+        "android_client_info": {
+          "package_name": "com.example.nexora"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrIOxK0TUU2HuUoTKpSRQzeEcqXIcXDZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494707331924:android:45ebd94c59741cc5436ec1",
+        "android_client_info": {
+          "package_name": "com.example.smartmedicalsystem"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrIOxK0TUU2HuUoTKpSRQzeEcqXIcXDZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
