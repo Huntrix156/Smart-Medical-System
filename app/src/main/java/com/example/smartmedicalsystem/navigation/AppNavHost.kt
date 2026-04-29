@@ -12,6 +12,7 @@ import com.example.smartmedical.screens.PatientDashboard
 import com.example.smartmedicalsystem.ui.theme.screens.DashboardScreen
 import com.example.smartmedicalsystem.ui.theme.screens.LoginScreen
 import com.example.smartmedicalsystem.ui.theme.screens.RegisterScreen
+import com.example.smartmedicalsystem.ui.theme.screens.screen.AddMedicine.screen.AddMedicationScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screen.ForgotPasswordScreen
 
 
@@ -23,40 +24,52 @@ object Routes {
 }
 @Composable
 fun AppNavHost(navController: NavHostController = rememberNavController(),
-               startDestination:String = ROUTE_LOGIN){
-    NavHost(navController = navController,
-        startDestination = startDestination) {
+               startDestination:String = ROUTE_LOGIN) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination
+    ) {
         composable(ROUTE_REGISTER) { RegisterScreen(navController) }
-        composable(ROUTE_LOGIN) { LoginScreen(navController,  onRoleSelected = { role ->
-            when (role) {
+        composable(ROUTE_LOGIN) {
+            LoginScreen(navController, onRoleSelected = { role ->
+                when (role) {
 
-                "Patient" -> navController.navigate(Routes.PATIENT)
-                "Doctor"  -> navController.navigate(Routes.DOCTOR)
-                "Admin"   -> navController.navigate(Routes.ADMIN)
+                    "Patient" -> navController.navigate(Routes.PATIENT)
+                    "Doctor" -> navController.navigate(Routes.DOCTOR)
+                    "Admin" -> navController.navigate(Routes.ADMIN)
+                }
             }
-        }
-        )
+            )
         }
         composable(Routes.PATIENT) {
-            PatientDashboard(onLogout = { navController.navigate(Routes.LOGIN) {
-                popUpTo(Routes.LOGIN) { inclusive = true }
-            }})
+            PatientDashboard(navController,onLogout = {
+                navController.navigate(Routes.LOGIN) {
+                    popUpTo(Routes.LOGIN) { inclusive = true }
+                }
+            })
         }
         composable(Routes.DOCTOR) {
-            DoctorDashboard(onLogout = { navController.navigate(Routes.LOGIN) {
-                popUpTo(Routes.LOGIN) { inclusive = true }
-            }})
+            DoctorDashboard(onLogout = {
+                navController.navigate(Routes.LOGIN) {
+                    popUpTo(Routes.LOGIN) { inclusive = true }
+                }
+            })
         }
         composable(Routes.ADMIN) {
-            AdminDashboard(onLogout = { navController.navigate(Routes.LOGIN) {
-                popUpTo(Routes.LOGIN) { inclusive = true }
-            }})
+            AdminDashboard(onLogout = {
+                navController.navigate(Routes.LOGIN) {
+                    popUpTo(Routes.LOGIN) { inclusive = true }
+                }
+            })
         }
 
         composable(ROUTE_MAIN_DASHBOARD) { DashboardScreen(navController) }
 
         composable(ROUTE_FORGOT_PASSWORD) { ForgotPasswordScreen(navController) }
+
+        composable(ROUTE_ADD_MEDICATION) { AddMedicationScreen(navController) }
     }
+
 }
 
 
