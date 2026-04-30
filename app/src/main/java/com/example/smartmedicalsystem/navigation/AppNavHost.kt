@@ -10,10 +10,13 @@ import com.example.smartmedical.screens.AdminDashboard
 import com.example.smartmedical.screens.DoctorDashboard
 import com.example.smartmedical.screens.PatientDashboard
 import com.example.smartmedicalsystem.ui.theme.screens.DashboardScreen
+import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InventoryScreen
+import com.example.smartmedicalsystem.ui.theme.screens.Inventory.PharmacyManagementScreen
 import com.example.smartmedicalsystem.ui.theme.screens.LoginScreen
 import com.example.smartmedicalsystem.ui.theme.screens.RegisterScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screen.AddMedicine.screen.AddMedicationScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screen.ForgotPasswordScreen
+import com.example.smartmedicalsystem.ui.theme.screens.screen.MedicationScreen
 
 
 object Routes {
@@ -67,6 +70,16 @@ fun AppNavHost(navController: NavHostController = rememberNavController(),
 
         composable(ROUTE_FORGOT_PASSWORD) { ForgotPasswordScreen(navController) }
 
+        composable(ROUTE_PHARMACY_MANAGEMENT) { PharmacyManagementScreen(navController) }
+
+
+        composable(ROUTE_MEDICATION_SCREEN) {
+            MedicationScreen(navController)
+        }
+
+        composable(ROUTE_INVENTORY_SCREEN) {
+            InventoryScreen(navController)
+        }
         composable(ROUTE_ADD_MEDICATION) { AddMedicationScreen(navController) }
     }
 

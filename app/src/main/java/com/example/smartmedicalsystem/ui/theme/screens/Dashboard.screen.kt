@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.smartmedicalsystem.navigation.ROUTE_MAIN_DASHBOARD
+import com.example.smartmedicalsystem.navigation.ROUTE_PHARMACY_MANAGEMENT
 import kotlinx.coroutines.launch
 
 
@@ -304,6 +305,39 @@ fun DashboardScreen(navController: NavController){
 
                             }
                             Card(onClick = {
+                                navController.navigate(ROUTE_PHARMACY_MANAGEMENT)
+                            },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp),
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFF1A2EFF)),
+                                elevation = CardDefaults.cardElevation(8.dp),
+                                shape = RoundedCornerShape(16.dp))
+                            {
+                                Row(modifier = Modifier
+                                    .padding(16.dp),
+                                    verticalAlignment = Alignment.CenterVertically) {
+                                    //Icon
+                                    Icon(
+                                        Icons.Filled.Person,
+                                        contentDescription = "View Pharmacy",
+                                        tint = Color.Black,
+                                        modifier = Modifier.size(40.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(16.dp))
+                                    //Text content
+                                    Column() {
+                                        Text(text= "Pharmacy History Records",
+                                            fontSize = 20.sp,
+                                            color = Color.Black)
+                                        Text("View Pharmacy History Records",
+                                            fontSize = 14.sp,
+                                            color = Color.Black)
+                                    }
+                                }
+
+                            }
+                            Card(onClick = {
 //                                navController.navigate(ROUTE_PATIENT_LIST)
                             },
                                 modifier = Modifier
@@ -336,6 +370,7 @@ fun DashboardScreen(navController: NavController){
                                 }
 
                             }
+
                             Card(onClick = { navController.navigate(ROUTE_MAIN_DASHBOARD)
                             },
                                 modifier = Modifier
