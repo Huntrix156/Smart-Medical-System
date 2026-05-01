@@ -16,6 +16,5 @@ const val ROUTE_FORGOT_PASSWORD="forgot password screen"
 
 const val ROUTE_ADD_MEDICATION="add medication"
 
-const val ROUTE_PHARMACY_MANAGEMENT= "pharmacy management"
 const val ROUTE_MEDICATION_SCREEN = "medication_screen"
 const val ROUTE_INVENTORY_SCREEN = "inventory_screen"

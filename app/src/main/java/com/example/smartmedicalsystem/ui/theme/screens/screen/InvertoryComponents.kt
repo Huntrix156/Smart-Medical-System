@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.example.smartmedicalsystem.models.Medicine
 import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InventoryScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screen.InvertoryUtils.daysRemaining
@@ -114,7 +115,7 @@ fun RefillAlertCard(medicine: Medicine) {
 @Composable
 fun SummaryCard(title: String, value: String) {
     Card(
-        modifier = Modifier.weight(1f),
+//        modifier = Modifier.weight(1f),
         elevation = CardDefaults.cardElevation(3.dp)
     ) {
         Column(
@@ -145,16 +146,31 @@ fun CenterCardText(title: String, subtitle: String) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewInventory() {
-    val sample = listOf(
-        Medicine("Paracetamol", 30, 50, LocalDate.now().plusDays(20)),
-        Medicine("Amoxicillin", 5, 40, LocalDate.now().plusDays(10)),
-        Medicine("Ibuprofen", 100, 50, LocalDate.now().plusDays(120))
+    val sampleMedicines = listOf(
+        Medicine(
+            name = "Paracetamol",
+            quantity = 20,
+            stock = 100,
+            minStock = 10,
+            // Wrap the string in LocalDate.parse()
+            expiryDate = LocalDate.parse("2026-12-01")
+        ),
+        Medicine(
+            name = "Amoxicillin",
+            quantity = 15,
+            stock = 50,
+            minStock = 5,
+            expiryDate = LocalDate.parse("2027-03-15")
+        )
+    )// ✅ List properly closed before NavHost
+    val navController = rememberNavController()
+
+    // Call the screen ONLY ONCE
+    InventoryScreen(
+        navController = navController,
+        medicines = sampleMedicines
     )
-
-    InventoryScreen(sample)
 }
-
-
 @Composable
 fun MenuCard(title: String, onClick: () -> Unit) {
 

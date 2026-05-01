@@ -1,6 +1,5 @@
 package com.example.smartmedicalsystem.ui.theme.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,11 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.FilePresent
 import androidx.compose.material.icons.filled.Person
@@ -36,33 +36,34 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.smartmedicalsystem.navigation.ROUTE_MAIN_DASHBOARD
-import com.example.smartmedicalsystem.navigation.ROUTE_PHARMACY_MANAGEMENT
+import com.example.smartmedicalsystem.navigation.ROUTE_ADD_MEDICATION
+import com.example.smartmedicalsystem.navigation.ROUTE_INVENTORY_SCREEN
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(navController: NavController){
-                val selectedItem = remember { mutableStateOf(0) }
+                val selectedItem = remember { mutableIntStateOf(0) }
 //                val authViewModel: AuthViewModel = viewModel()
 //                val context = LocalContext.current
 
+//            val scrollState = rememberScrollState()
 
 
-                // Drawer state
+    // Drawer state
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                 val scope = rememberCoroutineScope()
 
@@ -85,7 +86,8 @@ fun DashboardScreen(navController: NavController){
                             NavigationDrawerItem(
                                 label = { Text("Dashboard") },
                                 selected = false,
-                                onClick = { }
+                                onClick = { scope.launch { drawerState.close() }
+                                    navController.navigate(ROUTE_ADD_MEDICATION)}
                             )
 
                             NavigationDrawerItem(
@@ -182,7 +184,9 @@ fun DashboardScreen(navController: NavController){
                     { innerPadding ->
                         Column(modifier = Modifier.padding(innerPadding)
 //                            .background(Color(0xFFF3F5F9))
-                        ) {
+                            .verticalScroll(rememberScrollState()),
+
+                            ) {
                             Text(text = "Welcome to Smart Medical System",
                                 fontSize = 25.sp,
                                 color = Color.Blue)
@@ -305,7 +309,7 @@ fun DashboardScreen(navController: NavController){
 
                             }
                             Card(onClick = {
-                                navController.navigate(ROUTE_PHARMACY_MANAGEMENT)
+                                navController.navigate(ROUTE_ADD_MEDICATION)
                             },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -371,7 +375,7 @@ fun DashboardScreen(navController: NavController){
 
                             }
 
-                            Card(onClick = { navController.navigate(ROUTE_MAIN_DASHBOARD)
+                            Card(onClick = { navController.navigate(ROUTE_INVENTORY_SCREEN)
                             },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -385,17 +389,17 @@ fun DashboardScreen(navController: NavController){
                                     verticalAlignment = Alignment.CenterVertically) {
                                     //Icon
                                     Icon(Icons.Filled.Person,
-                                        contentDescription = "Reminders",
+                                        contentDescription = "Pharmacy Management History",
                                         tint = Color.Black,
                                         modifier = Modifier.size(40.dp)
                                     )
                                     Spacer(modifier = Modifier.width(16.dp))
                                     //Text content
                                     Column() {
-                                        Text(text= "Reminders",
+                                        Text(text= "Pharmacy Management History",
                                             fontSize = 20.sp,
                                             color = Color.Black)
-                                        Text("View Patient`s Reminders",
+                                        Text("Pharmacy Management History",
                                             fontSize = 14.sp,
                                             color = Color.Black)
                                     }

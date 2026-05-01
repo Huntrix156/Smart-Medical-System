@@ -13,7 +13,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.smartmedicalsystem.models.Medicine
+import com.example.smartmedicalsystem.ui.theme.screens.screen.InvertoryUtils.daysRemaining
+import com.example.smartmedicalsystem.ui.theme.screens.screen.RefillAlertCard
+import com.example.smartmedicalsystem.ui.theme.screens.screen.SummaryCard
 import kotlin.collections.filter
 
 //
@@ -126,7 +130,7 @@ import kotlin.collections.filter
 
 
 @Composable
-fun InventoryScreen(medicines: List<Medicine>) {
+fun InventoryScreen(navController: NavController,medicines: List<Medicine>) {
 
     val lowStockItems = medicines.filter { it.stock <= it.minStock }
     val expiringSoon = medicines.filter { daysRemaining(it.expiryDate) <= 30 }

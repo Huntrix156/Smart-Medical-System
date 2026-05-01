@@ -240,7 +240,9 @@ fun LoginScreen(navController: NavController,onRoleSelected: (String) -> Unit){
                     text = "Dashboard",
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clickable {
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
                         navController.navigate(ROUTE_MAIN_DASHBOARD)
                     })
 
