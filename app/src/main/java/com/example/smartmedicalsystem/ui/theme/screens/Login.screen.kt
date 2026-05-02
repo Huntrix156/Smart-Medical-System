@@ -1,5 +1,7 @@
 package com.example.smartmedicalsystem.ui.theme.screens
 
+import android.R.attr.background
+import android.R.id.background
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -28,6 +31,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -84,24 +88,29 @@ fun LoginScreen(navController: NavController,onRoleSelected: (String) -> Unit){
 
 
 
+     //======email validation==========//
 
 
-    Box(modifier = Modifier.padding(30.dp)){
+    Box(modifier = Modifier.padding(26.dp)
+        .background(Color(0xFFEDE7F6),
+            shape = RoundedCornerShape(10.dp))
+        ){
+
         Column(   modifier = Modifier
 //            .padding(innerPadding)
-            .background(Color(0xFFF3F5F9))
-
+//            .background(Color(0xFFEDE7F6))
             .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly)
-        { Spacer(modifier = Modifier.height(26.dp))
+        { Spacer(modifier = Modifier.height(50.dp))
             Text(text = "Welcome Back",fontSize = 26.sp, fontWeight = FontWeight.Bold)
             Text(text = "Please enter your credentials to access your account")
             // EMAIL
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email") },
+                label = { Text("Email",color = MaterialTheme.colorScheme.onSurface) },
+                placeholder = {Text("e.g, example@gmail.com",color = MaterialTheme.colorScheme.onSurface)},
                 leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 isError = email.isNotEmpty() &&
@@ -114,13 +123,21 @@ fun LoginScreen(navController: NavController,onRoleSelected: (String) -> Unit){
                     }
                 },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                        colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color.Blue,
+                unfocusedBorderColor = Color.Gray,
+                errorBorderColor = Color.Red,
+
+            ),
+                shape = RoundedCornerShape(8.dp)
             )
+
             // PASSWORD
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Password") },
+                label = { Text("Password",color = MaterialTheme.colorScheme.onSurface) },
                 leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
                 trailingIcon = {
                     IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -136,7 +153,9 @@ fun LoginScreen(navController: NavController,onRoleSelected: (String) -> Unit){
                     VisualTransformation.None
                 else PasswordVisualTransformation(),
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp)
+
             )
             // Role dropdown
             ExposedDropdownMenuBox(
@@ -148,11 +167,13 @@ fun LoginScreen(navController: NavController,onRoleSelected: (String) -> Unit){
                     value = selectedRole.ifEmpty { "Select role" },
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Role") },
+                    label = { Text("Role",color = MaterialTheme.colorScheme.onSurface) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     modifier = Modifier
                         .menuAnchor()
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp)
+
                 )
                 ExposedDropdownMenu(
                     expanded = expanded,
@@ -195,7 +216,9 @@ fun LoginScreen(navController: NavController,onRoleSelected: (String) -> Unit){
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp)
+                    .height(50.dp),
+                shape = RoundedCornerShape(8.dp)
+
             ) {
                 Text("Sign In", fontSize = 16.sp)
             }

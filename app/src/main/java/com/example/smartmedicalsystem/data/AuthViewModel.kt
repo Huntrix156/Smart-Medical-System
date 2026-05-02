@@ -180,7 +180,7 @@ class AuthViewModel : ViewModel() {
     ) {
 
         if (email.isBlank() || password.isBlank()|| gender.isBlank()) {
-            Toast.makeText(context, "Email and Password required", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Please Fill All the Fields", Toast.LENGTH_LONG).show()
             return
         }
 

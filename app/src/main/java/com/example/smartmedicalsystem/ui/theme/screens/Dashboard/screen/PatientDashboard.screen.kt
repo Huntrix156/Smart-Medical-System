@@ -10,7 +10,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.smartmedicalsystem.navigation.ROUTE_ADD_MEDICATION
+import com.example.smartmedicalsystem.navigation.ROUTE_MEDICATION_SCREEN
+import com.example.smartmedicalsystem.navigation.ROUTE_UPCOMING_APPOINTMENT
 import com.example.smartmedicalsystem.ui.theme.screens.screen.StatCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,16 +53,21 @@ fun PatientDashboard(navController: NavController,onLogout: () -> Unit) {
             }
 
             Spacer(modifier = Modifier.height(20.dp))
-            Button(onClick = {}, modifier = Modifier.fillMaxWidth()) {
+            Button(onClick = {navController.navigate(ROUTE_UPCOMING_APPOINTMENT)}, modifier = Modifier.fillMaxWidth()) {
                 Text("Book Appointment")
             }
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedButton(onClick = {}, modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(onClick = { }, modifier = Modifier.fillMaxWidth()) {
                 Text("View My Records")
             }
-            OutlinedButton(onClick ={ navController.navigate(ROUTE_ADD_MEDICATION)},
+            OutlinedButton(onClick ={ navController.navigate(ROUTE_MEDICATION_SCREEN)},
                 modifier = Modifier.fillMaxWidth()) {
                 Text(text = "Medicine")
+            }
+
+            OutlinedButton(onClick ={ navController.navigate(ROUTE_MEDICATION_SCREEN)},
+                modifier = Modifier.fillMaxWidth()) {
+                Text(text = "Quick Action")
             }
         }
     }

@@ -30,9 +30,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.smartmedicalsystem.models.Medicine
 import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InventoryScreen
-import com.example.smartmedicalsystem.ui.theme.screens.screen.InvertoryUtils.daysRemaining
-import com.example.smartmedicalsystem.ui.theme.screens.screen.InvertoryUtils.expiryStatusColor
-import com.example.smartmedicalsystem.ui.theme.screens.screen.InvertoryUtils.stockStatusColor
+import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InvertoryUtils.daysRemaining
+import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InvertoryUtils.expiryStatusColor
+import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InvertoryUtils.stockStatusColor
 import java.time.LocalDate
 
 @Composable

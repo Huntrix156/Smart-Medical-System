@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.smartmedicalsystem.models.Medicine
-import com.example.smartmedicalsystem.ui.theme.screens.screen.InvertoryUtils.daysRemaining
+import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InvertoryUtils.daysRemaining
 import com.example.smartmedicalsystem.ui.theme.screens.screen.RefillAlertCard
 import com.example.smartmedicalsystem.ui.theme.screens.screen.SummaryCard
 import kotlin.collections.filter

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -74,7 +75,8 @@ fun RegisterScreen(navController: NavController) {
             .fillMaxWidth()
         .verticalScroll(scrollState),
         shape = MaterialTheme.shapes.large,
-        elevation = CardDefaults.cardElevation(10.dp)
+        elevation = CardDefaults.cardElevation(10.dp),
+
     ) {
         Column(
             modifier = Modifier
@@ -100,7 +102,8 @@ fun RegisterScreen(navController: NavController) {
                     label = { Text("First Name") },
                     leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
                     singleLine = true,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(8.dp)
                 )
                 OutlinedTextField(
                     value = lastName,
@@ -108,7 +111,8 @@ fun RegisterScreen(navController: NavController) {
                     label = { Text("Last Name") },
                     leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
                     singleLine = true,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(8.dp)
                 )
             }
 
@@ -131,7 +135,8 @@ fun RegisterScreen(navController: NavController) {
                     }
                 },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp)
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -156,7 +161,8 @@ fun RegisterScreen(navController: NavController) {
                     VisualTransformation.None
                 else PasswordVisualTransformation(),
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp)
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -187,7 +193,8 @@ fun RegisterScreen(navController: NavController) {
                     }
                 },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp)   ////for the rounded shape////
             )
 //       OutlinedTextField(
 //           value = gender,
@@ -234,7 +241,8 @@ fun RegisterScreen(navController: NavController) {
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
+                .height(50.dp),
+            shape = RoundedCornerShape(8.dp)
         ) {
             Text("Create Account")
             Spacer(modifier = Modifier.width(20.dp))

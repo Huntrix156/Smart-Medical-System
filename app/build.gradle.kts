@@ -109,6 +109,7 @@ dependencies {
     implementation(libs.androidx.compose.foundation.layout)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.work.runtime.ktx)
     annotationProcessor("androidx.room:room-compiler:2.6.1")  // use kapt or ksp if using Kotlin
 
     // ── Image loading ───────────────────────────────────────────────────────
@@ -131,4 +132,8 @@ dependencies {
 
     //==========================Onboarding_screen=============================//
     implementation("androidx.compose.foundation:foundation")
+
+
+    // USE THIS ONE (with -ktx)
+    implementation("androidx.work:work-runtime-ktx:${"2.9.0"}")
 }

@@ -1,4 +1,4 @@
-package com.example.smartmedicalsystem.ui.theme.screens
+package com.example.smartmedicalsystem.ui.theme.screens.Dashboard.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -50,6 +50,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.smartmedicalsystem.navigation.ROUTE_ADD_MEDICATION
 import com.example.smartmedicalsystem.navigation.ROUTE_INVENTORY_SCREEN
+import com.example.smartmedicalsystem.navigation.ROUTE_MEDICATION_SCREEN
 import kotlinx.coroutines.launch
 
 
@@ -182,38 +183,55 @@ fun DashboardScreen(navController: NavController){
                     )
 
                     { innerPadding ->
-                        Column(modifier = Modifier.padding(innerPadding)
+                        Column(
+                            modifier = Modifier
+                                .padding(innerPadding)
 //                            .background(Color(0xFFF3F5F9))
                             .verticalScroll(rememberScrollState()),
 
                             ) {
+
                             Text(text = "Welcome to Smart Medical System",
                                 fontSize = 25.sp,
                                 color = Color.Blue)
-                            Row(modifier = Modifier
+
+                            Row(
+                                modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(bottom = 16.dp),
                                 horizontalArrangement = Arrangement.SpaceEvenly) {
-                                Card(modifier = Modifier.size(100.dp),
+
+                                Card(
+                                    modifier = Modifier.size(100.dp),
                                     colors = CardDefaults.cardColors(  containerColor = Color.Blue),
                                     elevation = CardDefaults.cardElevation(5.dp),
                                     shape = RoundedCornerShape(12.dp)
-                                ) { Column(modifier = Modifier.fillMaxSize(),
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxSize(),
                                     verticalArrangement = Arrangement.Center,
                                     horizontalAlignment= Alignment.CenterHorizontally) {
-                                    Text(text = "120",
+
+                                    Text(
+                                        text = "120",
                                         color = Color.White,
                                         fontSize = 30.sp)
-                                    Text(text = "Patients",
+                                    Text(
+                                        text = "Patients",
                                         color = Color.White,
                                         fontSize = 20.sp)
                                 }}
-                                Card(modifier = Modifier.size(100.dp),
+                                Card(
+                                    modifier = Modifier
+                                        .size(100.dp),
 
                                     colors = CardDefaults.cardColors(  containerColor = Color.Blue),
                                     elevation = CardDefaults.cardElevation(5.dp),
                                     shape = RoundedCornerShape(12.dp)
-                                ) { Column(modifier = Modifier.fillMaxSize(),
+
+                                ) {
+                                    Column(modifier = Modifier.fillMaxSize(),
                                     verticalArrangement = Arrangement.Center,
                                     horizontalAlignment= Alignment.CenterHorizontally) {
                                     Text(text = "120",
@@ -376,6 +394,37 @@ fun DashboardScreen(navController: NavController){
                             }
 
                             Card(onClick = { navController.navigate(ROUTE_INVENTORY_SCREEN)
+                            },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp),
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFF1A2EFF)),
+                                elevation = CardDefaults.cardElevation(8.dp),
+                                shape = RoundedCornerShape(16.dp))
+                            {
+                                Row(modifier = Modifier
+                                    .padding(16.dp),
+                                    verticalAlignment = Alignment.CenterVertically) {
+                                    //Icon
+                                    Icon(Icons.Filled.Person,
+                                        contentDescription = "Pharmacy Management History",
+                                        tint = Color.Black,
+                                        modifier = Modifier.size(40.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(16.dp))
+                                    //Text content
+                                    Column() {
+                                        Text(text= "Pharmacy Management History",
+                                            fontSize = 20.sp,
+                                            color = Color.Black)
+                                        Text("Pharmacy Management History",
+                                            fontSize = 14.sp,
+                                            color = Color.Black)
+                                    }
+                                }
+
+                            }
+                            Card(onClick = { navController.navigate(ROUTE_MEDICATION_SCREEN)
                             },
                                 modifier = Modifier
                                     .fillMaxWidth()

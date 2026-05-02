@@ -1,9 +1,8 @@
-package com.example.smartmedicalsystem.ui.theme.screens.screen
+package com.example.smartmedicalsystem.ui.theme.screens.screen.Onboarding.screen
 
 //package com.example.healthapp.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -13,13 +12,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.smartmedicalsystem.models.OnboardingPage
-import com.example.smartmedicalsystem.navigation.ROUTE_LOGIN
 import kotlinx.coroutines.launch
 
 @Composable
@@ -130,7 +128,7 @@ fun OnboardingSlider(navController: NavController,
                         color = Color(0xFF8A9BA8),
                         fontSize = 14.sp,
                         lineHeight = 20.sp,
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        textAlign = TextAlign.Center
                     )
                 }
             }
@@ -159,8 +157,8 @@ fun OnboardingSlider(navController: NavController,
                 },
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
-                    .height(55.dp)
-                    .padding(bottom = 20.dp),
+                    .height(100.dp)
+                    .padding(bottom = 50.dp),
                 shape = RoundedCornerShape(15.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF4A8CFF)

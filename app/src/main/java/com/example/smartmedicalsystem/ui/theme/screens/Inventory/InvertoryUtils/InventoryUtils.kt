@@ -1,4 +1,4 @@
-package com.example.smartmedicalsystem.ui.theme.screens.screen.InvertoryUtils
+package com.example.smartmedicalsystem.ui.theme.screens.Inventory.InvertoryUtils
 
 //package com.yourapp.pharmacy.utils
 

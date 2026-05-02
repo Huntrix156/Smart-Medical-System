@@ -4,21 +4,28 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.nexora.ui.theme.screens.medicine.screen.AddMedicineScreen
+import com.example.nexora.ui.theme.screens.medicine.screen.MedicineListScreen
+import com.example.nexora.ui.theme.screens.medicine.screen.UpdateMedicineScreen
 import com.example.smartmedical.screens.AdminDashboard
 import com.example.smartmedical.screens.DoctorDashboard
 import com.example.smartmedical.screens.PatientDashboard
+import com.example.smartmedicalsystem.model.MedicationReminderComponent
 import com.example.smartmedicalsystem.models.Medicine
-import com.example.smartmedicalsystem.ui.theme.screens.DashboardScreen
+import com.example.smartmedicalsystem.ui.theme.screens.Dashboard.screen.DashboardScreen
 import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InventoryScreen
 import com.example.smartmedicalsystem.ui.theme.screens.LoginScreen
 import com.example.smartmedicalsystem.ui.theme.screens.RegisterScreen
+import com.example.smartmedicalsystem.ui.theme.screens.UpcomingAppointmentsScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screen.AddMedicine.screen.AddMedicationScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screen.ForgotPasswordScreen
-import com.example.smartmedicalsystem.ui.theme.screens.screen.MedicationScreen
-import com.example.smartmedicalsystem.ui.theme.screens.screen.OnboardingSlider
+import com.example.smartmedicalsystem.ui.theme.screens.screen.Medicine.screen.MedicationScreen
+import com.example.smartmedicalsystem.ui.theme.screens.screen.Onboarding.screen.OnboardingSlider
 import java.time.LocalDate
 
 
@@ -158,7 +165,35 @@ fun AppNavHost(navController: NavHostController = rememberNavController(),
             )
         }
         composable(ROUTE_ADD_MEDICATION) { AddMedicationScreen(navController) }
+        composable(ROUTE_MEDICATION_REMINDER_COMPONENT) {
+            MedicationReminderComponent() // Ensure this name matches your UI file
+        }
+        composable(ROUTE_UPCOMING_APPOINTMENT) {
+            UpcomingAppointmentsScreen(navController)
+        }
+
+        //============New=================//
+        composable (ROUTE_MEDICINE_LIST) { MedicineListScreen(navController) }
+
+        composable (ROUTE_ADD_MEDICINE) { AddMedicineScreen(navController) }
+
+        composable(ROUTE_UPDATE_MEDICATION,
+            arguments = listOf(
+                navArgument("medicineId"){
+                    type = NavType.StringType }
+            )){
+                backStackEntry ->
+            val medicineId = backStackEntry.arguments?.getString("medicineId")!!
+            UpdateMedicineScreen(
+                navController = navController,
+                medicineId  = medicineId
+            )
+        }
+
+
+
     }
+
 
 }
 

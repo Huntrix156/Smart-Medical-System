@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.smartmedicalsystem.models.Medicine
-import com.example.smartmedicalsystem.ui.theme.screens.screen.InvertoryUtils.daysRemaining
-import com.example.smartmedicalsystem.ui.theme.screens.screen.InvertoryUtils.expiryStatusColor
-import com.example.smartmedicalsystem.ui.theme.screens.screen.InvertoryUtils.stockStatusColor
+import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InvertoryUtils.daysRemaining
+import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InvertoryUtils.expiryStatusColor
+import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InvertoryUtils.stockStatusColor
 
 @Composable
 fun MedicineCard(medicine: Medicine) {
