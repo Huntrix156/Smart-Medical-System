@@ -17,15 +17,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.smartmedicalsystem.navigation.ROUTE_ADD_MEDICATION
 import com.example.smartmedicalsystem.navigation.ROUTE_ADD_MEDICINE
 import com.example.smartmedicalsystem.navigation.ROUTE_INVENTORY_SCREEN
-import com.example.smartmedicalsystem.navigation.ROUTE_LOGIN
 import com.example.smartmedicalsystem.navigation.ROUTE_MEDICATION_REMINDER_COMPONENT
 import com.example.smartmedicalsystem.navigation.ROUTE_MEDICINE_LIST
 import com.example.smartmedicalsystem.ui.theme.screens.screen.CenterCardText
@@ -42,7 +39,7 @@ fun MedicationScreen(navController: NavController) {
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = "Booking Appointment")
+                    Text(text = "Medication Detaills")
                 },
                 actions = {
                     IconButton(onClick = {

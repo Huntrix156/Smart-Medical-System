@@ -272,7 +272,7 @@ fun AddMedicineScreen(navController: NavController) {
             topBar = {
                 TopAppBar(
                     title = {
-                        Text("Booking Appointment")
+                        Text("Add Medication")
                     },
 
                     // ✅ Navigation (BACK)
@@ -349,132 +349,303 @@ fun AddMedicineScreen(navController: NavController) {
             }
 
         ) { innerPadding ->
-
-            // ✅ Wrap everything properly
             Column(
                 modifier = Modifier
-                    .background(Color(0xFFF3F5F9))
+                    .background(Color(0xFFEAF2FF))
                     .padding(innerPadding)
                     .padding(16.dp)
                     .fillMaxSize()
-                .verticalScroll(scrollState),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+                    .verticalScroll(scrollState),
+                verticalArrangement = Arrangement.spacedBy(14.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                // =========================
-                // IMAGE PICKER
-                // =========================
-                Box(
-                    modifier = Modifier.size(80.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    if (imageUri != null) {
-                        Image(
-                            painter = rememberAsyncImagePainter(imageUri),
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
-                    } else {
-                        Icon(
-                            Icons.Default.Person,
-                            contentDescription = null,
-                            modifier = Modifier.size(60.dp)
-                        )
-                    }
-                }
-
-                Button(onClick = { launcher.launch("image/*") }) {
-                    Text("Select Image")
-                }
-
-                // =========================
-                // FORM
-                // =========================
-
-                OutlinedTextField(
-                    value = name,
-                    onValueChange = { name = it },
-                    label = { Text("Medicine Name") },
-                    modifier = Modifier.fillMaxWidth()
+                // 🔷 TITLE SECTION
+                Text(
+                    text = "Add Medication",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF0D47A1)
                 )
 
-                OutlinedTextField(
-                    value = dosage,
-                    onValueChange = { dosage = it },
-                    label = { Text("Dosage") },
-                    modifier = Modifier.fillMaxWidth()
+                Text(
+                    text = "Fill in medicine details for scheduling reminders",
+                    fontSize = 13.sp,
+                    color = Color.DarkGray
                 )
-
-                OutlinedTextField(
-                    value = startDate,
-                    onValueChange = { startDate = it },
-                    label = { Text("Start Date/Time") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                OutlinedTextField(
-                    value = endDate,
-                    onValueChange = { endDate = it },
-                    label = { Text("End Date/Time") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                OutlinedTextField(
-                    value = frequency,
-                    onValueChange = { frequency = it },
-                    label = { Text("Frequency (e.g. 08:00,14:00)") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                errorMessage?.let {
-                    Text(
-                        text = it,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                // =========================
-                // SAVE BUTTON
-                // =========================
-                Button(
-                    onClick = {
-                        if (name.isBlank() || dosage.isBlank()) {
-                            errorMessage = "Name and dosage are required"
-                            return@Button
+                // 🔷 CARD CONTAINER (IMPORTANT IMPROVEMENT)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            Color.White,
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                        .padding(16.dp)
+                ) {
+
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        // =========================
+                        // IMAGE UPLOAD SECTION
+                        // =========================
+                        Box(
+                            modifier = Modifier
+                                .size(100.dp)
+                                .background(Color(0xFFF1F5FF), RoundedCornerShape(16.dp)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            if (imageUri != null) {
+                                Image(
+                                    painter = rememberAsyncImagePainter(imageUri),
+                                    contentDescription = null,
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentScale = ContentScale.Crop
+                                )
+                            } else {
+                                Icon(
+                                    Icons.Default.Person,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(50.dp),
+                                    tint = Color(0xFF1976D2)
+                                )
+                            }
                         }
 
-                        isLoading = true
+                        Button(
+                            onClick = { launcher.launch("image/*") },
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Text("Upload Medicine Image")
+                        }
 
-                        medicineViewModel.uploadMedicine(
-                            imageUri,
-                            name,
-                            dosage,
-                            startDate,
-                            endDate,
-                            frequency,
-                            context,
-                            navController
+                        // =========================
+                        // INPUT FIELDS
+                        // =========================
+
+                        OutlinedTextField(
+                            value = name,
+                            onValueChange = { name = it },
+                            label = { Text("Medicine Name") },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp)
                         )
 
-                        isLoading = false
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = !isLoading
-                ) {
-                    if (isLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp),
-                            color = MaterialTheme.colorScheme.onPrimary
+                        OutlinedTextField(
+                            value = dosage,
+                            onValueChange = { dosage = it },
+                            label = { Text("Dosage (e.g. 1 tablet)") },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp)
                         )
-                    } else {
-                        Text("Save Medication")
+
+                        OutlinedTextField(
+                            value = startDate,
+                            onValueChange = { startDate = it },
+                            label = { Text("Start Time") },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+
+                        OutlinedTextField(
+                            value = endDate,
+                            onValueChange = { endDate = it },
+                            label = { Text("End Time") },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+
+                        OutlinedTextField(
+                            value = frequency,
+                            onValueChange = { frequency = it },
+                            label = { Text("Frequency (e.g. 08:00 / 14:00)") },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+
+                        // ERROR
+                        errorMessage?.let {
+                            Text(
+                                text = it,
+                                color = Color.Red,
+                                fontSize = 12.sp
+                            )
+                        }
+
+                        // =========================
+                        // SAVE BUTTON
+                        // =========================
+                        Button(
+                            onClick = {
+                                if (name.isBlank() || dosage.isBlank()) {
+                                    errorMessage = "Medicine name and dosage required"
+                                    return@Button
+                                }
+
+                                isLoading = true
+
+                                medicineViewModel.uploadMedicine(
+                                    imageUri,
+                                    name,
+                                    dosage,
+                                    startDate,
+                                    endDate,
+                                    frequency,
+                                    context,
+                                    navController
+                                )
+
+                                isLoading = false
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp),
+                            shape = RoundedCornerShape(14.dp)
+                        ) {
+                            if (isLoading) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(20.dp),
+                                    color = Color.White
+                                )
+                            } else {
+                                Text("Save Medication")
+                            }
+                        }
                     }
                 }
             }
+
+//            // ✅ Wrap everything properly
+//            Column(
+//                modifier = Modifier
+//                    .background(Color(0xFFF3F5F9))
+//                    .padding(innerPadding)
+//                    .padding(16.dp)
+//                    .fillMaxSize()
+//                .verticalScroll(scrollState),
+//            verticalArrangement = Arrangement.spacedBy(10.dp),
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//
+//                // =========================
+//                // IMAGE PICKER
+//                // =========================
+//                Box(
+//                    modifier = Modifier.size(80.dp),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    if (imageUri != null) {
+//                        Image(
+//                            painter = rememberAsyncImagePainter(imageUri),
+//                            contentDescription = null,
+//                            modifier = Modifier.fillMaxSize(),
+//                            contentScale = ContentScale.Crop
+//                        )
+//                    } else {
+//                        Icon(
+//                            Icons.Default.Person,
+//                            contentDescription = null,
+//                            modifier = Modifier.size(60.dp)
+//                        )
+//                    }
+//                }
+//
+//                Button(onClick = { launcher.launch("image/*") }) {
+//                    Text("Select Image")
+//                }
+//
+//                // =========================
+//                // FORM
+//                // =========================
+//
+//                OutlinedTextField(
+//                    value = name,
+//                    onValueChange = { name = it },
+//                    label = { Text("Medicine Name") },
+//                    modifier = Modifier.fillMaxWidth()
+//                )
+//
+//                OutlinedTextField(
+//                    value = dosage,
+//                    onValueChange = { dosage = it },
+//                    label = { Text("Dosage") },
+//                    modifier = Modifier.fillMaxWidth()
+//                )
+//
+//                OutlinedTextField(
+//                    value = startDate,
+//                    onValueChange = { startDate = it },
+//                    label = { Text("Start Date/Time") },
+//                    modifier = Modifier.fillMaxWidth()
+//                )
+//
+//                OutlinedTextField(
+//                    value = endDate,
+//                    onValueChange = { endDate = it },
+//                    label = { Text("End Date/Time") },
+//                    modifier = Modifier.fillMaxWidth()
+//                )
+//
+//                OutlinedTextField(
+//                    value = frequency,
+//                    onValueChange = { frequency = it },
+//                    label = { Text("Frequency (e.g. 08:00,14:00)") },
+//                    modifier = Modifier.fillMaxWidth()
+//                )
+//
+//                errorMessage?.let {
+//                    Text(
+//                        text = it,
+//                        color = MaterialTheme.colorScheme.error
+//                    )
+//                }
+//
+//                Spacer(modifier = Modifier.height(10.dp))
+//
+//                // =========================
+//                // SAVE BUTTON
+//                // =========================
+//                Button(
+//                    onClick = {
+//                        if (name.isBlank() || dosage.isBlank()) {
+//                            errorMessage = "Name and dosage are required"
+//                            return@Button
+//                        }
+//
+//                        isLoading = true
+//
+//                        medicineViewModel.uploadMedicine(
+//                            imageUri,
+//                            name,
+//                            dosage,
+//                            startDate,
+//                            endDate,
+//                            frequency,
+//                            context,
+//                            navController
+//                        )
+//
+//                        isLoading = false
+//                    },
+//                    modifier = Modifier.fillMaxWidth(),
+//                    enabled = !isLoading
+//                ) {
+//                    if (isLoading) {
+//                        CircularProgressIndicator(
+//                            modifier = Modifier.size(20.dp),
+//                            color = MaterialTheme.colorScheme.onPrimary
+//                        )
+//                    } else {
+//                        Text("Save Medication")
+//                    }
+//                }
+            }
 //        }
     }
-}
+//}
