@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
-import com.example.smartmedicalsystem.models.Medicine
+import com.example.smartmedicalsystem.models.medication.Medicine
 import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InventoryScreen
 import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InvertoryUtils.daysRemaining
 import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InvertoryUtils.expiryStatusColor

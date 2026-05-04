@@ -23,3 +23,12 @@ const val ROUTE_MEDICATION_SCREEN = "medication_screen"
 const val ROUTE_INVENTORY_SCREEN = "inventory_screen"
 const val ROUTE_MEDICATION_REMINDER_COMPONENT="medication Screen"
 const val ROUTE_UPCOMING_APPOINTMENT="Upcoming Appointment"
+const val ROUTE_ADMIN_ADD_DOCTOR="admin add doctor screen"
+
+const val ROUTE_CHANGE_PASSWORD = "change password"
+const val ROUTE_REMINDER="reminder"
+const val ROUTE_SETTINGS="settings"
+
+
+
+

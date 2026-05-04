@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.smartmedicalsystem.models.MedicineModel
+import com.example.smartmedicalsystem.models.medication.MedicineModel
 import com.example.smartmedicalsystem.navigation.ROUTE_ADD_MEDICATION
 import com.example.smartmedicalsystem.navigation.ROUTE_PATIENT_DASHBOARD
 import com.google.firebase.database.FirebaseDatabase

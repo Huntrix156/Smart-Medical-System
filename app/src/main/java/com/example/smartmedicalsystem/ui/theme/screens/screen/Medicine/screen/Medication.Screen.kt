@@ -25,6 +25,7 @@ import com.example.smartmedicalsystem.navigation.ROUTE_ADD_MEDICINE
 import com.example.smartmedicalsystem.navigation.ROUTE_INVENTORY_SCREEN
 import com.example.smartmedicalsystem.navigation.ROUTE_MEDICATION_REMINDER_COMPONENT
 import com.example.smartmedicalsystem.navigation.ROUTE_MEDICINE_LIST
+import com.example.smartmedicalsystem.navigation.ROUTE_REMINDER
 import com.example.smartmedicalsystem.ui.theme.screens.screen.CenterCardText
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -123,7 +124,9 @@ fun MedicationScreen(navController: NavController) {
 
                     // ✅ Medication Reminder Card
                     Card(
-                        onClick = { navController.navigate(ROUTE_MEDICATION_REMINDER_COMPONENT) },
+                        onClick = {
+//                            navController.navigate(ROUTE_MEDICATION_REMINDER_COMPONENT)
+                            navController.navigate(ROUTE_REMINDER)},
                         modifier = Modifier.size(140.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.Blue),
                         shape = RoundedCornerShape(12.dp),

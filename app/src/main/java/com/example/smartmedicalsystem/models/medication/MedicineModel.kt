@@ -1,4 +1,4 @@
-package com.example.smartmedicalsystem.models
+package com.example.smartmedicalsystem.models.medication
 
 data class MedicineModel(
     var id: String?=null,//from the database//

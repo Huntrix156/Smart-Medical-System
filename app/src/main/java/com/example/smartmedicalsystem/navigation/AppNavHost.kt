@@ -9,6 +9,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.dosetracker.ui.theme.screens.changepassword.screen.ChangePassword
+import com.example.nexora.ui.theme.screens.Reminder.screen.ReminderScreen
+import com.example.nexora.ui.theme.screens.Settings.screen.SettingsScreen
 import com.example.nexora.ui.theme.screens.medicine.screen.AddMedicineScreen
 import com.example.nexora.ui.theme.screens.medicine.screen.MedicineListScreen
 import com.example.nexora.ui.theme.screens.medicine.screen.UpdateMedicineScreen
@@ -16,7 +19,8 @@ import com.example.smartmedical.screens.AdminDashboard
 import com.example.smartmedical.screens.DoctorDashboard
 import com.example.smartmedical.screens.PatientDashboard
 import com.example.smartmedicalsystem.model.MedicationReminderComponent
-import com.example.smartmedicalsystem.models.Medicine
+import com.example.smartmedicalsystem.models.medication.Medicine
+import com.example.smartmedicalsystem.ui.theme.Admin.AdminAddDoctorScreen
 import com.example.smartmedicalsystem.ui.theme.screens.Dashboard.screen.DashboardScreen
 import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InventoryScreen
 import com.example.smartmedicalsystem.ui.theme.screens.LoginScreen
@@ -131,6 +135,17 @@ fun AppNavHost(navController: NavHostController = rememberNavController(),
         composable (ROUTE_MEDICINE_LIST) { MedicineListScreen(navController) }
 
         composable (ROUTE_ADD_MEDICINE) { AddMedicineScreen(navController) }
+
+        composable(ROUTE_ADMIN_ADD_DOCTOR) {
+            AdminAddDoctorScreen(navController)
+        }
+        composable(ROUTE_SETTINGS) {
+            SettingsScreen(navController = navController)
+        }
+
+        composable (ROUTE_REMINDER) { ReminderScreen(navController = navController) }
+
+        composable (ROUTE_CHANGE_PASSWORD ){ ChangePassword(navController)}
 
         composable(ROUTE_UPDATE_MEDICATION,
             arguments = listOf(

@@ -43,7 +43,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.smartmedicalsystem.data.MedicineViewModel
-import com.example.smartmedicalsystem.models.MedicineModel
+import com.example.smartmedicalsystem.models.medication.MedicineModel
 
 
 @Composable

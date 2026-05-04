@@ -136,4 +136,11 @@ dependencies {
 
     // USE THIS ONE (with -ktx)
     implementation("androidx.work:work-runtime-ktx:${"2.9.0"}")
+
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
 }

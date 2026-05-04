@@ -1,4 +1,4 @@
-package com.example.smartmedicalsystem.models
+package com.example.smartmedicalsystem.models.medication
 
 import java.time.LocalDate
 
