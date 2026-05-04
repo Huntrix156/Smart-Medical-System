@@ -478,8 +478,40 @@ fun RegisterScreen(navController: NavController) {
                     }
 
                     // REGISTER BUTTON (premium style)
+//                    Button(
+//                        onClick = {
+//                            authViewModel.signup(
+//                                firstname = firstName,
+//                                lastname = lastName,
+//                                email = email,
+//                                password = password,
+//                                confirmpassword = confirmPassword,
+//                                gender = gender,
+//                                navController = navController,
+//                                context = context
+//                            )
+//                        },
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(52.dp),
+//                        shape = RoundedCornerShape(14.dp)
+//                    ) {
+//                        Text("Create Account", fontSize = 16.sp)
+//                    }
                     Button(
                         onClick = {
+
+                            if (
+                                firstName.isBlank() ||
+                                lastName.isBlank() ||
+                                email.isBlank() ||
+                                password.isBlank() ||
+                                confirmPassword.isBlank() ||
+                                gender.isBlank()
+                            ) return@Button
+
+                            if (password != confirmPassword) return@Button
+
                             authViewModel.signup(
                                 firstname = firstName,
                                 lastname = lastName,
@@ -498,6 +530,13 @@ fun RegisterScreen(navController: NavController) {
                     ) {
                         Text("Create Account", fontSize = 16.sp)
                     }
+
+
+
+
+
+
+
 
                     // FOOTER
                     Row(

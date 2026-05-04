@@ -29,19 +29,8 @@ import com.example.smartmedicalsystem.ui.theme.screens.screen.Onboarding.screen.
 import java.time.LocalDate
 
 
-//object Routes {
-//    const val LOGIN = "login"
-//    const val PATIENT = "patient_dashboard"
-//    const val DOCTOR = "doctor_dashboard"
-//    const val ADMIN = "admin_dashboard"
-//
-//}
 
-object Routes {
-    const val PATIENT = "patient_dashboard"
-    const val DOCTOR = "doctor_dashboard"
-    const val ADMIN = "admin_dashboard"
-}
+
 sealed class Screen(val route: String) {
     object Onboarding : Screen("onboarding")
     object Login : Screen("login")
@@ -82,44 +71,10 @@ fun AppNavHost(navController: NavHostController = rememberNavController(),
 
     ) {
         composable(ROUTE_REGISTER) { RegisterScreen(navController) }
-//        composable(ROUTE_LOGIN) {
         composable(Screen.Login.route) {
-            LoginScreen(navController, onRoleSelected = { role ->
-                when (role) {
-                    "Patient" -> navController.navigate(Routes.PATIENT)
-                    "Doctor" -> navController.navigate(Routes.DOCTOR)
-                    "Admin" -> navController.navigate(Routes.ADMIN)
-                }
-            })
+            LoginScreen(navController)
         }
-        composable(Routes.PATIENT) {
-            PatientDashboard(
-                navController,
-                onLogout = {
-                    navController.navigate(Screen.Login.route) {
-                        popUpTo(Screen.Login.route) { inclusive = true }
-                    }
-                }
-            )
-        }
-        composable(Routes.DOCTOR) {
-            DoctorDashboard(
-                onLogout = {
-                    navController.navigate(Screen.Login.route) {
-                        popUpTo(Screen.Login.route) { inclusive = true }
-                    }
-                }
-            )
-        }
-        composable(Routes.ADMIN) {
-            AdminDashboard(
-                onLogout = {
-                    navController.navigate(Screen.Login.route) {
-                        popUpTo(Screen.Login.route) { inclusive = true }
-                    }
-                }
-            )
-        }
+
 
         composable(ROUTE_MAIN_DASHBOARD) { DashboardScreen(navController) }
 

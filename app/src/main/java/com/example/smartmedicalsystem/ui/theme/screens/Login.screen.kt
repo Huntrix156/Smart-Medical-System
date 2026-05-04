@@ -20,10 +20,7 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -50,6 +47,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.smartmedicalsystem.data.AuthViewModel
 import com.example.smartmedicalsystem.navigation.ROUTE_MAIN_DASHBOARD
 import com.example.smartmedicalsystem.navigation.ROUTE_REGISTER
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 //
 //import android.R.attr.background
@@ -346,7 +345,7 @@ import com.example.smartmedicalsystem.navigation.ROUTE_REGISTER
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController, onRoleSelected: (String) -> Unit) {
+fun LoginScreen(navController: NavController) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -355,10 +354,10 @@ fun LoginScreen(navController: NavController, onRoleSelected: (String) -> Unit) 
     var expanded by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
 
-    val roles = listOf("Patient", "Doctor", "Admin")
 
     val authViewModel: AuthViewModel = viewModel()
     val context = LocalContext.current
+
 
     Box(
         modifier = Modifier
@@ -448,68 +447,129 @@ fun LoginScreen(navController: NavController, onRoleSelected: (String) -> Unit) 
                     )
 
                     // ROLE DROPDOWN
-                    ExposedDropdownMenuBox(
-                        expanded = expanded,
-                        onExpandedChange = { expanded = !expanded }
-                    ) {
-                        OutlinedTextField(
-                            value = selectedRole.ifEmpty { "Select Role" },
-                            onValueChange = {},
-                            readOnly = true,
-                            label = { Text("Role") },
-                            trailingIcon = {
-                                ExposedDropdownMenuDefaults.TrailingIcon(expanded)
-                            },
-                            modifier = Modifier
-                                .menuAnchor()
-                                .fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-
-                        ExposedDropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false }
-                        ) {
-                            roles.forEach { role ->
-                                DropdownMenuItem(
-                                    text = { Text(role) },
-                                    onClick = {
-                                        selectedRole = role
-                                        expanded = false
-                                        errorMessage = ""
-                                    }
-                                )
-                            }
-                        }
-                    }
-
-                    // ERROR
-                    if (errorMessage.isNotEmpty()) {
-                        Text(
-                            text = errorMessage,
-                            color = Color.Red,
-                            fontSize = 12.sp
-                        )
-                    }
-
+//                    ExposedDropdownMenuBox(
+//                        expanded = expanded,
+//                        onExpandedChange = { expanded = !expanded }
+//                    ) {
+//                        OutlinedTextField(
+//                            value = selectedRole.ifEmpty { "Select Role" },
+//                            onValueChange = {},
+//                            readOnly = true,
+//                            label = { Text("Role") },
+//                            trailingIcon = {
+//                                ExposedDropdownMenuDefaults.TrailingIcon(expanded)
+//                            },
+//                            modifier = Modifier
+//                                .menuAnchor()
+//                                .fillMaxWidth(),
+//                            shape = RoundedCornerShape(12.dp)
+//                        )
+//
+//                        ExposedDropdownMenu(
+//                            expanded = expanded,
+//                            onDismissRequest = { expanded = false }
+//                        ) {
+//                            roles.forEach { role ->
+//                                DropdownMenuItem(
+//                                    text = { Text(role) },
+//                                    onClick = {
+//                                        selectedRole = role
+//                                        expanded = false
+//                                        errorMessage = ""
+//                                    }
+//                                )
+//                            }
+//                        }
+//                    }
+//
+//                     ERROR
+//                    if (errorMessage.isNotEmpty()) {
+//                        Text(
+//                            text = errorMessage,
+//                            color = Color.Red,
+//                            fontSize = 12.sp
+//                        )
+//                    }
+//
                     // LOGIN BUTTON (more premium feel)
+//                    Button(
+//                        onClick = {
+//                            authViewModel.login(
+//                                email = email,
+//                                password = password,
+//                                gender = "",
+//                                navController = navController,
+//                                context = context
+//                            )
+//
+//                            when {
+//                                email.isEmpty() || password.isEmpty() ->
+//                                    errorMessage = "All fields are required"
+//                                selectedRole.isEmpty() ->
+//                                    errorMessage = "Select your role"
+//                                else -> onRoleSelected(selectedRole)
+//                            }
+//                        },
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(50.dp),
+//                        shape = RoundedCornerShape(12.dp)
+//                    ) {
+//                        Text("Sign In", fontSize = 16.sp)
+//                    }
                     Button(
                         onClick = {
-                            authViewModel.login(
-                                email = email,
-                                password = password,
-                                gender = "",
-                                navController = navController,
-                                context = context
-                            )
 
-                            when {
-                                email.isEmpty() || password.isEmpty() ->
-                                    errorMessage = "All fields are required"
-                                selectedRole.isEmpty() ->
-                                    errorMessage = "Select your role"
-                                else -> onRoleSelected(selectedRole)
+
+                            if (email.isEmpty() || password.isEmpty()) {
+                                errorMessage = "All fields are required"
+                                return@Button
                             }
+
+                            val auth = FirebaseAuth.getInstance()
+                            val db = FirebaseFirestore.getInstance()
+
+                            auth.signInWithEmailAndPassword(email, password)
+                                .addOnSuccessListener {
+
+                                    val uid = auth.currentUser?.uid
+
+                                    if (uid != null) {
+
+                                        db.collection("users").document(uid).get()
+                                            .addOnSuccessListener { document ->
+
+                                                if (!document.exists()) {
+                                                    errorMessage = "User profile not found"
+                                                    return@addOnSuccessListener
+                                                }
+
+                                                val role = document.getString("role")?.lowercase()?.trim()
+                                                when (role) {
+                                                    "admin" -> {
+                                                        navController.navigate("admin_dashboard") {
+                                                            popUpTo(0) { inclusive = true }
+                                                            launchSingleTop = true
+                                                        }                                                    }
+                                                    "doctor" -> {
+                                                        navController.navigate("doctor_dashboard")
+                                                    }
+                                                    "patient" -> {
+                                                        navController.navigate("patient_dashboard")
+                                                    }
+                                                    else -> {
+                                                        errorMessage = "Unknown role"
+                                                    }
+                                                }
+                                            }
+                                            .addOnFailureListener {
+                                                errorMessage = "Failed to get user data"
+                                            }
+                                    }
+                                }
+                                .addOnFailureListener {
+                                    errorMessage = "Login failed: ${it.message}"
+                                }
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -518,7 +578,14 @@ fun LoginScreen(navController: NavController, onRoleSelected: (String) -> Unit) 
                     ) {
                         Text("Sign In", fontSize = 16.sp)
                     }
-
+                    // 👇 ADD THIS HERE
+                    if (errorMessage.isNotEmpty()) {
+                        Text(
+                            text = errorMessage,
+                            color = Color.Red,
+                            fontSize = 12.sp
+                        )
+                    }
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Row(
@@ -557,8 +624,5 @@ fun LoginScreen(navController: NavController, onRoleSelected: (String) -> Unit) 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(
-        navController = rememberNavController(),
-        onRoleSelected = {}
-    )
+    LoginScreen(navController = rememberNavController())
 }
