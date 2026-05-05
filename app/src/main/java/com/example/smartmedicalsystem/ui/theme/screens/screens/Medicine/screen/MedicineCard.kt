@@ -1,4 +1,4 @@
-package com.example.smartmedicalsystem.ui.theme.screens.screen.Medicine.screen
+package com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

@@ -17,6 +17,5 @@ data class UserModel(
     val lastname: String = "",
     val email: String = "",
     val userId: String = "",
-    val gender: String = "",
-
+    val gender: String = ""
 )

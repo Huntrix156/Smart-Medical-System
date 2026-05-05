@@ -1,4 +1,4 @@
-package com.example.smartmedicalsystem.ui.theme.screens.screen
+package com.example.smartmedicalsystem.ui.theme.screens.screens
 
 
 import androidx.compose.foundation.layout.*

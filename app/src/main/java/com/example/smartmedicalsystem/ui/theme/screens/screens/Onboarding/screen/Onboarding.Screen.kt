@@ -1,4 +1,4 @@
-package com.example.smartmedicalsystem.ui.theme.screens.screen.Onboarding.screen
+package com.example.smartmedicalsystem.ui.theme.screens.screens.Onboarding.screen
 
 //package com.example.healthapp.ui.screens
 

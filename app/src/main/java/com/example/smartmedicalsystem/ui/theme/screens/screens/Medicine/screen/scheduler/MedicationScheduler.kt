@@ -112,14 +112,12 @@
 //}
 
 
-
-
-package com.example.smartmedicalsystem.ui.theme.screens.scheduler
+package com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.scheduler
 
 import android.content.Context
 import androidx.work.*
 import com.example.smartmedicalsystem.data.MedicationReminder
-import com.example.smartmedicalsystem.ui.theme.screens.screen.MedicationWorker
+import com.example.smartmedicalsystem.ui.theme.screens.screens.MedicationWorker
 import java.util.concurrent.TimeUnit
 import java.util.Calendar
 

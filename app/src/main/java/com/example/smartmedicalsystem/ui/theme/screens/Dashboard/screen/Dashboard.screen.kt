@@ -47,17 +47,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.smartmedicalsystem.navigation.ROUTE_ADD_MEDICATION
 import com.example.smartmedicalsystem.navigation.ROUTE_INVENTORY_SCREEN
 import com.example.smartmedicalsystem.navigation.ROUTE_MEDICATION_SCREEN
+import com.example.smartmedicalsystem.navigation.ROUTE_PATIENT_DASHBOARD
+import com.example.smartmedicalsystem.navigation.ROUTE_SETTINGS
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(navController: NavController){
-                val selectedItem = remember { mutableIntStateOf(0) }
+    val selectedItem = remember { mutableIntStateOf(0) }
+    val currentRoute = navController.currentBackStackEntryAsState()
+        .value?.destination?.route
 //                val authViewModel: AuthViewModel = viewModel()
 //                val context = LocalContext.current
 
@@ -148,30 +153,50 @@ fun DashboardScreen(navController: NavController){
                         },
                         bottomBar = { NavigationBar(containerColor = Color.Black){
                             NavigationBarItem(
-                                selected = selectedItem.value == 0,
-                                onClick = {selectedItem.value = 0},
+                                selected = currentRoute == ROUTE_SETTINGS,
+                                onClick = {
+                                    navController.navigate(ROUTE_SETTINGS) {
+                                        popUpTo(ROUTE_PATIENT_DASHBOARD)
+                                        launchSingleTop = true
+                                    }
+                                },
                                 icon = {Icon(Icons.Filled.Settings,
                                     contentDescription = "Settings")},
                                 label = {Text(text = "Settings") }
 
                             )
                             NavigationBarItem(
-                                selected = selectedItem.value == 1,
-                                onClick = {selectedItem.value = 1},
+                                selected = currentRoute == ROUTE_SETTINGS,
+                                onClick = {
+                                    navController.navigate(ROUTE_SETTINGS) {
+                                        popUpTo(ROUTE_PATIENT_DASHBOARD)
+                                        launchSingleTop = true
+                                    }
+                                },
                                 icon = {Icon(Icons.Filled.FilePresent,
                                     contentDescription = "Records")},
                                 label = {Text(text = "Records") })
 
                             NavigationBarItem(
-                                selected = selectedItem.value == 2,
-                                onClick = {selectedItem.value = 2},
+                                selected = currentRoute == ROUTE_SETTINGS,
+                                onClick = {
+                                    navController.navigate(ROUTE_SETTINGS) {
+                                        popUpTo(ROUTE_PATIENT_DASHBOARD)
+                                        launchSingleTop = true
+                                    }
+                                },
                                 icon = {Icon(Icons.Filled.CalendarToday,
                                     contentDescription = "Appointments")},
                                 label = {Text(text = "Appointments") },
                             )
                             NavigationBarItem(
-                                selected = selectedItem.value == 2,
-                                onClick = {selectedItem.value = 2},
+                                selected = currentRoute == ROUTE_SETTINGS,
+                                onClick = {
+                                    navController.navigate(ROUTE_SETTINGS) {
+                                        popUpTo(ROUTE_PATIENT_DASHBOARD)
+                                        launchSingleTop = true
+                                    }
+                                },
                                 icon = {Icon(Icons.Filled.AccountBox,
                                     contentDescription = "Profile")},
                                 label = {Text(text = "Profile") },

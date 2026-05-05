@@ -1,42 +1,53 @@
-package com.example.smartmedical.screens
-
-//import androidx.compose.foundation.layout.Column
-//import androidx.compose.foundation.layout.Spacer
-//import androidx.compose.foundation.layout.fillMaxWidth
-//import androidx.compose.foundation.layout.height
-//import androidx.compose.foundation.layout.padding
-//import androidx.compose.material3.Button
-//import androidx.compose.material3.Card
-//import androidx.compose.material3.CardDefaults
-//import androidx.compose.material3.ExperimentalMaterial3Api
-//import androidx.compose.material3.MaterialTheme
-//import androidx.compose.material3.Scaffold
-//import androidx.compose.material3.Text
-//import androidx.compose.material3.TopAppBar
-//import androidx.compose.runtime.Composable
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.graphics.Color
-//import androidx.compose.ui.text.font.FontWeight
-//import androidx.compose.ui.unit.dp
-//import androidx.compose.ui.unit.sp
-
+// ✅ FIXED: Package matches actual file location in this project
+package com.example.smartmedicalsystem.ui.theme.screens.Dashboard.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.FilePresent
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.smartmedicalsystem.data.DashboardViewModel
 import com.example.smartmedicalsystem.navigation.ROUTE_ADMIN_ADD_DOCTOR
-import com.example.smartmedicalsystem.ui.theme.screens.screen.StatCard
+import com.example.smartmedicalsystem.navigation.ROUTE_INVENTORY_SCREEN
+import com.example.smartmedicalsystem.navigation.ROUTE_MEDICINE_LIST
+import com.example.smartmedicalsystem.navigation.ROUTE_PATIENT_DASHBOARD
+import com.example.smartmedicalsystem.navigation.ROUTE_SETTINGS
+import com.example.smartmedicalsystem.navigation.ROUTE_UPCOMING_APPOINTMENT
 
+// ✅ FIXED: Import StatCard from its own file
+import com.example.smartmedicalsystem.ui.theme.screens.screens.StatCard
+
+// ✅ FIXED: Added username parameter — AppNavHost passes it in
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdminDashboard(navController: NavController,onLogout: () -> Unit) {
+fun AdminDashboard(
+    navController: NavController,
+    username: String,
+    viewModel: DashboardViewModel,
+    onLogout: () -> Unit
+) {
+    val currentRoute = navController.currentBackStackEntryAsState()
+        .value?.destination?.route
+
+    // ✅ Populate viewModel with the passed username
+    LaunchedEffect(username) {
+        viewModel.setUser(username, "Admin")
+    }
+
+    val greeting = viewModel.greeting.value
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -47,10 +58,78 @@ fun AdminDashboard(navController: NavController,onLogout: () -> Unit) {
                     }
                 }
             )
+        },
+        bottomBar = {
+            NavigationBar(containerColor = Color.Black) {
+                NavigationBarItem(
+                    selected = currentRoute == ROUTE_SETTINGS,
+                    onClick = {
+                        navController.navigate(ROUTE_SETTINGS) {
+                            popUpTo(ROUTE_PATIENT_DASHBOARD)
+                            launchSingleTop = true
+                        }
+                    },
+                    icon = { Icon(Icons.Filled.Settings, contentDescription = "Settings") },
+                    label = { Text("Settings") }
+                )
+                NavigationBarItem(
+                    selected = currentRoute == ROUTE_MEDICINE_LIST,
+                    onClick = {
+                        navController.navigate(ROUTE_MEDICINE_LIST) {
+                            popUpTo(ROUTE_PATIENT_DASHBOARD)
+                            launchSingleTop = true
+                        }
+                    },
+                    icon = { Icon(Icons.Filled.FilePresent, contentDescription = "Records") },
+                    label = { Text("Records") }
+                )
+                NavigationBarItem(
+                    selected = currentRoute == ROUTE_UPCOMING_APPOINTMENT,
+                    onClick = {
+                        navController.navigate(ROUTE_UPCOMING_APPOINTMENT) {
+                            popUpTo(ROUTE_PATIENT_DASHBOARD)
+                            launchSingleTop = true
+                        }
+                    },
+                    icon = { Icon(Icons.Filled.CalendarToday, contentDescription = "Appointments") },
+                    label = { Text("Appointments") }
+                )
+                NavigationBarItem(
+                    selected = currentRoute == ROUTE_INVENTORY_SCREEN,
+                    onClick = {
+                        navController.navigate(ROUTE_INVENTORY_SCREEN) {
+                            popUpTo(ROUTE_PATIENT_DASHBOARD)
+                            launchSingleTop = true
+                        }
+                    },
+                    icon = { Icon(Icons.Filled.AccountBox, contentDescription = "Profile") },
+                    label = { Text("Profile") }
+                )
+            }
         }
     ) { padding ->
-        Column(modifier = Modifier.padding(padding).padding(16.dp)) {
+
+        // ✅ FIXED: All content is properly inside the Scaffold lambda
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .padding(16.dp)
+        ) {
+
+            Text(
+                text = "$greeting, Admin $username ⚙️",
+                style = MaterialTheme.typography.headlineMedium
+            )
+
+            Text(
+                text = "Monitor users, doctors, patients, and system activity",
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Text("System Overview", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -60,11 +139,16 @@ fun AdminDashboard(navController: NavController,onLogout: () -> Unit) {
             }
 
             Spacer(modifier = Modifier.height(20.dp))
+
             Text("Recent Activity", fontWeight = FontWeight.SemiBold, fontSize = 16.sp)
+
             Spacer(modifier = Modifier.height(8.dp))
 
             Card(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     Text("New doctor registered — Dr. Kamau", fontSize = 14.sp)
                     HorizontalDivider()
                     Text("System backup completed", fontSize = 14.sp)
@@ -72,59 +156,22 @@ fun AdminDashboard(navController: NavController,onLogout: () -> Unit) {
             }
 
             Spacer(modifier = Modifier.height(20.dp))
-            Button(onClick = {navController.navigate(ROUTE_ADMIN_ADD_DOCTOR)}, modifier = Modifier.fillMaxWidth()) {
+
+            Button(
+                onClick = { navController.navigate(ROUTE_ADMIN_ADD_DOCTOR) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text("Add New Doctor")
             }
+
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedButton(onClick = {}, modifier = Modifier.fillMaxWidth()) {
+
+            OutlinedButton(
+                onClick = {},
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text("Generate Report")
             }
         }
     }
 }
-
-
-
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun AdminDashboard(
-//    userRole: String, // Added this parameter
-//    onLogout: () -> Unit
-//) {
-//    Scaffold(
-//        topBar = {
-//            aTopAppBar(title = { Text("System Administrator") })
-//        }
-//    ) { padding ->
-//        Column(modifier = Modifier.padding(padding).padding(16.dp)) {
-//            Text("Admin Portal", fontSize = 24.sp, fontWeight = FontWeight.Bold)
-//
-//            // SECURITY CHECK: Only show "Add Doctor" if userRole is exactly "Admin"
-//            if (userRole == "Admin") {
-//                Spacer(modifier = Modifier.height(20.dp))
-//
-//                Card(
-//                    colors = CardDefaults.cardColors(
-//                        containerColor = MaterialTheme.colorScheme.primaryContainer
-//                    )
-//                ) {
-//                    Column(modifier = Modifier.padding(16.dp)) {
-//                        Text("Management", fontWeight = FontWeight.Bold)
-//                        Text("Add new clinical staff to the system.")
-//                        Spacer(modifier = Modifier.height(10.dp))
-//
-//                        Button(
-//                            onClick = { /* Navigate to your Add Doctor Screen */ },
-//                            modifier = Modifier.fillMaxWidth()
-//                        ) {
-//                            Text("Add New Doctor")
-//                        }
-//                    }
-//                }
-//            } else {
-//                // If somehow a non-admin gets here, they see this:
-//                Text("Access Denied. You do not have permission to manage staff.", color = Color.Red)
-//            }
-//        }
-//    }
-//}

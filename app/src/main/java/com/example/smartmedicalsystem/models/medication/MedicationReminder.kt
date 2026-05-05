@@ -4,7 +4,7 @@ package com.example.smartmedicalsystem.model
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.example.smartmedicalsystem.data.MedicationReminder
-import com.example.smartmedicalsystem.ui.theme.screens.scheduler.scheduleMedicationReminder
+import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.scheduler.scheduleMedicationReminder
 
 @Composable
 fun MedicationReminderComponent() {
