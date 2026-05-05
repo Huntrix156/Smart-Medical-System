@@ -1,4 +1,4 @@
-package com.example.nexora.data.Reminder
+package com.example.smartmedicalsystem.data.Reminder
 
 import android.Manifest
 import android.app.AlarmManager
@@ -6,8 +6,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.annotation.RequiresPermission
-import com.example.nexora.receiver.AlarmReceiver
 import com.example.smartmedicalsystem.models.Reminder
+import com.example.smartmedicalsystem.receiver.AlarmReceiver
 
 object AlarmScheduler {
 

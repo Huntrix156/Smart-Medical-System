@@ -1,7 +1,5 @@
 package com.example.smartmedicalsystem.data.changepassword
 
-// class changePasswordViewModel()
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.smartmedicalsystem.models.ChangePasswordState

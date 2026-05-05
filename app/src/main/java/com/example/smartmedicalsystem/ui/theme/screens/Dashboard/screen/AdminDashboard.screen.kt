@@ -30,11 +30,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.smartmedicalsystem.navigation.ROUTE_ADMIN_ADD_DOCTOR
 import com.example.smartmedicalsystem.ui.theme.screens.screen.StatCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdminDashboard(onLogout: () -> Unit) {
+fun AdminDashboard(navController: NavController,onLogout: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -70,8 +72,8 @@ fun AdminDashboard(onLogout: () -> Unit) {
             }
 
             Spacer(modifier = Modifier.height(20.dp))
-            Button(onClick = {}, modifier = Modifier.fillMaxWidth()) {
-                Text("Add New User")
+            Button(onClick = {navController.navigate(ROUTE_ADMIN_ADD_DOCTOR)}, modifier = Modifier.fillMaxWidth()) {
+                Text("Add New Doctor")
             }
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedButton(onClick = {}, modifier = Modifier.fillMaxWidth()) {

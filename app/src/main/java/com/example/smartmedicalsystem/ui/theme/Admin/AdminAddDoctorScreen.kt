@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.smartmedicalsystem.data.AuthViewModel
+
 
 @Composable
 fun AdminAddDoctorScreen(navController: NavController) {
@@ -42,8 +42,8 @@ fun AdminAddDoctorScreen(navController: NavController) {
     var password by remember { mutableStateOf("") }
     var gender by remember { mutableStateOf("") }
 
-    val authViewModel: AuthViewModel = viewModel()
-    val context = LocalContext.current
+//    val authViewModel: AuthViewModel = viewModel()
+//    val context = LocalContext.current
 
     Column(
         modifier = Modifier

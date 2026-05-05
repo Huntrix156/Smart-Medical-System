@@ -1,4 +1,4 @@
-package com.example.nexora.receiver
+package com.example.smartmedicalsystem.receiver
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -11,6 +11,7 @@ import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.example.nexora.ui.alarm.AlarmAlertActivity
+import kotlin.jvm.java
 
 class AlarmReceiver : BroadcastReceiver() {
 
@@ -33,7 +34,7 @@ class AlarmReceiver : BroadcastReceiver() {
         // ── Notification ────────────────────────────────────────
         createNotificationChannel(context)
 
-        val notification = NotificationCompat.Builder(context, "nexora_reminders")
+        val notification = NotificationCompat.Builder(context, "smartmedicalsystem_reminders")
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle("💊 Medicine Reminder")
             .setContentText("Time to take $medicineName")
@@ -58,7 +59,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 .build()
 
             val channel = NotificationChannel(
-                "nexora_reminders",
+                "smartmedicalsystem_reminders",
                 "Medicine Reminders",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {

@@ -181,7 +181,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.nexora.data.Reminder.AlarmScheduler
+import com.example.smartmedicalsystem.data.Reminder.AlarmScheduler
 import com.example.smartmedicalsystem.models.Reminder
 import java.util.Calendar
 

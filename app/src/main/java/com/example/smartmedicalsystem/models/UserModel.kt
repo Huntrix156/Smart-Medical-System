@@ -18,5 +18,5 @@ data class UserModel(
     val email: String = "",
     val userId: String = "",
     val gender: String = "",
-    val role: String = "patient" // ✅ IMPORTANT FIX
+
 )

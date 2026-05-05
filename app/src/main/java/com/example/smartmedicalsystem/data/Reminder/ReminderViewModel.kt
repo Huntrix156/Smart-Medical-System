@@ -1,14 +1,17 @@
 
-package com.example.nexora.viewmodel  // ✅ fix package name (not .data.Reminder)
+package com.example.smartmedicalsystem.viewmodel  // ✅ fix package name (not .data.Reminder)
 
+import android.Manifest
 import android.app.Application
+import androidx.annotation.RequiresPermission
 import androidx.lifecycle.AndroidViewModel
-import com.example.nexora.data.Reminder.AlarmScheduler
+import com.example.smartmedicalsystem.data.Reminder.AlarmScheduler
 import com.example.smartmedicalsystem.models.Reminder
 
 class ReminderViewModel(application: Application) : AndroidViewModel(application) {
 
 
+    @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
     fun scheduleReminder(reminder: Reminder) {
         val context = getApplication<Application>() // ✅ safe way to get context
         AlarmScheduler.setAlarm(context, reminder)
