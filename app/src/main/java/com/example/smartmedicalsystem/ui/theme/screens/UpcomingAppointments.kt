@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.FilePresent
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -26,6 +27,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -36,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.smartmedicalsystem.models.Appointment
 import com.example.smartmedicalsystem.navigation.ROUTE_PATIENT_DASHBOARD
 import com.example.smartmedicalsystem.navigation.ROUTE_SETTINGS
 
@@ -45,6 +48,14 @@ fun UpcomingAppointmentsScreen(navController: NavController) {
     val selectedItem = remember { mutableIntStateOf(0) }
     val currentRoute = navController.currentBackStackEntryAsState()
         .value?.destination?.route
+    var appointmentDate by remember { mutableStateOf("") }
+    var appointmentTime by remember { mutableStateOf("") }
+    var doctorName by remember { mutableStateOf("") }
+    var reason by remember { mutableStateOf("") }
+
+    var reminder by remember { mutableStateOf("1 Hour Before") }
+    val reminderOptions = listOf("30 Min Before", "1 Hour Before", "1 Day Before")
+    var reminderExpanded by remember { mutableStateOf(false) }
 
     var nextdosetime by remember { mutableStateOf("") }
     var drugname by remember { mutableStateOf("") }
@@ -57,6 +68,7 @@ fun UpcomingAppointmentsScreen(navController: NavController) {
     var status by remember { mutableStateOf(options[2]) } // Defaults to "Pending"
 
 
+    val appointments = remember { mutableStateListOf<Appointment>() }
 
 
     Scaffold(
@@ -149,52 +161,72 @@ fun UpcomingAppointmentsScreen(navController: NavController) {
         ) {
 
             Column {
-
-
                 OutlinedTextField(
-                    value = nextdosetime,
-                    onValueChange = { nextdosetime = it },
-                    label = { Text("Next Dose Time") }
+                    value = appointmentDate,
+                    onValueChange = { appointmentDate = it },
+                    label = { Text("Appointment Date (e.g. 12/05/2026)") },
+                    modifier = Modifier.fillMaxWidth()
                 )
-
                 OutlinedTextField(
-                    value = drugname,
-                    onValueChange = { drugname = it },
-                    label = { Text("Drug Name") }
+                    value = appointmentTime,
+                    onValueChange = { appointmentTime = it },
+                    label = { Text("Appointment Time (e.g. 10:30 AM)") },
+                    modifier = Modifier.fillMaxWidth()
                 )
-
-                // 🔷 DROPDOWN
+                OutlinedTextField(
+                    value = doctorName,
+                    onValueChange = { doctorName = it },
+                    label = { Text("Doctor Name") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = reason,
+                    onValueChange = { reason = it },
+                    label = { Text("Reason for Appointment") },
+                    modifier = Modifier.fillMaxWidth()
+                )
                 ExposedDropdownMenuBox(
-                    expanded = expanded,
-                    onExpandedChange = { expanded = !expanded }
+                    expanded = reminderExpanded,
+                    onExpandedChange = { reminderExpanded = !reminderExpanded }
                 ) {
 
                     OutlinedTextField(
-                        value = status,
+                        value = reminder,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Status") },
+                        label = { Text("Reminder") },
                         trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = reminderExpanded)
                         },
                         modifier = Modifier.menuAnchor()
                     )
 
                     ExposedDropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
+                        expanded = reminderExpanded,
+                        onDismissRequest = { reminderExpanded = false }
                     ) {
-
-                        options.forEach { selectionOption ->
+                        reminderOptions.forEach {
                             DropdownMenuItem(
-                                text = { Text(selectionOption) },
+                                text = { Text(it) },
                                 onClick = {
-                                    status = selectionOption
-                                    expanded = false
+                                    reminder = it
+                                    reminderExpanded = false
                                 }
                             )
                         }
                     }
+                }
+                Button(onClick = {
+                    appointments.add(
+                        Appointment(
+                            doctor = doctorName,
+                            date = appointmentDate,
+                            time = appointmentTime,
+                            reason = reason
+                        )
+                    )
+                }) {
+                    Text("Book Appointment")
                 }
             }
         }

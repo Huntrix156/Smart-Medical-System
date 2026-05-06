@@ -38,7 +38,9 @@ import coil.compose.AsyncImage
 import com.example.smartmedicalsystem.data.ProfileViewModel
 import com.example.smartmedicalsystem.models.ProfileModel
 import com.example.smartmedicalsystem.navigation.ROUTE_MAIN_DASHBOARD
+import com.example.smartmedicalsystem.navigation.ROUTE_PATIENT_DASHBOARD
 import com.example.smartmedicalsystem.navigation.ROUTE_PROFILE
+import com.example.smartmedicalsystem.navigation.ROUTE_SETTINGS
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -333,7 +335,7 @@ fun ProfileScreen(navController: NavController, userId: String) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
                     onClick = {
-                        navController.navigate(ROUTE_MAIN_DASHBOARD) {
+                        navController.navigate(ROUTE_SETTINGS) {
                             popUpTo(ROUTE_PROFILE)
                             launchSingleTop = true
                         }
@@ -341,8 +343,9 @@ fun ProfileScreen(navController: NavController, userId: String) {
                     modifier = Modifier.fillMaxWidth().height(52.dp),
                     shape = RoundedCornerShape(14.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD32F2F))
-                ) {
-                    Text("Back To Dashboard", color = Color.White, fontWeight = FontWeight.Bold)
+                )
+                {
+                    Text("Back ", color = Color.White, fontWeight = FontWeight.Bold)
                 }
             }
 

@@ -90,20 +90,20 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    implementation("androidx.compose.material:material-icons-extended")
+    implementation(libs.androidx.compose.material.icons.extended)
 
     // ── Navigation ──────────────────────────────────────────────────────────
-    implementation("androidx.navigation:navigation-compose:2.8.4")
+    implementation(libs.androidx.navigation.compose.v284)
 
     // ── Firebase ────────────────────────────────────────────────────────────
-    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
-    implementation("com.google.firebase:firebase-auth")        // no -ktx needed anymore
-    implementation("com.google.firebase:firebase-database")    // no -ktx needed anymore
-    implementation("com.google.firebase:firebase-firestore")   // no -ktx needed anymore
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.google.firebase.auth)        // no -ktx needed anymore
+    implementation(libs.google.firebase.database)    // no -ktx needed anymore
+    implementation(libs.firebase.firestore)   // no -ktx needed anymore
 
     // ── Room ────────────────────────────────────────────────────────────────
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.foundation.layout)
@@ -111,10 +111,11 @@ dependencies {
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.compose.ui.text)
-    annotationProcessor("androidx.room:room-compiler:2.6.1")  // use kapt or ksp if using Kotlin
+    implementation(libs.androidx.benchmark.traceprocessor)
+    annotationProcessor(libs.androidx.room.compiler)  // use kapt or ksp if using Kotlin
 
     // ── Image loading ───────────────────────────────────────────────────────
-    implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation(libs.coil.compose)
 
     // ── Testing ─────────────────────────────────────────────────────────────
     testImplementation(libs.junit)
@@ -125,23 +126,28 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
      //-------------roles selection-----------
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("androidx.compose.material3:material3:1.2.1")
-    implementation("androidx.compose.material:material-icons-extended:1.6.4")
+    implementation(libs.androidx.navigation.compose.v277)
+    implementation(libs.androidx.compose.material3.v121)
+    implementation(libs.androidx.material.icons.extended)
 
 
 
     //==========================Onboarding_screen=============================//
-    implementation("androidx.compose.foundation:foundation")
+    implementation(libs.androidx.foundation)
 
 
     // USE THIS ONE (with -ktx)
-    implementation("androidx.work:work-runtime-ktx:${"2.9.0"}")
+    implementation(libs.androidx.work.runtime.ktx.v290)
 
     // DataStore
-    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation(libs.androidx.datastore.preferences)
 
 
-    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation(libs.androidx.datastore.preferences.v111)
+
+
+    implementation(libs.play.services.location)
+    //============for adding splash screen==============//
+    implementation(libs.androidx.core.splashscreen)
 
 }

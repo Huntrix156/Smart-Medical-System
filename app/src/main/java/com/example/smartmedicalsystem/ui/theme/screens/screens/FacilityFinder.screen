@@ -1,0 +1,85 @@
+package com.example.smartmedicalsystem.ui.theme.screens.screens
+
+@Composable
+fun FacilityFinderScreen(
+    viewModel: FinderViewModel = viewModel()
+) {
+    val context = LocalContext.current
+    val userLocation = viewModel.userLocation
+    val facilities = viewModel.filteredFacilities
+
+    var search by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchLocation()
+    }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+
+        // 🔍 Search Bar
+        TextField(
+            value = search,
+            onValueChange = {
+                search = it
+                viewModel.search(it)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            placeholder = { Text("Search hospital or specialty") }
+        )
+
+        // 🗺️ Map Section
+        Box(modifier = Modifier.weight(1f)) {
+
+            userLocation?.let { location ->
+
+                val cameraPositionState = rememberCameraPositionState {
+                    position = CameraPosition.fromLatLngZoom(location, 14f)
+                }
+
+                GoogleMap(
+                    modifier = Modifier.fillMaxSize(),
+                    cameraPositionState = cameraPositionState
+                ) {
+
+                    // 📍 User Marker
+                    Marker(
+                        state = MarkerState(position = location),
+                        title = "You are here"
+                    )
+
+                    // 🏥 Facility Markers
+                    facilities.forEach {
+                        Marker(
+                            state = MarkerState(
+                                position = LatLng(it.lat, it.lng)
+                            ),
+                            title = it.name
+                        )
+                    }
+                }
+            }
+        }
+
+        // 📋 Facility List
+      LazyColumn(
+          modifier = Modifier
+              .fillMaxWidth()
+              .height(200.dp)
+      ) {
+          items(facilities) { facility ->
+              FacilityItem(
+                  facility = facility,
+                  onClick = { selectedFacility ->
+
+                      val uri = Uri.parse(
+                          "google.navigation:q=${selectedFacility.lat},${selectedFacility.lng}"
+                      )
+                      val intent = Intent(Intent.ACTION_VIEW, uri)
+                      intent.setPackage("com.google.android.apps.maps")
+                      context.startActivity(intent)
+                  }
+              )
+          }
+      }

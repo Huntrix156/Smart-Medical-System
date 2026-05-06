@@ -105,11 +105,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Sms
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.*
@@ -274,8 +280,15 @@ fun SOSButton(controller: SOSController, scope: CoroutineScope) {
 
 @Composable
 fun CountdownView(controller: SOSController) {
+    val context= LocalContext.current
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.SpaceBetween, // 🔥 IMPORTANT
+        horizontalAlignment = Alignment.CenterHorizontally) {
 
         Text(
             text = "Sending alert in ${controller.countdown}...",
@@ -283,7 +296,63 @@ fun CountdownView(controller: SOSController) {
             fontSize = 22.sp
         )
 
+
         Spacer(modifier = Modifier.height(20.dp))
+
+        OutlinedButton(
+            onClick = {
+                val phone = "+254700063070"
+
+                val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+
+                context.startActivity(intent)
+            },
+            colors = ButtonDefaults.buttonColors(Color.Blue),
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier.fillMaxWidth()
+
+        ) {
+            Icon(
+                imageVector = Icons.Default.Phone,
+                contentDescription = "Dial Icon",
+                tint = Color.Black
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "Dial",
+                fontSize = 30.sp)
+
+
+        }
+
+
+
+        OutlinedButton(
+            onClick = {
+                val uri = Uri.parse("smsto:0700063070")
+
+                val intent = Intent(Intent.ACTION_SENDTO, uri)
+
+                intent.putExtra("Hello", "How is todays weather")
+
+                context.startActivity(intent)
+            },
+            colors = ButtonDefaults.buttonColors(Color.Blue),
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier.fillMaxWidth()
+
+        ) {
+            Icon(
+                imageVector = Icons.Default.Sms,
+                contentDescription = "sms Icon",
+                tint = Color.Black
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "Sms",
+                fontSize = 30.sp)
+
+
+        }
+
 
         Button(onClick = { controller.cancelSOS() }) {
             Text("CANCEL")
@@ -298,6 +367,7 @@ fun ActiveSOSView(controller: SOSController) {
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
+
         Text(
             text = "SOS ACTIVE",
             color = Color.Red,
@@ -309,7 +379,7 @@ fun ActiveSOSView(controller: SOSController) {
         Text("Contacts notified", color = Color.White)
         Text("Calling emergency contact...", color = Color.White)
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         Button(onClick = { controller.stopSOS() }) {
             Text("STOP SOS")

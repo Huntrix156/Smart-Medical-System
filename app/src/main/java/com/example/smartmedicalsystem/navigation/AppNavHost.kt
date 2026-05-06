@@ -110,6 +110,10 @@ fun AppNavHost(
                 }
             )
         }
+        composable(ROUTE_UPCOMING_APPOINTMENT) {
+            UpcomingAppointmentsScreen(navController)
+        }
+
 
         composable(ROUTE_FORGOT_PASSWORD) {
             ForgotPasswordScreen(navController)
