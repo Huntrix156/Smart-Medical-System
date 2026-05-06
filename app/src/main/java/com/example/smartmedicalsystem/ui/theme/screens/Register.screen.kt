@@ -394,8 +394,16 @@ fun RegisterScreen(navController: NavController) {
                                     password = password,
                                     confirmpassword = confirmPassword,
                                     gender = gender,
-                                    navController = navController,
-                                    context = context
+                                    onSuccess = {
+                                        isLoading = false
+                                        navController.navigate(ROUTE_LOGIN) {
+                                            popUpTo(ROUTE_LOGIN) { inclusive = true }
+                                        }
+                                    },
+                                    onError = { errorMsg ->
+                                        isLoading = false
+                                        android.widget.Toast.makeText(context, errorMsg, android.widget.Toast.LENGTH_LONG).show()
+                                    }
                                 )
                             }
                         },

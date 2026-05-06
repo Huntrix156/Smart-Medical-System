@@ -9,9 +9,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.nexora.ui.theme.screens.medicine.screen.AddMedicineScreen
-import com.example.nexora.ui.theme.screens.medicine.screen.MedicineListScreen
-import com.example.nexora.ui.theme.screens.medicine.screen.UpdateMedicineScreen
 
 // ✅ All imports now point to the correct package — no more com.example.nexora or com.example.smartmedical
 import com.example.smartmedicalsystem.models.medication.Medicine
@@ -27,11 +24,15 @@ import com.example.smartmedicalsystem.ui.theme.screens.Settings.screen.SettingsS
 import com.example.smartmedicalsystem.ui.theme.screens.screens.service.Reminder.screen.ReminderScreen
 import com.example.smartmedicalsystem.ui.theme.screens.UpcomingAppointmentsScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.AddMedicine.screen.AddMedicationScreen
-import com.example.smartmedicalsystem.ui.theme.screens.screens.EmergencyScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.ForgotPasswordScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.MedicationScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.Onboarding.screen.OnboardingSlider
 import java.time.LocalDate
+import com.example.nexora.ui.theme.screens.medicine.screen.AddMedicineScreen
+import com.example.nexora.ui.theme.screens.medicine.screen.MedicineListScreen
+import com.example.nexora.ui.theme.screens.medicine.screen.UpdateMedicineScreen
+import com.example.smartmedicalsystem.ui.theme.screens.screens.EmergencySOSScreen
+
 
 sealed class Screen(val route: String) {
     object Onboarding : Screen("onboarding")
@@ -39,7 +40,7 @@ sealed class Screen(val route: String) {
 }
 
 fun NavHostController.logout() {
-    navigate(Screen.Login.route) {
+    navigate(ROUTE_LOGIN) {
         popUpTo(0)
     }
 }
@@ -78,7 +79,7 @@ fun AppNavHost(
             OnboardingSlider(
                 navController = navController,
                 onFinish = {
-                    navController.navigate(Screen.Login.route) {
+                    navController.navigate(ROUTE_LOGIN) {
                         popUpTo(Screen.Onboarding.route) { inclusive = true }
                     }
                 }
@@ -91,7 +92,7 @@ fun AppNavHost(
         }
 
         // ✅ Login receives onRoleSelected and navigates based on role
-        composable(Screen.Login.route) {
+        composable(ROUTE_LOGIN) {
             LoginScreen(
                 navController = navController,
                 onRoleSelected = { role, username ->
@@ -103,7 +104,7 @@ fun AppNavHost(
                         else      -> "patient_dashboard/$encodedUsername"
                     }
                     navController.navigate(destination) {
-                        popUpTo(Screen.Login.route) { inclusive = true }
+                        popUpTo(ROUTE_LOGIN) { inclusive = true }
                         launchSingleTop = true
                     }
                 }
@@ -125,7 +126,7 @@ fun AppNavHost(
                 username = username,
                 viewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
                 onLogout = {
-                    navController.navigate(Screen.Login.route) {
+                    navController.navigate(ROUTE_LOGIN) {
                         popUpTo(0)
                         launchSingleTop = true
                     }
@@ -142,7 +143,7 @@ fun AppNavHost(
                 username = username,
                 viewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
                 onLogout = {
-                    navController.navigate(Screen.Login.route) {
+                    navController.navigate(ROUTE_LOGIN) {
                         popUpTo(0)
                         launchSingleTop = true
                     }
@@ -159,7 +160,7 @@ fun AppNavHost(
                 username = username,
                 viewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
                 onLogout = {
-                    navController.navigate(Screen.Login.route) {
+                    navController.navigate(ROUTE_LOGIN) {
                         popUpTo(0)
                         launchSingleTop = true
                     }
@@ -190,21 +191,28 @@ fun AppNavHost(
         }
 
         // ── Emergency ─────────────────────────────────────────────
-        composable(ROUTE_EMERGENCY_SOS) {
-            EmergencyScreen(
-                onSOSClick = {
-                    navController.navigate("sos_alert")
-                },
-                onCallContact = { number ->
-                    val intent = android.content.Intent(
-                        android.content.Intent.ACTION_DIAL
-                    ).apply {
-                        data = android.net.Uri.parse("tel:$number")
-                    }
-                }
-            )
-        }
 
+
+
+//                    composable(ROUTE_EMERGENCY_SOS) {
+
+//                        val viewModel: SOSViewModel = viewModel()
+//
+//                        EmergencySOSScreen(
+//                            viewModel = viewModel,
+//                            onCallContact = { number ->
+//                                val intent = android.content.Intent(
+//                                    android.content.Intent.ACTION_DIAL
+//                                ).apply {
+//                                    data = android.net.Uri.parse("tel:$number")
+//                                }
+//                                navController.context.startActivity(intent)
+//                            }
+//                        )
+//                    }
+        composable(ROUTE_EMERGENCY_SOS) {
+            EmergencySOSScreen(context = navController.context)
+        }
         // ── Medication ────────────────────────────────────────────
         composable(ROUTE_MEDICATION_SCREEN) {
             MedicationScreen(navController)
