@@ -34,6 +34,7 @@ const val ROUTE_APPOINTMENT_LIST = "appointment_list"
 const val ROUTE_ADMIN_ADD_DOCTOR = "admin_add_doctor_screen"
 
 const val ROUTE_CHANGE_PASSWORD = "change_password"
+const val ROUTE_WRITE_PRESCRIPTION ="write_prescriptions"
 
 const val ROUTE_REMINDER = "reminder"
 

@@ -54,6 +54,7 @@ import com.example.smartmedicalsystem.navigation.ROUTE_INVENTORY_SCREEN
 import com.example.smartmedicalsystem.navigation.ROUTE_MEDICATION_SCREEN
 import com.example.smartmedicalsystem.navigation.ROUTE_PATIENT_DASHBOARD
 import com.example.smartmedicalsystem.navigation.ROUTE_SETTINGS
+import com.example.smartmedicalsystem.navigation.ROUTE_WRITE_PRESCRIPTION
 import kotlinx.coroutines.launch
 
 
@@ -153,16 +154,16 @@ fun DashboardScreen(navController: NavController){
                         },
                         bottomBar = { NavigationBar(containerColor = Color.Black){
                             NavigationBarItem(
-                                selected = currentRoute == ROUTE_SETTINGS,
+                                selected = currentRoute == ROUTE_WRITE_PRESCRIPTION,
                                 onClick = {
-                                    navController.navigate(ROUTE_SETTINGS) {
+                                    navController.navigate(ROUTE_WRITE_PRESCRIPTION) {
                                         popUpTo(ROUTE_PATIENT_DASHBOARD)
                                         launchSingleTop = true
                                     }
                                 },
                                 icon = {Icon(Icons.Filled.Settings,
-                                    contentDescription = "Settings")},
-                                label = {Text(text = "Settings") }
+                                    contentDescription = "prescription")},
+                                label = {Text(text = "prescription") }
 
                             )
                             NavigationBarItem(

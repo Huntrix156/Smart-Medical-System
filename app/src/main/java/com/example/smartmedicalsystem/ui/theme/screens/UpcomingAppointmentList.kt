@@ -55,17 +55,17 @@ fun UpcomingAppointmentsListScreen() {
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.fillMaxSize()
         ) {
-            items(appointments) { appointment ->
-                AppointmentCard(
-                    appointment = appointment,
-                    onDelete = {
-                        appointments.remove(appointment)
-                    }
-                )
+//            items(appointments) { appointment ->
+//                AppointmentCard(
+//                    appointment = appointment,
+//                    onDelete = {
+//                        appointments.remove(appointment)
+//                    }
+//                )
             }
         }
     }
-}
+//}
 
 
 
