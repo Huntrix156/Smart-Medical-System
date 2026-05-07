@@ -1,5 +1,6 @@
 package com.example.smartmedicalsystem.ui.theme.screens.Dashboard.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -56,6 +57,7 @@ import com.example.smartmedicalsystem.navigation.ROUTE_PATIENT_DASHBOARD
 import com.example.smartmedicalsystem.navigation.ROUTE_SETTINGS
 import com.example.smartmedicalsystem.navigation.ROUTE_WRITE_PRESCRIPTION
 import kotlinx.coroutines.launch
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -152,7 +154,7 @@ fun DashboardScreen(navController: NavController){
                                 ),
                             )
                         },
-                        bottomBar = { NavigationBar(containerColor = Color.Black){
+                        bottomBar = { NavigationBar(containerColor = Color(0xFF004D40)){
                             NavigationBarItem(
                                 selected = currentRoute == ROUTE_WRITE_PRESCRIPTION,
                                 onClick = {
@@ -209,13 +211,17 @@ fun DashboardScreen(navController: NavController){
                     )
 
                     { innerPadding ->
+
                         Column(
                             modifier = Modifier
+                                .fillMaxSize()
+                                .background(colors().IconBgColor)
                                 .padding(innerPadding)
-//                            .background(Color(0xFFF3F5F9))
-                            .verticalScroll(rememberScrollState()),
+                                .background(colors().BackgroundColor)
+                                .verticalScroll(rememberScrollState())
 
-                            ) {
+
+                        ) {
 
                             Text(text = "Welcome to Smart Medical System",
                                 fontSize = 25.sp,

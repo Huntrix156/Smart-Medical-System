@@ -196,6 +196,7 @@
 // ✅ FIXED: Package matches actual file location in this project
 package com.example.smartmedicalsystem.ui.theme.screens.Dashboard.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -207,6 +208,7 @@ import androidx.compose.material.icons.filled.FilePresent
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -225,6 +227,14 @@ import com.example.smartmedicalsystem.navigation.ROUTE_WRITE_PRESCRIPTION
 import com.example.smartmedicalsystem.ui.theme.screens.screens.StatCard
 import com.google.firebase.auth.FirebaseAuth
 
+
+class colors {
+    // Professional Medical Theme Colors
+    val PrimaryGreen = Color(0xFF00604E)
+    val SecondaryGreen = Color(0xFF004D40)
+    val BackgroundColor = Color(0xFFF5F7F6)
+    val IconBgColor = Color(0xFFE0F2F1)
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DoctorDashboard(
@@ -256,17 +266,41 @@ fun DoctorDashboard(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Doctor Dashboard") },
-                actions = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(90.dp)
+                    .background(colors().PrimaryGreen)
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
+            ) {
+
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Text(
+                        text = "Doctor Dashboard",
+                        color = Color.White,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
                     IconButton(onClick = onLogout) {
-                        Icon(Icons.Default.ExitToApp, contentDescription = "Logout")
+
+                        Icon(
+                            imageVector = Icons.Default.ExitToApp,
+                            contentDescription = "Logout",
+                            tint = Color.White
+                        )
                     }
                 }
-            )
+            }
         },
+
         bottomBar = {
-            NavigationBar(containerColor = Color.Black) {
+            NavigationBar(containerColor = Color(0xFF004D40)) {
                 NavigationBarItem(
                     selected = currentRoute == ROUTE_SETTINGS,
                     onClick = {
@@ -317,25 +351,33 @@ fun DoctorDashboard(
 
         Column(
             modifier = Modifier
+                    .fillMaxSize()
+                .background(colors().IconBgColor)
                 .padding(padding)
-                .padding(16.dp)
+//                .padding(1.dp)
                 .verticalScroll(rememberScrollState())
 
         ) {
 
             Text(
                 text = "$greeting, Doctor $username ⚕️",
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier,
+                color = Color.Black
             )
 
             Text(
                 text = "Manage your patients and medical records",
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier,
+                color = Color.Black
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text("Welcome, Dr. $username", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text("Welcome, Dr. $username", fontSize = 20.sp, fontWeight = FontWeight.Bold,
+                modifier = Modifier,
+                color = Color.Black)
             Text("Cardiology", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -355,7 +397,9 @@ fun DoctorDashboard(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Text("Today's Appointments", fontWeight = FontWeight.SemiBold, fontSize = 16.sp)
+            Text("Today's Appointments", fontWeight = FontWeight.SemiBold, fontSize = 16.sp,
+                modifier = Modifier,
+                color = Color.Black)
 
             Spacer(modifier = Modifier.height(8.dp))
 

@@ -180,6 +180,7 @@
 package com.example.smartmedicalsystem.ui.theme.screens.Dashboard.screen
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -241,17 +242,41 @@ fun AdminDashboard(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Admin Dashboard") },
-                actions = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(90.dp)
+                    .background(colors().PrimaryGreen)
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
+            ) {
+
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Text(
+                        text = "Admin Dashboard",
+                        color = Color.White,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
                     IconButton(onClick = onLogout) {
-                        Icon(Icons.Default.ExitToApp, contentDescription = "Logout")
+
+                        Icon(
+                            imageVector = Icons.Default.ExitToApp,
+                            contentDescription = "Logout",
+                            tint = Color.White
+                        )
                     }
                 }
-            )
+            }
         },
+
         bottomBar = {
-            NavigationBar(containerColor = Color.Black) {
+            NavigationBar(containerColor = Color(0xFF004D40)) {
                 NavigationBarItem(
                     selected = currentRoute == ROUTE_SETTINGS,
                     onClick = {
@@ -302,25 +327,34 @@ fun AdminDashboard(
 
         Column(
             modifier = Modifier
+                .fillMaxSize()
+                .background(colors().IconBgColor)
                 .padding(padding)
-                .padding(16.dp)
+//                .padding(1.dp)
                 .verticalScroll(rememberScrollState())
+
 
         ) {
 
             Text(
                 text = "$greeting, Admin $username ⚙️",
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier,
+                color = Color.Black
             )
 
             Text(
                 text = "Monitor users, doctors, patients, and system activity",
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier,
+                color = Color.Black
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text("System Overview", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text("System Overview", fontSize = 20.sp, fontWeight = FontWeight.Bold,
+                modifier = Modifier,
+                color = Color.Black)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -340,7 +374,9 @@ fun AdminDashboard(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Text("Recent Activity", fontWeight = FontWeight.SemiBold, fontSize = 16.sp)
+            Text("Recent Activity", fontWeight = FontWeight.SemiBold, fontSize = 16.sp,
+                modifier = Modifier,
+                color = Color.Black)
 
             Spacer(modifier = Modifier.height(8.dp))
 

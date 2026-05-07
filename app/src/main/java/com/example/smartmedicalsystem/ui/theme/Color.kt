@@ -24,3 +24,9 @@ val BackgroundLight = Color(0xFFF3F5F9)
 
 // Surface
 val SurfaceLight = Color(0xFFFFFFFF)
+
+// Professional Medical Theme Colors
+val PrimaryGreen = Color(0xFF00604E)
+val SecondaryGreen = Color(0xFF004D40)
+val BackgroundColor = Color(0xFFF5F7F6)
+val IconBgColor = Color(0xFFE0F2F1)
