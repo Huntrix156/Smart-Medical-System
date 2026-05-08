@@ -22,7 +22,6 @@ class AuthViewModel : ViewModel() {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    // Exposed so the UI can observe loading / error states
     val authState = mutableStateOf<AuthResult>(AuthResult.Idle)
 
     // ── Signup ────────────────────────────────────────────────────────────────
@@ -59,7 +58,8 @@ class AuthViewModel : ViewModel() {
                         lastname = lastname,
                         email = email,
                         userId = userId,
-                        gender = gender
+                        gender = gender,
+                        role = "Patient"   // ✅ every new signup defaults to Patient
                     )
                     saveUserToDatabase(
                         user = user,
@@ -87,7 +87,7 @@ class AuthViewModel : ViewModel() {
         onError: (String) -> Unit
     ) {
         FirebaseDatabase.getInstance()
-            .getReference("Users")
+            .getReference("users")        // ✅ lowercase — consistent across the app
             .child(user.userId)
             .setValue(user)
             .addOnCompleteListener { task ->
@@ -96,15 +96,16 @@ class AuthViewModel : ViewModel() {
             }
     }
 
-    // ── Login ─────────────────────────────────────────────────────────────────
-    fun login(
+    // ── Login + fetch role from Realtime Database ─────────────────────────────
+    fun loginAndFetchRole(
         email: String,
         password: String,
         context: Context,
-        onSuccess: () -> Unit
+        onSuccess: (role: String, username: String) -> Unit,
+        onError: (String) -> Unit
     ) {
         if (email.isBlank() || password.isBlank()) {
-            Toast.makeText(context, "Email and Password are required", Toast.LENGTH_LONG).show()
+            onError("Email and Password are required")
             return
         }
 
@@ -113,13 +114,45 @@ class AuthViewModel : ViewModel() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    authState.value = AuthResult.Success
-                    Toast.makeText(context, "Login Successful", Toast.LENGTH_LONG).show()
-                    onSuccess()
+                    val uid = auth.currentUser?.uid ?: ""
+
+                    FirebaseDatabase.getInstance()
+                        .getReference("users")    // ✅ lowercase
+                        .child(uid)
+                        .get()
+                        .addOnSuccessListener { snapshot ->
+                            if (snapshot.exists()) {
+                                val rawRole = snapshot.child("role")
+                                    .getValue(String::class.java) ?: "Patient"
+
+                                // ✅ Normalize casing: "admin" → "Admin"
+                                val role = rawRole.replaceFirstChar { it.uppercase() }
+
+                                val firstName = snapshot.child("firstname")
+                                    .getValue(String::class.java)
+                                    ?: email.substringBefore("@")
+
+                                authState.value = AuthResult.Success
+                                Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+                                onSuccess(role, firstName)
+
+                            } else {
+                                // Auth succeeded but no DB record found — default to Patient
+                                authState.value = AuthResult.Success
+                                Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+                                onSuccess("Patient", email.substringBefore("@"))
+                            }
+                        }
+                        .addOnFailureListener { e ->
+                            val msg = e.message ?: "Failed to fetch user role"
+                            authState.value = AuthResult.Error(msg)
+                            onError(msg)
+                        }
+
                 } else {
                     val msg = task.exception?.message ?: "Login failed"
                     authState.value = AuthResult.Error(msg)
-                    Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                    onError(msg)
                 }
             }
     }

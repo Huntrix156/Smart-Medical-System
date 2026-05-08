@@ -1,5 +1,4 @@
-//package com.example.nexora.data
-package com.example.nexora.viewmodel
+package com.example.smartmedicalsystem.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
