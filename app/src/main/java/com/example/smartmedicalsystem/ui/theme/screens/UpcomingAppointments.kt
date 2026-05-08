@@ -219,7 +219,7 @@ fun UpcomingAppointmentsScreen(navController: NavController) {
                 Button(onClick = {
                     appointments.add(
                         Appointment(
-                            doctor = doctorName,
+                            doctorName = doctorName,
                             date = appointmentDate,
                             time = appointmentTime,
                             reason = reason

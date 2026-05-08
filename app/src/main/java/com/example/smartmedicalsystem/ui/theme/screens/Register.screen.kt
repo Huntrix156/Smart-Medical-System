@@ -56,6 +56,7 @@ import com.example.smartmedicalsystem.navigation.ROUTE_LOGIN
 @Composable
 fun RegisterScreen(navController: NavController) {
 
+
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -77,6 +78,7 @@ fun RegisterScreen(navController: NavController) {
     val context = LocalContext.current
 
     var isLoading by remember { mutableStateOf(false) }
+
 
     Box(
         modifier = Modifier

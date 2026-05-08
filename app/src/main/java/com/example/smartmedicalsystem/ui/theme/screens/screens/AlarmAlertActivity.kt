@@ -1,5 +1,4 @@
-package com.example.nexora.ui.alarm
-
+package com.example.smartmedicalsystem.ui.theme.screens.screens
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle

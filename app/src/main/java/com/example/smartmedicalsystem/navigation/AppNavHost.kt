@@ -509,7 +509,7 @@ fun AppNavHost(
             )
         }
 
-        // ── Inventory ─────────────────────────────────────────────
+        // ── Inventory ───────
         composable(ROUTE_INVENTORY_SCREEN) {
             InventoryScreen(
                 navController = navController,
@@ -517,7 +517,7 @@ fun AppNavHost(
             )
         }
 
-        // ── Upcoming Appointments ─────────────────────────────────
+        //  Upcoming Appointments
         composable(ROUTE_UPCOMING_APPOINTMENT) {
             UpcomingAppointmentsScreen(navController)
         }

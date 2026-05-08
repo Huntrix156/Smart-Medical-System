@@ -10,7 +10,7 @@ import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.example.smartmedicalsystem.ui.alarm.AlarmAlertActivity
+import com.example.smartmedicalsystem.ui.theme.screens.screens.AlarmAlertActivity
 import kotlin.jvm.java
 
 class AlarmReceiver : BroadcastReceiver() {

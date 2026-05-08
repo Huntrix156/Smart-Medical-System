@@ -24,24 +24,24 @@ fun Label(text: String) {
     )
 }
 
-@Composable
-fun FacilityItem(
-    facility: FacilityModel,
-    onClick: (FacilityModel) -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable { onClick(facility) }
-    ) {
-        Column(modifier = Modifier.padding(12.dp)) {
-            Text(
-                text = facility.name,
-                fontWeight = FontWeight.Bold
-            )
-            Text(text = facility.type)
-            Text(text = facility.specialty)
-        }
-    }
-}
+//@Composable
+//fun FacilityItem(
+//    facility: Int,
+//    onClick: (FacilityModel) -> Unit
+//) {
+//    Card(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(8.dp)
+//            .clickable { onClick(facility) }
+//    ) {
+//        Column(modifier = Modifier.padding(12.dp)) {
+//            Text(
+//                text = facility.name,
+//                fontWeight = FontWeight.Bold
+//            )
+//            Text(text = facility.type)
+//            Text(text = facility.specialty)
+//        }
+//    }
+//}

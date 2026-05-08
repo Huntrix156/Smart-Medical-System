@@ -412,10 +412,7 @@ fun AdminDashboard(
     }
 }
 
-/**
- * LiveStatCard — identical visual to StatCard but adds a small pulsing
- * "LIVE" indicator badge so admins know the number updates in real-time.
- */
+
 @Composable
 fun LiveStatCard(label: String, value: String, modifier: Modifier = Modifier) {
     Card(

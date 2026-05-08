@@ -1,77 +1,60 @@
-package com.example.smartmedicalsystem.data
+//package com.example.smartmedicalsystem.data
 //
-//import android.Manifest
-//import android.app.Application
-//import android.health.connect.datatypes.ExerciseRoute
-//import android.location.Location
-//import androidx.annotation.RequiresPermission
 //import androidx.compose.runtime.getValue
 //import androidx.compose.runtime.mutableStateOf
 //import androidx.compose.runtime.setValue
-//import androidx.lifecycle.AndroidViewModel
+//import androidx.lifecycle.ViewModel
+//
 //import com.example.smartmedicalsystem.models.FacilityModel
-//import com.google.android.gms.location.LocationServices
 //import com.google.type.LatLng
+//import kotlinx.coroutines.flow.MutableStateFlow
+//import kotlinx.coroutines.flow.StateFlow
 //
-//class FinderViewModel(application: Application) : AndroidViewModel(application) {
-//
-//    private val fusedLocationClient =
-//        LocationServices.getFusedLocationProviderClient(application)
-//
+//class FinderViewModel : ViewModel() {
+//    private val _userLocation = MutableStateFlow(LatLng(-1.286389, 36.817223))
+//    val userLocation: StateFlow<LatLng> = _userLocation
+//}
 //    var userLocation by mutableStateOf<LatLng?>(null)
 //        private set
 //
-//    var facilities by mutableStateOf(listOf<FacilityModel>())
+//    private val allFacilities = listOf(
+//
+//        FacilityModel(
+//            id = "1",
+//            name = "Nairobi Hospital",
+//            lat = -1.3000,
+//            lng = 36.8080,
+//            type = "Hospital",
+//            specialty = "General Care"
+//        ),
+//
+//        FacilityModel(
+//            id = "2",
+//            name = "Aga Khan Hospital",
+//            lat = -1.2630,
+//            lng = 36.8172,
+//            type = "Hospital",
+//            specialty = "Cardiology"
+//        )
+//    )
+//
+//    var filteredFacilities by mutableStateOf(allFacilities)
 //        private set
 //
-//    var filteredFacilities by mutableStateOf(listOf<FacilityModel>())
-//        private set
-//
-//    init {
-//        loadDummyFacilities()
-//    }
-//
-//    @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
 //    fun fetchLocation() {
-//        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-//            location?.let {
-//                val latLng = LatLng(it.latitude, it.longitude)
-//                userLocation = latLng
-//                filterNearby()
-//            }
-//        }
-//    }
 //
-//    private fun loadDummyFacilities() {
-//        facilities = listOf(
-//            FacilityModel("1", "City Hospital", -1.2921, 36.8219, "Hospital", "General"),
-//            FacilityModel("2", "Care Clinic", -1.2950, 36.8200, "Clinic", "Dental"),
-//            FacilityModel("3", "Med Pharmacy", -1.2900, 36.8250, "Pharmacy", "Drugs")
+//        userLocation = LatLng(
+//            -1.286389,
+//            36.817223
 //        )
-//        filteredFacilities = facilities
-//    }
-//
-//    private fun distance(a: LatLng, b: LatLng): Float {
-//        val results = FloatArray(1)
-//        Location.distanceBetween(
-//            a.latitude, a.longitude,
-//            b.latitude, b.longitude,
-//            results
-//        )
-//        return results[0]
-//    }
-//
-//    fun filterNearby(radiusMeters: Float = 5000f) {
-//        val userLoc = userLocation ?: return
-//        filteredFacilities = facilities.filter {
-//            distance(userLoc, LatLng(it.lat, it.lng)) <= radiusMeters
-//        }
 //    }
 //
 //    fun search(query: String) {
-//        filteredFacilities = facilities.filter {
-//            it.name.contains(query, true) ||
-//                    it.specialty.contains(query, true)
+//
+//        filteredFacilities = allFacilities.filter {
+//
+//            it.name.contains(query, ignoreCase = true) ||
+//                    it.specialty.contains(query, ignoreCase = true)
 //        }
 //    }
 //}

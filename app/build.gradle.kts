@@ -112,6 +112,7 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.compose.ui.text)
     implementation(libs.androidx.benchmark.traceprocessor)
+    implementation(libs.play.services.maps)
     annotationProcessor(libs.androidx.room.compiler)  // use kapt or ksp if using Kotlin
 
     // ── Image loading ───────────────────────────────────────────────────────
@@ -149,5 +150,9 @@ dependencies {
     implementation(libs.play.services.location)
     //============for adding splash screen==============//
     implementation(libs.androidx.core.splashscreen)
+
+    implementation(libs.maps.compose)
+    implementation(libs.play.services.maps.v1820)
+    implementation(libs.play.services.location.v2120)
 
 }

@@ -1,5 +1,4 @@
-package com.example.nexora.ui.theme.screens.Profile.screen.Profile
-
+package com.example.smartmedicalsystem.ui.theme.screens.Profile.screen
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

@@ -1,5 +1,4 @@
-package com.example.nexora.ui.theme.screens.Profile.screen
-
+package com.example.smartmedicalsystem.ui.theme.screens.Profile.screen
 
 
 import androidx.compose.foundation.background
