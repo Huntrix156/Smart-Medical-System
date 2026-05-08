@@ -28,9 +28,6 @@
 //import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.MedicationScreen
 //import com.example.smartmedicalsystem.ui.theme.screens.screens.Onboarding.screen.OnboardingSlider
 //import java.time.LocalDate
-//import com.example.nexora.ui.theme.screens.medicine.screen.AddMedicineScreen
-//import com.example.nexora.ui.theme.screens.medicine.screen.MedicineListScreen
-//import com.example.nexora.ui.theme.screens.medicine.screen.UpdateMedicineScreen
 //import com.example.smartmedicalsystem.ui.theme.screens.screens.EmergencySOSScreen
 //
 //
@@ -274,6 +271,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.nexora.ui.theme.screens.medicine.screen.MedicineListScreen
+import com.example.nexora.ui.theme.screens.medicine.screen.UpdateMedicineScreen
 
 // ✅ All imports point to the correct package
 import com.example.smartmedicalsystem.data.DashboardStatsViewModel
@@ -289,16 +288,14 @@ import com.example.smartmedicalsystem.ui.theme.screens.Profile.screen.ProfileScr
 import com.example.smartmedicalsystem.ui.theme.screens.Settings.screen.SettingsScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.service.Reminder.screen.ReminderScreen
 import com.example.smartmedicalsystem.ui.theme.screens.UpcomingAppointmentsScreen
-import com.example.smartmedicalsystem.ui.theme.screens.screens.AddMedicine.screen.AddMedicationScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.ForgotPasswordScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.MedicationScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.Onboarding.screen.OnboardingSlider
 import java.time.LocalDate
-import com.example.nexora.ui.theme.screens.medicine.screen.AddMedicineScreen
-import com.example.nexora.ui.theme.screens.medicine.screen.MedicineListScreen
-import com.example.nexora.ui.theme.screens.medicine.screen.UpdateMedicineScreen
 import com.example.smartmedicalsystem.ui.theme.Admin.AdminAddDoctorScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.EmergencySOSScreen
+import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.AddMedicationScreen
+import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.AddMedicineScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.WritePrescriptionScreen
 
 
@@ -477,7 +474,7 @@ fun AppNavHost(
 
         // ── Medication ────────────────────────────────────────────
         composable(ROUTE_MEDICATION_SCREEN) {
-            MedicationScreen(navController)
+            MedicationScreen(navController= navController,onLogout = {})
         }
 
         composable(ROUTE_ADD_MEDICATION) {

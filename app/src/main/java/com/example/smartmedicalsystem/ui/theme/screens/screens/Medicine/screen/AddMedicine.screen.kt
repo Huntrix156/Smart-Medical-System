@@ -1,5 +1,4 @@
-package com.example.nexora.ui.theme.screens.medicine.screen
-
+package com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -58,7 +57,6 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.smartmedicalsystem.data.MedicineViewModel
 
 //
-//import com.example.nexora.data.MedicineViewModel
 //import android.net.Uri
 //import androidx.activity.compose.rememberLauncherForActivityResult
 //import androidx.activity.result.contract.ActivityResultContracts

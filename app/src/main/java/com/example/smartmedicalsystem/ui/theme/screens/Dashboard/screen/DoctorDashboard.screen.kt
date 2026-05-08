@@ -1,5 +1,3 @@
-//// ✅ FIXED: Package matches actual file location in this project
-//package com.example.smartmedicalsystem.ui.theme.screens.Dashboard.screen
 //
 //import android.os.Build
 //import androidx.annotation.RequiresApi
@@ -27,10 +25,8 @@
 //import com.example.smartmedicalsystem.navigation.ROUTE_SETTINGS
 //import com.example.smartmedicalsystem.navigation.ROUTE_UPCOMING_APPOINTMENT
 //
-//// ✅ FIXED: Import StatCard from its own file — removed the duplicate definition that was here
 //import com.example.smartmedicalsystem.ui.theme.screens.screens.StatCard
 //
-//// ✅ FIXED: Added username and viewModel parameters to match AppNavHost call
 //@OptIn(ExperimentalMaterial3Api::class)
 //@Composable
 //fun DoctorDashboard(
@@ -42,7 +38,6 @@
 //    val currentRoute = navController.currentBackStackEntryAsState()
 //        .value?.destination?.route
 //
-//    // ✅ Populate viewModel with the passed username
 //    LaunchedEffect(username) {
 //        viewModel.setUser(username, "Doctor")
 //    }
