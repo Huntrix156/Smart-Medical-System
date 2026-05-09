@@ -74,10 +74,7 @@ fun AppNavHost(
         )
     )
 
-    // ✅ NEW: Single shared DashboardStatsViewModel scoped to the NavHost.
-    // Because viewModel() is called here (outside individual composable lambdas),
-    // the same instance is shared across all three role dashboards — Firebase
-    // listeners are attached only once and survive navigation back-and-forth.
+
     val statsViewModel: DashboardStatsViewModel = viewModel()
 
     NavHost(
@@ -85,7 +82,6 @@ fun AppNavHost(
         startDestination = startDestination
     ) {
 
-        // ── Onboarding ────────────────────────────────────────────
         composable(Screen.Onboarding.route) {
             OnboardingSlider(
                 navController = navController,
@@ -97,12 +93,11 @@ fun AppNavHost(
             )
         }
 
-        // ── Auth ──────────────────────────────────────────────────
+
         composable(ROUTE_REGISTER) {
             RegisterScreen(navController)
         }
 
-        // ✅ Login receives onRoleSelected and navigates based on role
         composable(ROUTE_LOGIN) {
             LoginScreen(
                 navController = navController,
@@ -126,7 +121,6 @@ fun AppNavHost(
             ForgotPasswordScreen(navController)
         }
 
-        // ── Role Dashboards ───────────────────────────────────────
 
         composable("patient_dashboard/{username}") { backStackEntry ->
             val username = java.net.URLDecoder.decode(
@@ -136,7 +130,7 @@ fun AppNavHost(
                 navController = navController,
                 username = username,
                 viewModel = viewModel(),
-                statsViewModel = statsViewModel,  // ✅ live counts
+                statsViewModel = statsViewModel,
                 onLogout = {
                     navController.navigate(ROUTE_LOGIN) {
                         popUpTo(0)
@@ -154,7 +148,7 @@ fun AppNavHost(
                 navController = navController,
                 username = username,
                 viewModel = viewModel(),
-                statsViewModel = statsViewModel,  // ✅ live counts
+                statsViewModel = statsViewModel,
                 onLogout = {
                     navController.navigate(ROUTE_LOGIN) {
                         popUpTo(0)
@@ -172,7 +166,7 @@ fun AppNavHost(
                 navController = navController,
                 username = username,
                 viewModel = viewModel(),
-                statsViewModel = statsViewModel,  // ✅ live counts
+                statsViewModel = statsViewModel,
                 onLogout = {
                     navController.navigate(ROUTE_LOGIN) {
                         popUpTo(0)
@@ -182,12 +176,10 @@ fun AppNavHost(
             )
         }
 
-        // ── General Dashboard ─────────────────────────────────────
         composable(ROUTE_MAIN_DASHBOARD) {
             DashboardScreen(navController)
         }
 
-        // ── Settings & Profile ────────────────────────────────────
         composable(ROUTE_SETTINGS) {
             SettingsScreen(navController)
         }
@@ -199,17 +191,14 @@ fun AppNavHost(
             )
         }
 
-        // ── Reminder ──────────────────────────────────────────────
         composable(ROUTE_REMINDER) {
             ReminderScreen(navController)
         }
 
-        // ── Emergency ─────────────────────────────────────────────
         composable(ROUTE_EMERGENCY_SOS) {
             EmergencySOSScreen(context = navController.context)
         }
 
-        // ── Medication ────────────────────────────────────────────
         composable(ROUTE_MEDICATION_SCREEN) {
             MedicationScreen(navController= navController,onLogout = {})
         }

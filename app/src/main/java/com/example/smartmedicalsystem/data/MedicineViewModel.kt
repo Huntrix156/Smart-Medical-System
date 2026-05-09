@@ -29,9 +29,8 @@ import java.io.InputStream
     val cloudinaryUrl =
         "https://api.cloudinary.com/v1_1/dfuv2cguf/image/upload"//"https://api.cloudinary.com/v1_1/this come from cloudinary(Cloud name)/image/upload"
     val uploadPreset =
-        "image_folder"//this is done  in the cloudinary to the ((upload) in the setting)
+        "image_folder"
 
-    //    capturing patient details//
     fun uploadMedicine(
         imageUri: Uri?,
         name: String,
@@ -47,9 +46,9 @@ import java.io.InputStream
             try {
                 val imageUrl = imageUri?.let { uploadToCloudinary(context, it) }
                 val ref = FirebaseDatabase.getInstance().getReference("Medicine")
-                    .push()//to be saved in the database table Medicine
+                    .push()
                 val patientData = mapOf(
-                    "id" to ref.key,//if successful this try works if not //CATCH work meaning not saved
+                    "id" to ref.key,
                     "name" to name,
                     "age" to dosage,
                     "phone" to startDate,
@@ -57,7 +56,7 @@ import java.io.InputStream
                     "imageUrl" to imageUrl,
                     "gender" to frequency,
                 )
-                ref.setValue(patientData).await()//Save function//
+                ref.setValue(patientData).await()
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, "Medicine saved Successfully", Toast.LENGTH_LONG).show()
                     navController.navigate(ROUTE_PATIENT_DASHBOARD)
@@ -91,11 +90,10 @@ import java.io.InputStream
     }
 
 
-    // Correct state for a list
     private val _medicines = mutableStateListOf<MedicineModel>()
     val medicines: List<MedicineModel> = _medicines
 
-    fun fetchMedicine(context: Context) {      //CHANGE HERE//
+    fun fetchMedicine(context: Context) {
 
         val ref = FirebaseDatabase.getInstance().getReference("Medicines")
 
@@ -104,9 +102,9 @@ import java.io.InputStream
             _medicines.clear()
 
             for (child in snapshot.children) {
-                val medicine = child.getValue(MedicineModel::class.java)      //CHANGE HERE//
+                val medicine = child.getValue(MedicineModel::class.java)
 
-                medicine?.let {       //CHANGE HERE//
+                medicine?.let {
                     it.id = child.key ?: ""
                     _medicines.add(it)
                 }
@@ -116,7 +114,7 @@ import java.io.InputStream
             Toast.makeText(context, "Failed to load medicines", Toast.LENGTH_LONG).show()
         }
     }
-    //-----UPDATE MEDICINE FUNCTION-------
+
     fun updateMedicine(medicineId: String,
                       imageUri: Uri?,
                       name: String,
@@ -142,11 +140,11 @@ import java.io.InputStream
 
                 val ref = FirebaseDatabase.getInstance()
                     .getReference("Medicines")
-                    .child(medicineId) // ✅ FIX: correct update path
+                    .child(medicineId)
 
-                ref.setValue( updateMedicine).await() // ✅ FIX: actually update data
+                ref.setValue( updateMedicine).await()
 
-                withContext(Dispatchers.Main){ // ✅ FIX: UI thread
+                withContext(Dispatchers.Main){
                     Toast.makeText(context,"Medicine updated successfully",Toast.LENGTH_LONG).show()
                     navController.navigate(ROUTE_ADD_MEDICATION)
                 }
@@ -159,7 +157,7 @@ import java.io.InputStream
 
         }
     }
-    //--------Delete Function------------//
+
     fun deleteMedicine(medicineId: String,context: Context){
         val ref = FirebaseDatabase.getInstance()
             .getReference("Medicines").child(medicineId)

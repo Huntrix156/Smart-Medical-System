@@ -54,7 +54,6 @@ fun AdminAppointmentsScreen(
         }
     }
 
-    // State for the assign-doctor bottom sheet
     var selectedAppointment by remember { mutableStateOf<Appointment?>(null) }
     var showAssignSheet by remember { mutableStateOf(false) }
 
@@ -119,7 +118,6 @@ fun AdminAppointmentsScreen(
                     appointment = appt,
                     onAssignClick = {
                         selectedAppointment = appt
-                        // Load doctors filtered by the patient's requested specialization
                         appointmentViewModel.reloadDoctors(
                             specialization = appt.specialization,
                             excludeDoctorId = appt.doctorId
@@ -167,7 +165,6 @@ private fun AdminAppointmentCard(
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
 
-            // ── Status badge + alert icon ─────────────────────────────
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -197,7 +194,7 @@ private fun AdminAppointmentCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // ── Patient info ──────────────────────────────────────────
+
             Text(
                 text = "Patient: ${appointment.patientName}",
                 fontWeight = FontWeight.Bold,
@@ -231,7 +228,6 @@ private fun AdminAppointmentCard(
                 )
             }
 
-            // Referral note from doctor
             if (isReferral && appointment.referralNote.isNotBlank()) {
                 Spacer(modifier = Modifier.height(6.dp))
                 Card(
@@ -247,7 +243,6 @@ private fun AdminAppointmentCard(
                 }
             }
 
-            // ── Action button ─────────────────────────────────────────
             if (isPending || isReferral) {
                 Spacer(modifier = Modifier.height(10.dp))
                 Button(

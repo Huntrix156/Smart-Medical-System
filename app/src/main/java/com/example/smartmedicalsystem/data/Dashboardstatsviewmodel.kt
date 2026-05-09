@@ -14,12 +14,10 @@ class DashboardStatsViewModel : ViewModel() {
 
     private val db = FirebaseDatabase.getInstance().reference
 
-    // ── Admin stats ───────────────────────────────────────────────────────────
 
     private val _doctorCount = mutableStateOf(0)
     val doctorCount: State<Int> = _doctorCount
 
-    // ── Patient stats ─────────────────────────────────────────────────────────
 
     private val _upcomingAppointments = mutableStateOf(0)
     val upcomingAppointments: State<Int> = _upcomingAppointments
@@ -65,7 +63,6 @@ class DashboardStatsViewModel : ViewModel() {
     fun listenPatientStats(patientUid: String) {
         if (upcomingListener != null) return  // already attached
 
-        // ── Upcoming appointments ─────────────────────────────────────────────
         upcomingListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var count = 0

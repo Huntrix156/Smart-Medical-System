@@ -36,12 +36,10 @@ class SOSViewModel(
         "0798765432"
     )
 
-    // 🔴 Start Long Press
     fun startHolding() {
         sosState = SOSState.HOLDING
     }
 
-    // 🔴 Release → Start Countdown
     fun startCountdown() {
         sosState = SOSState.COUNTDOWN
         countdown = 5
@@ -56,13 +54,11 @@ class SOSViewModel(
         }
     }
 
-    // ❌ Cancel SOS
     fun cancelSOS() {
         countdownJob?.cancel()
         sosState = SOSState.IDLE
     }
 
-    // 🚨 FINAL TRIGGER
     private fun triggerSOS() {
         sosState = SOSState.ACTIVE
 
@@ -76,10 +72,9 @@ class SOSViewModel(
         }
     }
 
-    // 📍 LOCATION
     private suspend fun getLocation(): Pair<Double, Double>? {
-        // Simplified (replace with FusedLocationProviderClient)
-        return Pair(-1.2921, 36.8219) // Nairobi fallback
+
+        return Pair(-1.2921, 36.8219)
     }
 
     private fun buildMessage(location: Pair<Double, Double>?): String {
@@ -99,7 +94,6 @@ class SOSViewModel(
         }
     }
 
-    // 📞 CALL
     private fun makeCall(number: String) {
         val intent = Intent(Intent.ACTION_CALL).apply {
             data = Uri.parse("tel:$number")
@@ -108,7 +102,6 @@ class SOSViewModel(
         context.startActivity(intent)
     }
 
-    // 🔊 ALARM
     private fun playAlarm() {
         val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
         val ringtone = RingtoneManager.getRingtone(context, uri)

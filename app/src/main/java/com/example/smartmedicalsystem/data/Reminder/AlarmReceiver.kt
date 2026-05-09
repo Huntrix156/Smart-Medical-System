@@ -20,7 +20,6 @@ class AlarmReceiver : BroadcastReceiver() {
         val medicineName = intent.getStringExtra("reminder_medicine") ?: "your medicine"
         val isRepeat = intent.getBooleanExtra("reminder_repeat", false)
 
-        // ── Launch full-screen alarm activity ───────────────────
         val fullScreenIntent = Intent(context, AlarmAlertActivity::class.java).apply {
             putExtra("reminder_medicine", medicineName)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -31,7 +30,6 @@ class AlarmReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // ── Notification ────────────────────────────────────────
         createNotificationChannel(context)
 
         val notification = NotificationCompat.Builder(context, "smartmedicalsystem_reminders")

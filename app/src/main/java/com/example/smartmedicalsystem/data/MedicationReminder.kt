@@ -6,8 +6,8 @@ data class MedicationReminder(
     val id: String = UUID.randomUUID().toString(),
     val name: String,
     val dosage: String,
-    val times: List<String>, // e.g. ["08:00", "14:00"]
-    val frequency: String,   // DAILY, WEEKLY
+    val times: List<String>,
+    val frequency: String,
     val startDate: Long,
     val endDate: Long?,
     val isActive: Boolean = true

@@ -9,7 +9,7 @@ data class Appointment(
     val date: String = "",
     val time: String = "",
     val reason: String = "",
-    val status: String = "pending",           // pending | completed | referred
+    val status: String = "pending",
     val referredDoctorId: String = "",
     val referredDoctorName: String = "",
     val notificationMessage: String = "",

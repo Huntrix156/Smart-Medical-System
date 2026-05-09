@@ -27,9 +27,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.UUID
 
-// ---------------------------------------------
-// DATA MODELS
-// ---------------------------------------------
+
 
 data class MedicineItem(
     var medicineName: String = "",
@@ -52,7 +50,6 @@ fun WritePrescriptionScreen(navController: NavController) {
 
     val context = LocalContext.current
 
-    // Patient Info
     var patientName by remember { mutableStateOf("John Doe") }
     var patientId by remember { mutableStateOf("PAT-1023") }
     var age by remember { mutableStateOf("29") }
@@ -62,26 +59,21 @@ fun WritePrescriptionScreen(navController: NavController) {
     var allergies by remember { mutableStateOf("Penicillin") }
     var diagnosis by remember { mutableStateOf("Upper Respiratory Infection") }
 
-    // Doctor Info
     var doctorName by remember { mutableStateOf("Dr. Sarah Wilson") }
     var specialization by remember { mutableStateOf("General Physician") }
     var hospital by remember { mutableStateOf("SmartCare Hospital") }
     var license by remember { mutableStateOf("LIC-45920") }
     var contact by remember { mutableStateOf("+254700000000") }
 
-    // Notes
     var symptoms by remember { mutableStateOf("") }
     var observations by remember { mutableStateOf("") }
     var labFindings by remember { mutableStateOf("") }
 
-    // Status
     var prescriptionStatus by remember { mutableStateOf("Draft") }
 
-    // Follow-up
     var followUpDate by remember { mutableStateOf("") }
     var reminderEnabled by remember { mutableStateOf(true) }
 
-    // Medicines
     var medicines by remember {
         mutableStateOf(
             mutableListOf(
@@ -90,7 +82,6 @@ fun WritePrescriptionScreen(navController: NavController) {
         )
     }
 
-    // Prescription ID
     val prescriptionId = remember {
         UUID.randomUUID().toString().take(8)
     }
@@ -107,9 +98,7 @@ fun WritePrescriptionScreen(navController: NavController) {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
 
-        // ---------------------------------------------
-        // TITLE
-        // ---------------------------------------------
+
 
         item {
             Text(
@@ -119,9 +108,6 @@ fun WritePrescriptionScreen(navController: NavController) {
             )
         }
 
-        // ---------------------------------------------
-        // PATIENT INFORMATION
-        // ---------------------------------------------
 
         item {
             SectionCard(title = "Patient Information") {
@@ -162,9 +148,6 @@ fun WritePrescriptionScreen(navController: NavController) {
             }
         }
 
-        // ---------------------------------------------
-        // DOCTOR INFORMATION
-        // ---------------------------------------------
 
         item {
             SectionCard(title = "Doctor Information") {
@@ -191,9 +174,6 @@ fun WritePrescriptionScreen(navController: NavController) {
             }
         }
 
-        // ---------------------------------------------
-        // MEDICINES
-        // ---------------------------------------------
 
         item {
             Text(
@@ -213,9 +193,6 @@ fun WritePrescriptionScreen(navController: NavController) {
                 }
             )
 
-            // ---------------------------------------------
-            // ALLERGY WARNING
-            // ---------------------------------------------
 
             if (
                 allergies.lowercase().contains("penicillin") &&
@@ -226,10 +203,6 @@ fun WritePrescriptionScreen(navController: NavController) {
                     "⚠ Patient allergic to Penicillin-related drugs"
                 )
             }
-
-            // ---------------------------------------------
-            // OVERDOSE WARNING
-            // ---------------------------------------------
 
             if (
                 medicine.medicineName.lowercase()
@@ -243,9 +216,6 @@ fun WritePrescriptionScreen(navController: NavController) {
             }
         }
 
-        // ---------------------------------------------
-        // ADD MEDICINE BUTTON
-        // ---------------------------------------------
 
         item {
             Button(
@@ -260,9 +230,6 @@ fun WritePrescriptionScreen(navController: NavController) {
             }
         }
 
-        // ---------------------------------------------
-        // CLINICAL NOTES
-        // ---------------------------------------------
 
         item {
             SectionCard(title = "Clinical Notes") {
@@ -287,9 +254,6 @@ fun WritePrescriptionScreen(navController: NavController) {
             }
         }
 
-        // ---------------------------------------------
-        // PRESCRIPTION STATUS
-        // ---------------------------------------------
 
         item {
             SectionCard(title = "Prescription Status") {
@@ -320,9 +284,6 @@ fun WritePrescriptionScreen(navController: NavController) {
             }
         }
 
-        // ---------------------------------------------
-        // FOLLOW-UP
-        // ---------------------------------------------
 
         item {
             SectionCard(title = "Follow-up & Reminders") {
@@ -350,9 +311,6 @@ fun WritePrescriptionScreen(navController: NavController) {
             }
         }
 
-        // ---------------------------------------------
-        // PRESCRIPTION INFO
-        // ---------------------------------------------
 
         item {
             SectionCard(title = "Prescription Verification") {
@@ -363,9 +321,6 @@ fun WritePrescriptionScreen(navController: NavController) {
             }
         }
 
-        // ---------------------------------------------
-        // EMERGENCY WARNINGS
-        // ---------------------------------------------
 
         item {
             SectionCard(title = "Emergency Warnings") {
@@ -376,9 +331,6 @@ fun WritePrescriptionScreen(navController: NavController) {
             }
         }
 
-        // ---------------------------------------------
-        // PRESCRIPTION HISTORY
-        // ---------------------------------------------
 
         item {
             SectionCard(title = "Prescription History Timeline") {
@@ -389,9 +341,6 @@ fun WritePrescriptionScreen(navController: NavController) {
             }
         }
 
-        // ---------------------------------------------
-        // ACTION BUTTONS
-        // ---------------------------------------------
 
         item {
 
@@ -466,9 +415,6 @@ fun WritePrescriptionScreen(navController: NavController) {
     }
 }
 
-// ---------------------------------------------
-// MEDICINE CARD
-// ---------------------------------------------
 
 @Composable
 fun MedicineCard(
@@ -564,9 +510,6 @@ fun MedicineCard(
     }
 }
 
-// ---------------------------------------------
-// WARNING CARD
-// ---------------------------------------------
 
 @Composable
 fun WarningCard(message: String) {
@@ -597,9 +540,7 @@ fun WarningCard(message: String) {
     }
 }
 
-// ---------------------------------------------
-// SECTION CARD
-// ---------------------------------------------
+
 
 @Composable
 fun SectionCard(
@@ -627,9 +568,7 @@ fun SectionCard(
     }
 }
 
-// ---------------------------------------------
-// TEXT FIELD
-// ---------------------------------------------
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

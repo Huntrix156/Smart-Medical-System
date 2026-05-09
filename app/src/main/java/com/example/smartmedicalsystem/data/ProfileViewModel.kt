@@ -25,17 +25,15 @@ import okhttp3.RequestBody
 import java.io.InputStream
 
 
-//credintial functions
 class ProfileViewModel: ViewModel(){
 
 
     val cloudinaryUrl =
         "https://api.cloudinary.com/v1_1/dfuv2cguf/image/upload"//"https://api.cloudinary.com/v1_1/this come from cloudinary(Cloud name)/image/upload"
     val uploadPreset =
-        "image_folder"//this is done  in the cloudinary to the ((upload) in the setting)
+        "image_folder"
 
-    //    capturing user details//
-    fun uploadUser(    //----CHANGE HERE----//
+    fun uploadUser(
         imageUri: Uri?,
         firstname: String,
         lastname: String,
@@ -50,9 +48,9 @@ class ProfileViewModel: ViewModel(){
             try {
                 val imageUrl = imageUri?.let { uploadToCloudinary(context, it) }
                 val ref = FirebaseDatabase.getInstance().getReference("User")
-                    .push()//to be saved in the database table Medicine
+                    .push()
                 val userData = mapOf(
-                    "id" to ref.key,//if successful this try works if not //CATCH work meaning not saved
+                    "id" to ref.key,
                     "firstname" to firstname,
                     "lastname" to lastname,
                     "username" to username,
@@ -60,7 +58,7 @@ class ProfileViewModel: ViewModel(){
                     "imageUrl" to imageUrl,
 //                    "phonenumber" to phonenumber,
                 )
-                ref.setValue(userData).await()//Save function//
+                ref.setValue(userData).await()
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, "User saved Successfully", Toast.LENGTH_LONG).show()
                     navController.navigate(ROUTE_MAIN_DASHBOARD)
@@ -94,11 +92,10 @@ class ProfileViewModel: ViewModel(){
     }
 
 
-    // Correct state for a list
     private val _users = mutableStateListOf<ProfileModel>()
     val users: List<ProfileModel> = _users
 
-    fun fetchUser(context: Context) {    //-------CHANGE HERE-----//
+    fun fetchUser(context: Context) {
 
         val ref = FirebaseDatabase.getInstance().getReference("Users")
 
@@ -121,7 +118,6 @@ class ProfileViewModel: ViewModel(){
     }
 
 
-    //-----UPDATE USER FUNCTION-------//
     fun updateUser(userId: String,
                      imageUri: Uri?,
                      firstname: String,
@@ -147,11 +143,11 @@ class ProfileViewModel: ViewModel(){
 
                 val ref = FirebaseDatabase.getInstance()
                     .getReference("Users")
-                    .child(userId) // ✅ FIX: correct update path
+                    .child(userId)
 
-                ref.setValue( updateDoctor).await() // ✅ FIX: actually update data
+                ref.setValue( updateDoctor).await()
 
-                withContext(Dispatchers.Main){ // ✅ FIX: UI thread
+                withContext(Dispatchers.Main){
                     Toast.makeText(context,"User updated successfully",Toast.LENGTH_LONG).show()
                     navController.navigate(ROUTE_PROFILE)
                 }
@@ -165,7 +161,7 @@ class ProfileViewModel: ViewModel(){
         }
     }
 
-    //--------Delete Function------------//
+
     fun deleteUser(userId: String,context: Context){
         val ref = FirebaseDatabase.getInstance()
             .getReference("Users").child(userId)

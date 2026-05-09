@@ -36,7 +36,6 @@ class AdminViewModel : ViewModel() {
                     database.child("users").child(uid).setValue(doctor)
 
                 } else {
-                    // handle error
                 }
             }
     }

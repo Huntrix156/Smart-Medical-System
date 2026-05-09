@@ -56,7 +56,6 @@ fun DoctorAppointmentsScreen(
         }
     }
 
-    // Referral dialog state
     var referralAppointment by remember { mutableStateOf<Appointment?>(null) }
     var referralNote by remember { mutableStateOf("") }
 
@@ -174,11 +173,6 @@ private fun DoctorAppointmentCard(
     onReferral: () -> Unit,
     onComplete: () -> Unit
 ) {
-    // From doctor's perspective:
-    //  "assigned"           → doctor must act  (Proceed or Refer)
-    //  "taken"              → doctor is working on it → show as "Pending"
-    //  "referral_requested" → waiting for admin to re-assign
-    //  "completed"          → done
 
     val displayStatus = when (appointment.status) {
         "assigned"           -> "New"
@@ -202,7 +196,6 @@ private fun DoctorAppointmentCard(
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
 
-            // Status badge
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -249,14 +242,12 @@ private fun DoctorAppointmentCard(
                 )
             }
 
-            // ── Action buttons (only for "assigned" status) ───────────
             if (appointment.status == "assigned") {
                 Spacer(modifier = Modifier.height(12.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    // Referral button
                     OutlinedButton(
                         onClick = onReferral,
                         enabled = !isLoading,
@@ -274,7 +265,6 @@ private fun DoctorAppointmentCard(
                         Text("Referral", fontSize = 13.sp)
                     }
 
-                    // Proceed button
                     Button(
                         onClick = onProceed,
                         enabled = !isLoading,
@@ -294,7 +284,6 @@ private fun DoctorAppointmentCard(
                 }
             }
 
-            // Mark as complete (only when taken / in progress)
             if (appointment.status == "taken") {
                 Spacer(modifier = Modifier.height(10.dp))
                 Button(
@@ -307,7 +296,6 @@ private fun DoctorAppointmentCard(
                 }
             }
 
-            // Referral pending note
             if (appointment.status == "referral_requested") {
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(

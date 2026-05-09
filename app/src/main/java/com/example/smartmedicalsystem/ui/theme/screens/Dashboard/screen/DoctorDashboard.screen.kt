@@ -22,6 +22,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.smartmedicalsystem.data.DashboardStatsViewModel
 import com.example.smartmedicalsystem.data.DashboardViewModel
+import com.example.smartmedicalsystem.navigation.ROUTE_ADMIN_APPOINTMENTS
+import com.example.smartmedicalsystem.navigation.ROUTE_DOCTOR_APPOINTMENTS
 import com.example.smartmedicalsystem.navigation.ROUTE_INVENTORY_SCREEN
 import com.example.smartmedicalsystem.navigation.ROUTE_MEDICINE_LIST
 import com.example.smartmedicalsystem.navigation.ROUTE_PATIENT_DASHBOARD
@@ -33,7 +35,6 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 class colors {
-    // Professional Medical Theme Colors
     val PrimaryGreen = Color(0xFF00604E)
     val SecondaryGreen = Color(0xFF004D40)
     val BackgroundColor = Color(0xFFF5F7F6)
@@ -95,10 +96,7 @@ fun DoctorDashboard(
                     onClick = {
 
                         showLogoutDialog = false
-
-                        // Execute logout
-                        onLogout()
-                    }
+                        onLogout() }
                 ) {
 
                     Text(
@@ -244,7 +242,6 @@ fun DoctorDashboard(
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 StatCard("Today", "8", Modifier.weight(1f))
 
-                // ✅ LIVE COUNT: pending appointments assigned to this doctor
                 LiveStatCard(
                     label = "Pending",
                     value = pendingAppointments.toString(),
@@ -286,6 +283,12 @@ fun DoctorDashboard(
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedButton(
+                onClick = {navController.navigate((ROUTE_DOCTOR_APPOINTMENTS))},
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("View Appointments")
+            }
+            OutlinedButton(
                 onClick = {},
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -295,7 +298,6 @@ fun DoctorDashboard(
     }
 }
 
-// ✅ AppointmentRow helper — only here, not duplicated elsewhere
 @Composable
 fun AppointmentRow(name: String, detail: String, status: String) {
     Row(

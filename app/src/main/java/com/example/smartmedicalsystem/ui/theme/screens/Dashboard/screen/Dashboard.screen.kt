@@ -69,7 +69,6 @@ fun DashboardScreen(navController: NavController){
 //                val authViewModel: AuthViewModel = viewModel()
 //                val context = LocalContext.current
 
-//            val scrollState = rememberScrollState()
 
 
     // Drawer state
@@ -437,14 +436,13 @@ fun DashboardScreen(navController: NavController){
                                 Row(modifier = Modifier
                                     .padding(16.dp),
                                     verticalAlignment = Alignment.CenterVertically) {
-                                    //Icon
+
                                     Icon(Icons.Filled.Person,
                                         contentDescription = "Pharmacy Management History",
                                         tint = Color.Black,
                                         modifier = Modifier.size(40.dp)
                                     )
                                     Spacer(modifier = Modifier.width(16.dp))
-                                    //Text content
                                     Column() {
                                         Text(text= "Pharmacy Management History",
                                             fontSize = 20.sp,

@@ -177,17 +177,17 @@ fun AdminDashboard(
                     icon = { Icon(Icons.Filled.FilePresent, contentDescription = "Records") },
                     label = { Text("Records") }
                 )
-//                NavigationBarItem(
-//                    selected = currentRoute == ROUTE_UPCOMING_APPOINTMENT,
-//                    onClick = {
-//                        navController.navigate(ROUTE_UPCOMING_APPOINTMENT) {
-//                            popUpTo(ROUTE_PATIENT_DASHBOARD)
-//                            launchSingleTop = true
-//                        }
-//                    },
-//                    icon = { Icon(Icons.Filled.CalendarToday, contentDescription = "Appointments") },
-//                    label = { Text("Appointments") }
-//                )
+                NavigationBarItem(
+                    selected = currentRoute == ROUTE_UPCOMING_APPOINTMENT,
+                    onClick = {
+                        navController.navigate(ROUTE_UPCOMING_APPOINTMENT) {
+                            popUpTo(ROUTE_PATIENT_DASHBOARD)
+                            launchSingleTop = true
+                        }
+                    },
+                    icon = { Icon(Icons.Filled.CalendarToday, contentDescription = "Appointments") },
+                    label = { Text("Appointments") }
+                )
                 NavigationBarItem(
                     selected = currentRoute == ROUTE_PROFILE,
                     onClick = {
@@ -328,5 +328,6 @@ fun LiveStatCard(label: String, value: String, modifier: Modifier = Modifier) {
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
+
     }
 }
