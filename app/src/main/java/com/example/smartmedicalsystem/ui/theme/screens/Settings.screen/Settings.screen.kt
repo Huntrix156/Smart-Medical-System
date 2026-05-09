@@ -3,6 +3,8 @@ package com.example.smartmedicalsystem.ui.theme.screens.Settings.screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Notifications
@@ -22,6 +24,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.smartmedicalsystem.navigation.ROUTE_PROFILE
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(navController: NavController) {
 
@@ -29,111 +32,162 @@ fun SettingsScreen(navController: NavController) {
     var darkThemeEnabled by remember { mutableStateOf(false) }
 
 
-    Column(
+    Scaffold(
 
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        topBar = {
 
+            TopAppBar(
 
-    ) {
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            text = "Settings",
-            fontSize = 26.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color(0xFF004D40)
-        )
+                title = {
 
-        Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        text = "Settings",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                },
 
-        Text("Account", fontWeight = FontWeight.Bold, color = Color(0xFF004D40),
-                modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Start)
+                navigationIcon = {
 
-        Spacer(modifier = Modifier.height(8.dp))
+                    IconButton(
+                        onClick = { navController.popBackStack() }
+                    ) {
 
-        SettingItem(
-            title = "Profile Settings",
-            subtitle = "Edit your personal information",
-            icon = Icons.Default.Person,
-            onClick = {
-                navController.navigate(ROUTE_PROFILE) {
-                    launchSingleTop = true
-                }
-            }
-        )
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White
+                        )
+                    }
+                },
 
-        HorizontalDivider()
-
-        Text("Preferences", fontWeight = FontWeight.Bold, color = Color.Gray,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Start)
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        SettingItem(
-            title = "Notifications",
-            subtitle = "Enable reminders and alerts",
-            icon = Icons.Default.Notifications,
-            trailing = {
-                Switch(
-                    checked = notificationsEnabled,
-                    onCheckedChange = { notificationsEnabled = it }
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF004D40)
                 )
-            }
-        )
+            )
+        }
 
-        HorizontalDivider()
+    ) { paddingValues ->
 
-        SettingItem(
-            title = "Dark Mode",
-            subtitle = "Switch between light and dark theme",
-            icon = Icons.Default.DarkMode,
-            trailing = {
-                Switch(
-                    checked = darkThemeEnabled,
-                    onCheckedChange = { darkThemeEnabled = it }
-                )
-            }
-        )
-
-        HorizontalDivider()
-
-
-        Text("Security", fontWeight = FontWeight.Bold, color = Color.Gray,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Start)
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        SettingItem(
-            title = "Privacy & Security",
-            subtitle = "Manage passwords and permissions",
-            icon = Icons.Default.Lock,
-            onClick = { /* navigate to security screen */ }
-        )
-
-        HorizontalDivider()
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        // ── Logout ────────────────────────────────────────────────
-        Button(
-            onClick = {
-                navController.navigate("login") {
-                    popUpTo(0) { inclusive = true }
-                }
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Logout", color = Color.White)
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(
+                "Account",
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF004D40),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Start
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            SettingItem(
+                title = "Profile Settings",
+                subtitle = "Edit your personal information",
+                icon = Icons.Default.Person,
+                onClick = {
+                    navController.navigate(ROUTE_PROFILE) {
+                        launchSingleTop = true
+                    }
+                }
+            )
+
+            HorizontalDivider()
+
+            Text(
+                "Preferences",
+                fontWeight = FontWeight.Bold,
+                color = Color.Gray,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Start
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            SettingItem(
+                title = "Notifications",
+                subtitle = "Enable reminders and alerts",
+                icon = Icons.Default.Notifications,
+                trailing = {
+                    Switch(
+                        checked = notificationsEnabled,
+                        onCheckedChange = {
+                            notificationsEnabled = it
+                        }
+                    )
+                }
+            )
+
+            HorizontalDivider()
+
+            SettingItem(
+                title = "Dark Mode",
+                subtitle = "Switch between light and dark theme",
+                icon = Icons.Default.DarkMode,
+                trailing = {
+                    Switch(
+                        checked = darkThemeEnabled,
+                        onCheckedChange = {
+                            darkThemeEnabled = it
+                        }
+                    )
+                }
+            )
+
+            HorizontalDivider()
+
+            Text(
+                "Security",
+                fontWeight = FontWeight.Bold,
+                color = Color.Gray,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Start
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            SettingItem(
+                title = "Privacy & Security",
+                subtitle = "Manage passwords and permissions",
+                icon = Icons.Default.Lock,
+                onClick = { }
+            )
+
+            HorizontalDivider()
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            Button(
+                onClick = {
+                    navController.navigate("login") {
+                        popUpTo(0) { inclusive = true }
+                    }
+                },
+
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Red
+                ),
+
+                modifier = Modifier.fillMaxWidth()
+            ) {
+
+                Text(
+                    text = "Logout",
+                    color = Color.White
+                )
+            }
         }
     }
 }
-
 @Composable
 fun SettingItem(
     title: String,

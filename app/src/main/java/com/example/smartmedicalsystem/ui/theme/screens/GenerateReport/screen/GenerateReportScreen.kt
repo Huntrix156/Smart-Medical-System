@@ -1,17 +1,12 @@
-package com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen
+package com.example.smartmedicalsystem.ui.theme.screens.GenerateReport.screen
 
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +20,9 @@ private val HospitalTeal = Color(0xFF00604E)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MedicationScreen(navController: NavController,  onLogout: () -> Unit) {
+fun GenerateReportScreen(navController: NavController
+//                         ,onLogout: () -> Unit
+) {
 
 
 
@@ -39,9 +36,9 @@ fun MedicationScreen(navController: NavController,  onLogout: () -> Unit) {
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = HospitalTeal),
-                title = { Text("Medication Management", fontWeight = FontWeight.Bold, color = Color.White) },
+                title = { Text("Report Management", fontWeight = FontWeight.Bold, color = Color.White) },
 
-            )
+                )
         }
     ) { innerPadding ->
         Column(
@@ -53,26 +50,26 @@ fun MedicationScreen(navController: NavController,  onLogout: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                "Health Utilities",
+                "Reports Hub",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.align(Alignment.Start)
             )
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                MedicationMenuCard("Add Medication", "Create new entry", Modifier.weight(1f)) {
+                GenerateReportMenuCard("Add Medication", "Create new entry", Modifier.weight(1f)) {
                     navController.navigate(ROUTE_ADD_MEDICINE)
                 }
-                MedicationMenuCard("Reminders", "Set alerts", Modifier.weight(1f)) {
+                GenerateReportMenuCard("Reminders", "Set alerts", Modifier.weight(1f)) {
                     navController.navigate(ROUTE_REMINDER)
                 }
             }
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                MedicationMenuCard("Medicine List", "View stock", Modifier.weight(1f)) {
+                GenerateReportMenuCard("Medicine List", "View stock", Modifier.weight(1f)) {
                     navController.navigate(ROUTE_MEDICINE_LIST)
                 }
-                MedicationMenuCard("Update Medication", "Search meds", Modifier.weight(1f)) {
+                GenerateReportMenuCard("Update Medication", "Search meds", Modifier.weight(1f)) {
                     navController.navigate(ROUTE_UPDATE_MEDICATION)
                 }
             }
@@ -81,7 +78,7 @@ fun MedicationScreen(navController: NavController,  onLogout: () -> Unit) {
 }
 
 @Composable
-fun MedicationMenuCard(title: String, subtitle: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun GenerateReportMenuCard(title: String, subtitle: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Card(
         onClick = onClick,
         modifier = modifier.height(140.dp),

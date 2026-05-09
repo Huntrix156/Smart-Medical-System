@@ -1,5 +1,273 @@
 package com.example.smartmedicalsystem.data
 
+//import androidx.compose.runtime.State
+//import androidx.compose.runtime.mutableStateOf
+//import androidx.lifecycle.ViewModel
+//import com.example.smartmedicalsystem.models.Appointment
+//import com.example.smartmedicalsystem.models.AppointmentNotification
+//import com.example.smartmedicalsystem.models.DoctorProfile
+//import com.google.firebase.database.DataSnapshot
+//import com.google.firebase.database.DatabaseError
+//import com.google.firebase.database.FirebaseDatabase
+//import com.google.firebase.database.ValueEventListener
+//
+////
+//class AppointmentViewModel : ViewModel() {
+//
+//    private val db = FirebaseDatabase.getInstance().reference
+//
+//    private val _doctorAppointments = mutableStateOf<List<Appointment>>(emptyList())
+//    val doctorAppointments: State<List<Appointment>> = _doctorAppointments
+//
+//
+//    private val _patientAppointments = mutableStateOf<List<Appointment>>(emptyList())
+//    val patientAppointments: State<List<Appointment>> = _patientAppointments
+//
+//    private val _doctorList = mutableStateOf<List<DoctorProfile>>(emptyList())
+//    val doctorList: State<List<DoctorProfile>> = _doctorList
+//
+//    private val _isLoading = mutableStateOf(false)
+//    val isLoading: State<Boolean> = _isLoading
+//
+//    private val _errorMessage = mutableStateOf<String?>(null)
+//    val errorMessage: State<String?> = _errorMessage
+//
+//    private val _successMessage = mutableStateOf<String?>(null)
+//    val successMessage: State<String?> = _successMessage
+//
+//    // ── Listener handles ─────────────────────────────────────────────────────
+//    private var doctorApptListener: ValueEventListener? = null
+//    private var patientApptListener: ValueEventListener? = null
+//    private var doctorListListener: ValueEventListener? = null
+//
+//    // ═══════════════════════════════════════════════════════════════════════════
+//    //  PATIENT — Book an appointment
+//    // ═══════════════════════════════════════════════════════════════════════════
+//
+//    /**
+//     * Saves a new appointment to:
+//     *   appointments/{patientId}/{appointmentId}
+//     *   doctorAppointments/{doctorId}/{appointmentId}
+//     *
+//     * Both nodes hold the same data so both parties see it instantly.
+//     */
+//    fun bookAppointment(
+//        patientId: String,
+//        patientName: String,
+//        doctorId: String,
+//        doctorName: String,
+//        date: String,
+//        time: String,
+//        reason: String,
+//        onSuccess: () -> Unit,
+//        onFailure: (String) -> Unit
+//    ) {
+//        val appointmentId = db.push().key ?: return
+//        val appointment = Appointment(
+//            appointmentId = appointmentId,
+//            patientId = patientId,
+//            patientName = patientName,
+//            doctorId = doctorId,
+//            doctorName = doctorName,
+//            date = date,
+//            time = time,
+//            reason = reason,
+//            status = "pending"
+//        )
+//
+//        val updates = mapOf(
+//            "appointments/$patientId/$appointmentId" to appointment,
+//            "doctorAppointments/$doctorId/$appointmentId" to appointment
+//        )
+//
+//        db.updateChildren(updates)
+//            .addOnSuccessListener { onSuccess() }
+//            .addOnFailureListener { onFailure(it.message ?: "Failed to book appointment") }
+//    }
+//
+//    // ═══════════════════════════════════════════════════════════════════════════
+//    //  DOCTOR — Listen for appointments assigned to this doctor
+//    // ═══════════════════════════════════════════════════════════════════════════
+//
+//    fun listenDoctorAppointments(doctorId: String) {
+//        if (doctorApptListener != null) return
+//
+//        doctorApptListener = object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val list = mutableListOf<Appointment>()
+//                for (child in snapshot.children) {
+//                    child.getValue(Appointment::class.java)?.let { list.add(it) }
+//                }
+//                // Sort: pending first, then by date
+//                _doctorAppointments.value = list.sortedWith(
+//                    compareBy({ if (it.status == "pending") 0 else 1 }, { it.date })
+//                )
+//            }
+//            override fun onCancelled(error: DatabaseError) {
+//                _errorMessage.value = error.message
+//            }
+//        }
+//        db.child("doctorAppointments").child(doctorId)
+//            .addValueEventListener(doctorApptListener!!)
+//    }
+//
+//    // ═══════════════════════════════════════════════════════════════════════════
+//    //  PATIENT — Listen for all appointments booked by this patient
+//    // ═══════════════════════════════════════════════════════════════════════════
+//
+//    fun listenPatientAppointments(patientId: String) {
+//        if (patientApptListener != null) return
+//
+//        patientApptListener = object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val list = mutableListOf<Appointment>()
+//                for (child in snapshot.children) {
+//                    child.getValue(Appointment::class.java)?.let { list.add(it) }
+//                }
+//                _patientAppointments.value = list.sortedByDescending { it.date }
+//            }
+//            override fun onCancelled(error: DatabaseError) {
+//                _errorMessage.value = error.message
+//            }
+//        }
+//        db.child("appointments").child(patientId)
+//            .addValueEventListener(patientApptListener!!)
+//    }
+//
+//    // ═══════════════════════════════════════════════════════════════════════════
+//    //  DOCTOR — Mark appointment as Completed
+//    // ═══════════════════════════════════════════════════════════════════════════
+//
+//    fun markCompleted(
+//        appointment: Appointment,
+//        onSuccess: () -> Unit = {},
+//        onFailure: (String) -> Unit = {}
+//    ) {
+//        val message = "Your appointment with Dr. ${appointment.doctorName} on ${appointment.date} at ${appointment.time} has been marked as Completed."
+//        val updates = mapOf(
+//            "appointments/${appointment.patientId}/${appointment.appointmentId}/status" to "completed",
+//            "appointments/${appointment.patientId}/${appointment.appointmentId}/notificationMessage" to message,
+//            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/status" to "completed",
+//            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/notificationMessage" to message
+//        )
+//        db.updateChildren(updates)
+//            .addOnSuccessListener {
+//                sendNotification(
+//                    patientId = appointment.patientId,
+//                    title = "Appointment Completed",
+//                    message = message
+//                )
+//                onSuccess()
+//            }
+//            .addOnFailureListener { onFailure(it.message ?: "Update failed") }
+//    }
+//
+//    // ═══════════════════════════════════════════════════════════════════════════
+//    //  DOCTOR — Refer appointment to another doctor
+//    // ═══════════════════════════════════════════════════════════════════════════
+//
+//    fun referAppointment(
+//        appointment: Appointment,
+//        newDoctor: DoctorProfile,
+//        onSuccess: () -> Unit = {},
+//        onFailure: (String) -> Unit = {}
+//    ) {
+//        val message = "Your appointment originally with Dr. ${appointment.doctorName} on ${appointment.date} at ${appointment.time} has been referred to Dr. ${newDoctor.name}. Please attend as scheduled."
+//
+//        val updates = mapOf(
+//            // Update patient's copy
+//            "appointments/${appointment.patientId}/${appointment.appointmentId}/status" to "referred",
+//            "appointments/${appointment.patientId}/${appointment.appointmentId}/referredDoctorId" to newDoctor.uid,
+//            "appointments/${appointment.patientId}/${appointment.appointmentId}/referredDoctorName" to newDoctor.name,
+//            "appointments/${appointment.patientId}/${appointment.appointmentId}/notificationMessage" to message,
+//            // Update original doctor's copy
+//            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/status" to "referred",
+//            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/referredDoctorId" to newDoctor.uid,
+//            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/referredDoctorName" to newDoctor.name,
+//            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/notificationMessage" to message,
+//            // Create a copy for the new (referred) doctor
+//            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/appointmentId" to appointment.appointmentId,
+//            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/patientId" to appointment.patientId,
+//            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/patientName" to appointment.patientName,
+//            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/doctorId" to newDoctor.uid,
+//            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/doctorName" to newDoctor.name,
+//            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/date" to appointment.date,
+//            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/time" to appointment.time,
+//            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/reason" to appointment.reason,
+//            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/status" to "pending"
+//        )
+//
+//        db.updateChildren(updates)
+//            .addOnSuccessListener {
+//                sendNotification(
+//                    patientId = appointment.patientId,
+//                    title = "Appointment Referred",
+//                    message = message
+//                )
+//                onSuccess()
+//            }
+//            .addOnFailureListener { onFailure(it.message ?: "Referral failed") }
+//    }
+//
+//    // ═══════════════════════════════════════════════════════════════════════════
+//    //  Load all doctors for the referral picker
+//    // ═══════════════════════════════════════════════════════════════════════════
+//
+//    fun loadDoctors(excludeDoctorId: String = "") {
+//        if (doctorListListener != null) return
+//
+//        doctorListListener = object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val list = mutableListOf<DoctorProfile>()
+//                for (child in snapshot.children) {
+//                    val uid = child.key ?: continue
+//                    if (uid == excludeDoctorId) continue
+//                    val name = child.child("name").getValue(String::class.java)
+//                        ?: child.child("firstname").getValue(String::class.java) ?: "Unknown"
+//                    val spec = child.child("specialization").getValue(String::class.java) ?: ""
+//                    list.add(DoctorProfile(uid = uid, name = name, specialization = spec))
+//                }
+//                _doctorList.value = list
+//            }
+//            override fun onCancelled(error: DatabaseError) {}
+//        }
+//        db.child("doctors").addValueEventListener(doctorListListener!!)
+//    }
+//
+//    // ═══════════════════════════════════════════════════════════════════════════
+//    //  Private — write notification to Firebase
+//    // ═══════════════════════════════════════════════════════════════════════════
+//
+//    private fun sendNotification(patientId: String, title: String, message: String) {
+//        val notifId = db.push().key ?: return
+//        val notification = AppointmentNotification(
+//            notificationId = notifId,
+//            title = title,
+//            message = message,
+//            timestamp = System.currentTimeMillis(),
+//            read = false
+//        )
+//        db.child("notifications").child(patientId).child(notifId).setValue(notification)
+//    }
+//
+//    fun clearMessages() {
+//        _errorMessage.value = null
+//        _successMessage.value = null
+//    }
+//
+//    override fun onCleared() {
+//        super.onCleared()
+//        doctorApptListener?.let {
+//            // listeners cleaned up automatically when ViewModel is destroyed
+//        }
+//        patientApptListener?.let {}
+//        doctorListListener?.let { db.child("doctors").removeEventListener(it) }
+//    }
+//}
+//
+//
+//
+
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -11,33 +279,25 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-/**
- * AppointmentViewModel
- *
- * Handles all appointment-related Firebase operations:
- *  • Patient books an appointment
- *  • Doctor views their pending appointments
- *  • Doctor marks an appointment as completed or referred
- *  • On referral, a notification is written for the patient
- *  • Patient views all their appointments with live status
- */
 class AppointmentViewModel : ViewModel() {
 
     private val db = FirebaseDatabase.getInstance().reference
 
-    // ── Doctor's appointment list ─────────────────────────────────────────────
+    // ── Observed state ────────────────────────────────────────────────────────
+
     private val _doctorAppointments = mutableStateOf<List<Appointment>>(emptyList())
     val doctorAppointments: State<List<Appointment>> = _doctorAppointments
 
-    // ── Patient's appointment list ────────────────────────────────────────────
     private val _patientAppointments = mutableStateOf<List<Appointment>>(emptyList())
     val patientAppointments: State<List<Appointment>> = _patientAppointments
 
-    // ── All doctors (for referral picker) ────────────────────────────────────
+
+    private val _adminAppointments = mutableStateOf<List<Appointment>>(emptyList())
+    val adminAppointments: State<List<Appointment>> = _adminAppointments
+
     private val _doctorList = mutableStateOf<List<DoctorProfile>>(emptyList())
     val doctorList: State<List<DoctorProfile>> = _doctorList
 
-    // ── Loading / error state ─────────────────────────────────────────────────
     private val _isLoading = mutableStateOf(false)
     val isLoading: State<Boolean> = _isLoading
 
@@ -47,59 +307,144 @@ class AppointmentViewModel : ViewModel() {
     private val _successMessage = mutableStateOf<String?>(null)
     val successMessage: State<String?> = _successMessage
 
-    // ── Listener handles ─────────────────────────────────────────────────────
+    // ── Listener handles ──────────────────────────────────────────────────────
     private var doctorApptListener: ValueEventListener? = null
     private var patientApptListener: ValueEventListener? = null
+    private var adminApptListener: ValueEventListener? = null
     private var doctorListListener: ValueEventListener? = null
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  PATIENT — Book an appointment
-    // ═══════════════════════════════════════════════════════════════════════════
 
-    /**
-     * Saves a new appointment to:
-     *   appointments/{patientId}/{appointmentId}
-     *   doctorAppointments/{doctorId}/{appointmentId}
-     *
-     * Both nodes hold the same data so both parties see it instantly.
-     */
+
     fun bookAppointment(
         patientId: String,
         patientName: String,
-        doctorId: String,
-        doctorName: String,
+        reason: String,
         date: String,
         time: String,
-        reason: String,
+        specialization: String = "",
         onSuccess: () -> Unit,
         onFailure: (String) -> Unit
     ) {
-        val appointmentId = db.push().key ?: return
+        _isLoading.value = true
+        val appointmentId = db.push().key ?: run {
+            _isLoading.value = false
+            onFailure("Could not generate appointment ID")
+            return
+        }
+
         val appointment = Appointment(
             appointmentId = appointmentId,
             patientId = patientId,
             patientName = patientName,
-            doctorId = doctorId,
-            doctorName = doctorName,
             date = date,
             time = time,
             reason = reason,
-            status = "pending"
+            status = "pending_admin",
+            specialization = specialization,
+            notificationMessage = "Your appointment on $date at $time has been booked.",
+            referredDoctorId = "",
+            referredDoctorName = "",
+            doctorId = "",
+            doctorName = "",
+            referralNote = ""
         )
 
-        val updates = mapOf(
+        val updates: Map<String, Any> = mapOf(
             "appointments/$patientId/$appointmentId" to appointment,
-            "doctorAppointments/$doctorId/$appointmentId" to appointment
+            "adminAppointments/$appointmentId" to appointment
         )
 
         db.updateChildren(updates)
-            .addOnSuccessListener { onSuccess() }
-            .addOnFailureListener { onFailure(it.message ?: "Failed to book appointment") }
+            .addOnSuccessListener {
+                _isLoading.value = false
+                _successMessage.value = "Appointment booked! The admin will assign you a doctor."
+                onSuccess()
+            }
+            .addOnFailureListener {
+                _isLoading.value = false
+                _errorMessage.value = it.message
+                onFailure(it.message ?: "Failed to book appointment")
+            }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  DOCTOR — Listen for appointments assigned to this doctor
-    // ═══════════════════════════════════════════════════════════════════════════
+
+
+    fun listenAdminAppointments() {
+        if (adminApptListener != null) return
+
+        adminApptListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val list = mutableListOf<Appointment>()
+                for (child in snapshot.children) {
+                    child.getValue(Appointment::class.java)?.let { list.add(it) }
+                }
+                // Sort: referral alerts first, then pending_admin, then others
+                _adminAppointments.value = list.sortedWith(
+                    compareBy(
+                        {
+                            when (it.status) {
+                                "referral_requested" -> 0
+                                "pending_admin"      -> 1
+                                "assigned"           -> 2
+                                "taken"              -> 3
+                                else                 -> 4
+                            }
+                        },
+                        { it.date }
+                    )
+                )
+            }
+            override fun onCancelled(error: DatabaseError) {
+                _errorMessage.value = error.message
+            }
+        }
+        db.child("adminAppointments").addValueEventListener(adminApptListener!!)
+    }
+
+
+
+
+    fun assignDoctorToAppointment(
+        appointment: Appointment,
+        doctor: DoctorProfile,
+        onSuccess: () -> Unit = {},
+        onFailure: (String) -> Unit = {}
+    ) {
+        _isLoading.value = true
+        val msg = "Your appointment on ${appointment.date} at ${appointment.time} " +
+                "has been assigned to Dr. ${doctor.name} (${doctor.specialization})."
+
+        val updatedAppointment = appointment.copy(
+            doctorId = doctor.uid,
+            doctorName = doctor.name,
+            status = "assigned",
+            referralNote = "",
+            notificationMessage = msg
+        )
+
+        val updates: Map<String, Any> = mapOf(
+            "adminAppointments/${appointment.appointmentId}" to updatedAppointment,
+            "appointments/${appointment.patientId}/${appointment.appointmentId}" to updatedAppointment,
+            "doctorAppointments/${doctor.uid}/${appointment.appointmentId}" to updatedAppointment
+        )
+
+        db.updateChildren(updates)
+            .addOnSuccessListener {
+                _isLoading.value = false
+                sendNotification(
+                    patientId = appointment.patientId,
+                    title = "Doctor Assigned",
+                    message = msg
+                )
+                onSuccess()
+            }
+            .addOnFailureListener {
+                _isLoading.value = false
+                onFailure(it.message ?: "Assignment failed")
+            }
+    }
+
+
 
     fun listenDoctorAppointments(doctorId: String) {
         if (doctorApptListener != null) return
@@ -110,9 +455,17 @@ class AppointmentViewModel : ViewModel() {
                 for (child in snapshot.children) {
                     child.getValue(Appointment::class.java)?.let { list.add(it) }
                 }
-                // Sort: pending first, then by date
+
                 _doctorAppointments.value = list.sortedWith(
-                    compareBy({ if (it.status == "pending") 0 else 1 }, { it.date })
+                    compareBy(
+                        {
+                            when (it.status) {
+                                "assigned", "taken" -> 0
+                                else                -> 1
+                            }
+                        },
+                        { it.date }
+                    )
                 )
             }
             override fun onCancelled(error: DatabaseError) {
@@ -123,9 +476,104 @@ class AppointmentViewModel : ViewModel() {
             .addValueEventListener(doctorApptListener!!)
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  PATIENT — Listen for all appointments booked by this patient
-    // ═══════════════════════════════════════════════════════════════════════════
+
+
+
+    fun requestReferral(
+        appointment: Appointment,
+        referralNote: String,
+        onSuccess: () -> Unit = {},
+        onFailure: (String) -> Unit = {}
+    ) {
+        _isLoading.value = true
+        val updates: Map<String, Any> = mapOf(
+            "adminAppointments/${appointment.appointmentId}/status"       to "referral_requested",
+            "adminAppointments/${appointment.appointmentId}/referralNote" to referralNote,
+            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/status"       to "referral_requested",
+            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/referralNote" to referralNote,
+            "appointments/${appointment.patientId}/${appointment.appointmentId}/status"       to "referral_requested",
+            "appointments/${appointment.patientId}/${appointment.appointmentId}/referralNote" to referralNote
+        )
+        db.updateChildren(updates)
+            .addOnSuccessListener {
+                _isLoading.value = false
+                onSuccess()
+            }
+            .addOnFailureListener {
+                _isLoading.value = false
+                onFailure(it.message ?: "Referral request failed")
+            }
+    }
+
+
+
+    fun proceedWithAppointment(
+        appointment: Appointment,
+        onSuccess: () -> Unit = {},
+        onFailure: (String) -> Unit = {}
+    ) {
+        _isLoading.value = true
+        val msg = "Your appointment with Dr. ${appointment.doctorName} on ${appointment.date} " +
+                "at ${appointment.time} is being processed."
+
+        val updates: Map<String, Any> = mapOf(
+            "adminAppointments/${appointment.appointmentId}/status"                to "taken",
+            "adminAppointments/${appointment.appointmentId}/notificationMessage"   to msg,
+            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/status"              to "taken",
+            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/notificationMessage" to msg,
+            "appointments/${appointment.patientId}/${appointment.appointmentId}/status"              to "taken",
+            "appointments/${appointment.patientId}/${appointment.appointmentId}/notificationMessage" to msg
+        )
+        db.updateChildren(updates)
+            .addOnSuccessListener {
+                _isLoading.value = false
+                sendNotification(
+                    patientId = appointment.patientId,
+                    title = "Appointment Confirmed",
+                    message = msg
+                )
+                onSuccess()
+            }
+            .addOnFailureListener {
+                _isLoading.value = false
+                onFailure(it.message ?: "Could not proceed")
+            }
+    }
+
+
+    fun markCompleted(
+        appointment: Appointment,
+        onSuccess: () -> Unit = {},
+        onFailure: (String) -> Unit = {}
+    ) {
+        _isLoading.value = true
+        val msg = "Your appointment with Dr. ${appointment.doctorName} on ${appointment.date} " +
+                "at ${appointment.time} has been marked as Completed."
+
+        val updates: Map<String, Any> = mapOf(
+            "adminAppointments/${appointment.appointmentId}/status"                to "completed",
+            "adminAppointments/${appointment.appointmentId}/notificationMessage"   to msg,
+            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/status"              to "completed",
+            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/notificationMessage" to msg,
+            "appointments/${appointment.patientId}/${appointment.appointmentId}/status"              to "completed",
+            "appointments/${appointment.patientId}/${appointment.appointmentId}/notificationMessage" to msg
+        )
+        db.updateChildren(updates)
+            .addOnSuccessListener {
+                _isLoading.value = false
+                sendNotification(
+                    patientId = appointment.patientId,
+                    title = "Appointment Completed",
+                    message = msg
+                )
+                onSuccess()
+            }
+            .addOnFailureListener {
+                _isLoading.value = false
+                onFailure(it.message ?: "Update failed")
+            }
+    }
+
 
     fun listenPatientAppointments(patientId: String) {
         if (patientApptListener != null) return
@@ -146,86 +594,13 @@ class AppointmentViewModel : ViewModel() {
             .addValueEventListener(patientApptListener!!)
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  DOCTOR — Mark appointment as Completed
-    // ═══════════════════════════════════════════════════════════════════════════
 
-    fun markCompleted(
-        appointment: Appointment,
-        onSuccess: () -> Unit = {},
-        onFailure: (String) -> Unit = {}
+
+
+    fun loadDoctors(
+        specialization: String = "",
+        excludeDoctorId: String = ""
     ) {
-        val message = "Your appointment with Dr. ${appointment.doctorName} on ${appointment.date} at ${appointment.time} has been marked as Completed."
-        val updates = mapOf(
-            "appointments/${appointment.patientId}/${appointment.appointmentId}/status" to "completed",
-            "appointments/${appointment.patientId}/${appointment.appointmentId}/notificationMessage" to message,
-            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/status" to "completed",
-            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/notificationMessage" to message
-        )
-        db.updateChildren(updates)
-            .addOnSuccessListener {
-                sendNotification(
-                    patientId = appointment.patientId,
-                    title = "Appointment Completed",
-                    message = message
-                )
-                onSuccess()
-            }
-            .addOnFailureListener { onFailure(it.message ?: "Update failed") }
-    }
-
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  DOCTOR — Refer appointment to another doctor
-    // ═══════════════════════════════════════════════════════════════════════════
-
-    fun referAppointment(
-        appointment: Appointment,
-        newDoctor: DoctorProfile,
-        onSuccess: () -> Unit = {},
-        onFailure: (String) -> Unit = {}
-    ) {
-        val message = "Your appointment originally with Dr. ${appointment.doctorName} on ${appointment.date} at ${appointment.time} has been referred to Dr. ${newDoctor.name}. Please attend as scheduled."
-
-        val updates = mapOf(
-            // Update patient's copy
-            "appointments/${appointment.patientId}/${appointment.appointmentId}/status" to "referred",
-            "appointments/${appointment.patientId}/${appointment.appointmentId}/referredDoctorId" to newDoctor.uid,
-            "appointments/${appointment.patientId}/${appointment.appointmentId}/referredDoctorName" to newDoctor.name,
-            "appointments/${appointment.patientId}/${appointment.appointmentId}/notificationMessage" to message,
-            // Update original doctor's copy
-            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/status" to "referred",
-            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/referredDoctorId" to newDoctor.uid,
-            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/referredDoctorName" to newDoctor.name,
-            "doctorAppointments/${appointment.doctorId}/${appointment.appointmentId}/notificationMessage" to message,
-            // Create a copy for the new (referred) doctor
-            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/appointmentId" to appointment.appointmentId,
-            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/patientId" to appointment.patientId,
-            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/patientName" to appointment.patientName,
-            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/doctorId" to newDoctor.uid,
-            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/doctorName" to newDoctor.name,
-            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/date" to appointment.date,
-            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/time" to appointment.time,
-            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/reason" to appointment.reason,
-            "doctorAppointments/${newDoctor.uid}/${appointment.appointmentId}/status" to "pending"
-        )
-
-        db.updateChildren(updates)
-            .addOnSuccessListener {
-                sendNotification(
-                    patientId = appointment.patientId,
-                    title = "Appointment Referred",
-                    message = message
-                )
-                onSuccess()
-            }
-            .addOnFailureListener { onFailure(it.message ?: "Referral failed") }
-    }
-
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  Load all doctors for the referral picker
-    // ═══════════════════════════════════════════════════════════════════════════
-
-    fun loadDoctors(excludeDoctorId: String = "") {
         if (doctorListListener != null) return
 
         doctorListListener = object : ValueEventListener {
@@ -237,7 +612,9 @@ class AppointmentViewModel : ViewModel() {
                     val name = child.child("name").getValue(String::class.java)
                         ?: child.child("firstname").getValue(String::class.java) ?: "Unknown"
                     val spec = child.child("specialization").getValue(String::class.java) ?: ""
-                    list.add(DoctorProfile(uid = uid, name = name, specialization = spec))
+                    if (specialization.isBlank() || spec.equals(specialization, ignoreCase = true)) {
+                        list.add(DoctorProfile(uid = uid, name = name, specialization = spec))
+                    }
                 }
                 _doctorList.value = list
             }
@@ -246,9 +623,12 @@ class AppointmentViewModel : ViewModel() {
         db.child("doctors").addValueEventListener(doctorListListener!!)
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    //  Private — write notification to Firebase
-    // ═══════════════════════════════════════════════════════════════════════════
+    fun reloadDoctors(specialization: String = "", excludeDoctorId: String = "") {
+        doctorListListener?.let { db.child("doctors").removeEventListener(it) }
+        doctorListListener = null
+        loadDoctors(specialization, excludeDoctorId)
+    }
+
 
     private fun sendNotification(patientId: String, title: String, message: String) {
         val notifId = db.push().key ?: return
@@ -269,10 +649,6 @@ class AppointmentViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        doctorApptListener?.let {
-            // listeners cleaned up automatically when ViewModel is destroyed
-        }
-        patientApptListener?.let {}
         doctorListListener?.let { db.child("doctors").removeEventListener(it) }
     }
 }

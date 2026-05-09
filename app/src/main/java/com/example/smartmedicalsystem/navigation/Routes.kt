@@ -29,7 +29,6 @@ const val ROUTE_INVENTORY_SCREEN = "inventory_screen"
 const val ROUTE_MEDICATION_REMINDER_COMPONENT = "medication_reminder_component"
 
 const val ROUTE_UPCOMING_APPOINTMENT = "upcoming_appointment"
-const val ROUTE_APPOINTMENT_LIST = "appointment_list"
 
 const val ROUTE_ADMIN_ADD_DOCTOR = "admin_add_doctor_screen"
 
@@ -43,3 +42,8 @@ const val ROUTE_SETTINGS = "settings"
 const val ROUTE_EMERGENCY_SOS = "emergency_sos"
 
 const val ROUTE_PROFILE = "profile"
+const val ROUTE_GENERATE_REPORT = "generate_report"
+const val   ROUTE_UPDATE_PROFILE = "update_profile"
+
+const val ROUTE_ADMIN_APPOINTMENTS = "admin_appointments_screen"
+const val ROUTE_DOCTOR_APPOINTMENTS = "doctor_appointments_screen"

@@ -1079,7 +1079,6 @@ fun RegisterScreen(navController: NavController) {
                         }
                     }
 
-                    //  FOOTER//
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center

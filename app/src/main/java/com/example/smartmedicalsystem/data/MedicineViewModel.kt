@@ -23,7 +23,6 @@ import okhttp3.RequestBody
 import java.io.InputStream
 
 
-//credintial functions
  class MedicineViewModel: ViewModel(){
 
 
@@ -60,13 +59,13 @@ import java.io.InputStream
                 )
                 ref.setValue(patientData).await()//Save function//
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Patient saved Successfully", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Medicine saved Successfully", Toast.LENGTH_LONG).show()
                     navController.navigate(ROUTE_PATIENT_DASHBOARD)
                 }
 
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Patient not saved", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Medicine not saved", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -98,7 +97,7 @@ import java.io.InputStream
 
     fun fetchMedicine(context: Context) {      //CHANGE HERE//
 
-        val ref = FirebaseDatabase.getInstance().getReference("Patients")
+        val ref = FirebaseDatabase.getInstance().getReference("Medicines")
 
         ref.get().addOnSuccessListener { snapshot ->
 
@@ -177,10 +176,6 @@ import java.io.InputStream
 
 
 
-
-
-
-//}
 
 
 

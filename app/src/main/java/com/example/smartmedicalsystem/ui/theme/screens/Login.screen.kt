@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -51,6 +52,8 @@ import androidx.navigation.NavController
 
 import com.example.smartmedicalsystem.data.AuthViewModel
 import com.example.smartmedicalsystem.navigation.ROUTE_REGISTER
+import com.example.smartmedicalsystem.ui.theme.SecondaryGreen
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
@@ -103,7 +106,7 @@ fun LoginScreen(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFF1976D2),
+                            focusedBorderColor = Color(0xFF004D40),
                             unfocusedBorderColor = Color.Gray
                         )
                     )
@@ -127,7 +130,7 @@ fun LoginScreen(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFF1976D2),
+                            focusedBorderColor = Color(0xFF004D40),
                             unfocusedBorderColor = Color.Gray
                         )
                     )
@@ -161,7 +164,8 @@ fun LoginScreen(
                         },
                         enabled = !isLoading,
                         modifier = Modifier.fillMaxWidth().height(50.dp),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = SecondaryGreen)
                     ) {
                         Text(if (isLoading) "Signing in..." else "Sign In", fontSize = 16.sp)
                     }

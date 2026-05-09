@@ -62,6 +62,65 @@ fun PatientDashboard(
     val upcomingAppointments by statsViewModel.upcomingAppointments
     val appVisits by statsViewModel.appVisits
 
+
+
+    var showLogoutDialog by remember {
+        mutableStateOf(false)
+    }
+
+    if (showLogoutDialog) {
+
+        AlertDialog(
+            onDismissRequest = {
+                showLogoutDialog = false
+            },
+
+            title = {
+                Text(
+                    text = "Logout"
+                )
+            },
+
+            text = {
+                Text(
+                    text = "Are you sure you want to logout?"
+                )
+            },
+
+            confirmButton = {
+
+                TextButton(
+                    onClick = {
+
+                        showLogoutDialog = false
+
+                        // Execute logout
+                        onLogout()
+                    }
+                ) {
+
+                    Text(
+                        text = "Yes"
+                    )
+                }
+            },
+
+            dismissButton = {
+
+                TextButton(
+                    onClick = {
+                        showLogoutDialog = false
+                    }
+                ) {
+
+                    Text(
+                        text = "Cancel"
+                    )
+                }
+            }
+        )
+    }
+
     Scaffold(
         topBar = {
             Box(
@@ -85,7 +144,7 @@ fun PatientDashboard(
                         fontWeight = FontWeight.Bold
                     )
 
-                    IconButton(onClick = onLogout) {
+                    IconButton(onClick =  {showLogoutDialog = true}) {
 
                         Icon(
                             imageVector = Icons.Default.ExitToApp,

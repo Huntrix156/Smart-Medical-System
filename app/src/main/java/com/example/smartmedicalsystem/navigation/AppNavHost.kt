@@ -10,8 +10,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.nexora.ui.theme.screens.medicine.screen.MedicineListScreen
-import com.example.nexora.ui.theme.screens.medicine.screen.UpdateMedicineScreen
 
 import com.example.smartmedicalsystem.data.DashboardStatsViewModel
 import com.example.smartmedicalsystem.models.medication.Medicine
@@ -24,15 +22,19 @@ import com.example.smartmedicalsystem.ui.theme.screens.Inventory.InventoryScreen
 import com.example.smartmedicalsystem.ui.theme.screens.Profile.screen.ProfileScreen
 import com.example.smartmedicalsystem.ui.theme.screens.Settings.screen.SettingsScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.service.Reminder.screen.ReminderScreen
-import com.example.smartmedicalsystem.ui.theme.screens.UpcomingAppointmentsScreen
+import com.example.smartmedicalsystem.ui.theme.screens.Appointments.UpcomingAppointmentsScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.ForgotPasswordScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.MedicationScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.Onboarding.screen.OnboardingSlider
 import java.time.LocalDate
 import com.example.smartmedicalsystem.ui.theme.Admin.AdminAddDoctorScreen
+import com.example.smartmedicalsystem.ui.theme.screens.Appointments.AdminAppointmentsScreen
+import com.example.smartmedicalsystem.ui.theme.screens.Appointments.DoctorAppointmentsScreen
+import com.example.smartmedicalsystem.ui.theme.screens.GenerateReport.screen.GenerateReportScreen
 import com.example.smartmedicalsystem.ui.theme.screens.RegisterScreen
+import com.example.smartmedicalsystem.ui.theme.screens.medicine.screen.MedicineListScreen
+import com.example.smartmedicalsystem.ui.theme.screens.medicine.screen.UpdateMedicineScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.EmergencySOSScreen
-import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.AddMedicationScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.AddMedicineScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.WritePrescriptionScreen
 
@@ -126,7 +128,6 @@ fun AppNavHost(
 
         // ── Role Dashboards ───────────────────────────────────────
 
-        // ✅ PatientDashboard now receives statsViewModel for live counts
         composable("patient_dashboard/{username}") { backStackEntry ->
             val username = java.net.URLDecoder.decode(
                 backStackEntry.arguments?.getString("username") ?: "", "UTF-8"
@@ -145,7 +146,6 @@ fun AppNavHost(
             )
         }
 
-        // ✅ DoctorDashboard now receives statsViewModel for live pending count
         composable("doctor_dashboard/{username}") { backStackEntry ->
             val username = java.net.URLDecoder.decode(
                 backStackEntry.arguments?.getString("username") ?: "", "UTF-8"
@@ -164,7 +164,6 @@ fun AppNavHost(
             )
         }
 
-        // ✅ AdminDashboard now receives statsViewModel for live doctor count
         composable("admin_dashboard/{username}") { backStackEntry ->
             val username = java.net.URLDecoder.decode(
                 backStackEntry.arguments?.getString("username") ?: "", "UTF-8"
@@ -215,12 +214,15 @@ fun AppNavHost(
             MedicationScreen(navController= navController,onLogout = {})
         }
 
-        composable(ROUTE_ADD_MEDICATION) {
-            AddMedicationScreen(navController)
-        }
+
 
         composable(ROUTE_MEDICINE_LIST) {
             MedicineListScreen(navController)
+        }
+        composable(ROUTE_GENERATE_REPORT) {
+            GenerateReportScreen(navController
+//                , onLogout = {}
+            )
         }
 
         composable(ROUTE_ADD_MEDICINE) {
@@ -244,7 +246,6 @@ fun AppNavHost(
             )
         }
 
-        // ── Inventory ───────
         composable(ROUTE_INVENTORY_SCREEN) {
             InventoryScreen(
                 navController = navController,
@@ -252,9 +253,14 @@ fun AppNavHost(
             )
         }
 
-        //  Upcoming Appointments
         composable(ROUTE_UPCOMING_APPOINTMENT) {
             UpcomingAppointmentsScreen(navController)
+        }
+        composable(ROUTE_ADMIN_APPOINTMENTS) {
+            AdminAppointmentsScreen(navController)
+        }
+        composable(ROUTE_DOCTOR_APPOINTMENTS) {
+            DoctorAppointmentsScreen(navController)
         }
     }
 }

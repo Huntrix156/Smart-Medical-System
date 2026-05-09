@@ -1,4 +1,4 @@
-package com.example.nexora.ui.theme.screens.medicine.screen
+package com.example.smartmedicalsystem.ui.theme.screens.medicine.screen
 
 
 import androidx.compose.foundation.background

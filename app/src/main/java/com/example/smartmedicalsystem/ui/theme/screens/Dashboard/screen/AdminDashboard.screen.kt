@@ -24,9 +24,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.smartmedicalsystem.data.DashboardStatsViewModel
 import com.example.smartmedicalsystem.data.DashboardViewModel
 import com.example.smartmedicalsystem.navigation.ROUTE_ADMIN_ADD_DOCTOR
+import com.example.smartmedicalsystem.navigation.ROUTE_GENERATE_REPORT
 import com.example.smartmedicalsystem.navigation.ROUTE_INVENTORY_SCREEN
 import com.example.smartmedicalsystem.navigation.ROUTE_MEDICINE_LIST
 import com.example.smartmedicalsystem.navigation.ROUTE_PATIENT_DASHBOARD
+import com.example.smartmedicalsystem.navigation.ROUTE_PROFILE
 import com.example.smartmedicalsystem.navigation.ROUTE_SETTINGS
 import com.example.smartmedicalsystem.navigation.ROUTE_UPCOMING_APPOINTMENT
 import com.example.smartmedicalsystem.ui.theme.screens.screens.StatCard
@@ -56,6 +58,66 @@ fun AdminDashboard(
 
     val doctorCount by statsViewModel.doctorCount
 
+
+
+
+    var showLogoutDialog by remember {
+        mutableStateOf(false)
+    }
+
+    if (showLogoutDialog) {
+
+        AlertDialog(
+            onDismissRequest = {
+                showLogoutDialog = false
+            },
+
+            title = {
+                Text(
+                    text = "Logout"
+                )
+            },
+
+            text = {
+                Text(
+                    text = "Are you sure you want to logout?"
+                )
+            },
+
+            confirmButton = {
+
+                TextButton(
+                    onClick = {
+
+                        showLogoutDialog = false
+
+                        // Execute logout
+                        onLogout()
+                    }
+                ) {
+
+                    Text(
+                        text = "Yes"
+                    )
+                }
+            },
+
+            dismissButton = {
+
+                TextButton(
+                    onClick = {
+                        showLogoutDialog = false
+                    }
+                ) {
+
+                    Text(
+                        text = "Cancel"
+                    )
+                }
+            }
+        )
+    }
+
     Scaffold(
         topBar = {
             Box(
@@ -75,11 +137,11 @@ fun AdminDashboard(
                     Text(
                         text = "Admin Dashboard",
                         color = Color.White,
-                        fontSize = 28.sp,
-                        fontWeight = FontWeight.Bold
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
                     )
 
-                    IconButton(onClick = onLogout) {
+                    IconButton(onClick = { showLogoutDialog = true }) {
 
                         Icon(
                             imageVector = Icons.Default.ExitToApp,
@@ -127,9 +189,9 @@ fun AdminDashboard(
 //                    label = { Text("Appointments") }
 //                )
                 NavigationBarItem(
-                    selected = currentRoute == ROUTE_INVENTORY_SCREEN,
+                    selected = currentRoute == ROUTE_PROFILE,
                     onClick = {
-                        navController.navigate(ROUTE_INVENTORY_SCREEN) {
+                        navController.navigate(ROUTE_PROFILE) {
                             popUpTo(ROUTE_PATIENT_DASHBOARD)
                             launchSingleTop = true
                         }
@@ -217,7 +279,7 @@ fun AdminDashboard(
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedButton(
-                onClick = {},
+                onClick = {navController.navigate(ROUTE_GENERATE_REPORT)},
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Generate Report")

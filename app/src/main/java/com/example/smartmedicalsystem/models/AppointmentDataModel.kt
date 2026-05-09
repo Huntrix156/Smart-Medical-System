@@ -12,7 +12,9 @@ data class Appointment(
     val status: String = "pending",           // pending | completed | referred
     val referredDoctorId: String = "",
     val referredDoctorName: String = "",
-    val notificationMessage: String = ""
+    val notificationMessage: String = "",
+    val specialization: String,
+    val referralNote: String
 )
 
 
@@ -30,3 +32,6 @@ data class AppointmentNotification(
     val timestamp: Long = 0L,
     val read: Boolean = false
 )
+
+
+

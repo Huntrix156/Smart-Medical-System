@@ -1,17 +1,27 @@
 package com.example.smartmedicalsystem.ui.theme.screens.screens.service.Reminder.screen
 
+import android.R.attr.navigationIcon
 import android.app.TimePickerDialog
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,6 +34,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,12 +44,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-//import com.example.nexora.data.Reminder.AlarmScheduler
 import com.example.smartmedicalsystem.models.Reminder
+import com.example.smartmedicalsystem.ui.theme.SecondaryGreen
 import kotlinx.coroutines.delay
 import java.util.Calendar
 
@@ -53,7 +65,6 @@ fun ReminderScreen(navController: NavController) {
     var selectedTimeMillis by remember { mutableStateOf<Long?>(null) }
     var selectedTimeLabel by remember { mutableStateOf("No time selected") }
 
-    // List to show scheduled reminders in the session
     val scheduledReminders = remember { mutableStateListOf<String>() }
 
     LaunchedEffect(showConfirmation) {
@@ -62,7 +73,6 @@ fun ReminderScreen(navController: NavController) {
             showConfirmation = false
         }
     }
-    // Time Picker Dialog
     val calendar = Calendar.getInstance()
     val timePickerDialog = TimePickerDialog(
         context,
@@ -87,14 +97,31 @@ fun ReminderScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Medicine Reminders") },
+
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+
+                    IconButton(
+                        onClick = { navController.popBackStack() }
+                    ) {
+
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White
+                        )
                     }
-                }
-            )
+                },
+
+                title = { Text("Medication Reminder", fontWeight = FontWeight.Bold, color = Color.White) },
+
+
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = SecondaryGreen),
+                )
+
         }
+
+
+
     ) { paddingValues ->
 
         Column(
@@ -107,39 +134,39 @@ fun ReminderScreen(navController: NavController) {
                 .verticalScroll(rememberScrollState())
         ) {
 
-            // ── Input Card ──────────────────────────────────────
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(4.dp)
+                elevation = CardDefaults.cardElevation(4.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFF004D40))
             ) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.padding(16.dp)
                 ) {
-                    Text("New Reminder", fontWeight = FontWeight.Bold)
+                    Text("New Reminder", fontWeight = FontWeight.Bold, modifier = Modifier)
 
-                    // Medicine name input
                     OutlinedTextField(
                         value = medicineName,
                         onValueChange = {
                             medicineName = it
                             showConfirmation = false
                         },
-                        label = { Text("Medicine Name") },
-                        placeholder = { Text("e.g. Paracetamol") },
+                        label = { Text("Medicine Name",color = Color.White) },
+                        placeholder = { Text("e.g. Paracetamol",color = Color.White) },
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    // Time picker button
                     OutlinedButton(
                         onClick = { timePickerDialog.show() },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFF5F7F6)),
                     ) {
                         Text("⏰ Pick Time: $selectedTimeLabel")
                     }
 
-                    // Repeat daily toggle
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()
@@ -161,7 +188,6 @@ fun ReminderScreen(navController: NavController) {
                 }
             }
 
-            // ── Validation hint ─────────────────────────────────
             if (medicineName.isBlank() || selectedTimeMillis == null) {
                 Text(
                     text = "⚠️ Please enter medicine name and pick a time",
@@ -170,7 +196,7 @@ fun ReminderScreen(navController: NavController) {
                 )
             }
 
-            // ── Set Reminder button ─────────────────────────────
+
             Button(
                 onClick = {
                     if (medicineName.isNotBlank() && selectedTimeMillis != null) {
@@ -180,7 +206,7 @@ fun ReminderScreen(navController: NavController) {
                             timeInMillis = selectedTimeMillis!!,
                             repeatDaily = repeatDaily
                         )
-//                        AlarmScheduler.setAlarm(context, reminder)
+
                         scheduledReminders.add(
                             "$medicineName at $selectedTimeLabel ${if (repeatDaily) "(Daily)" else "(Once)"}"
                         )
@@ -192,6 +218,8 @@ fun ReminderScreen(navController: NavController) {
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF004D40)),
                 enabled = medicineName.isNotBlank() && selectedTimeMillis != null
             ) {
                 Text("✅ Set Medicine Reminder")
