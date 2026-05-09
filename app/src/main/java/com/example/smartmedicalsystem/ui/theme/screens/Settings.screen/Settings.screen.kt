@@ -1,4 +1,3 @@
-// ✅ FIXED: Package now matches this project — was wrongly set to com.example.nexora
 package com.example.smartmedicalsystem.ui.theme.screens.Settings.screen
 
 import androidx.compose.foundation.clickable
@@ -15,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,26 +28,32 @@ fun SettingsScreen(navController: NavController) {
     var notificationsEnabled by remember { mutableStateOf(true) }
     var darkThemeEnabled by remember { mutableStateOf(false) }
 
+
     Column(
+
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
-    ) {
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
 
+
+    ) {
+        Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = "Settings",
             fontSize = 26.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF004D40)
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // ── Account ───────────────────────────────────────────────
-        Text("Account", fontWeight = FontWeight.Bold, color = Color.Gray)
+        Text("Account", fontWeight = FontWeight.Bold, color = Color(0xFF004D40),
+                modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start)
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // ✅ FIXED: Profile navigation now uses ROUTE_PROFILE constant
         SettingItem(
             title = "Profile Settings",
             subtitle = "Edit your personal information",
@@ -61,8 +67,9 @@ fun SettingsScreen(navController: NavController) {
 
         HorizontalDivider()
 
-        // ── Preferences ───────────────────────────────────────────
-        Text("Preferences", fontWeight = FontWeight.Bold, color = Color.Gray)
+        Text("Preferences", fontWeight = FontWeight.Bold, color = Color.Gray,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start)
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -94,8 +101,10 @@ fun SettingsScreen(navController: NavController) {
 
         HorizontalDivider()
 
-        // ── Security ──────────────────────────────────────────────
-        Text("Security", fontWeight = FontWeight.Bold, color = Color.Gray)
+
+        Text("Security", fontWeight = FontWeight.Bold, color = Color.Gray,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start)
 
         Spacer(modifier = Modifier.height(8.dp))
 

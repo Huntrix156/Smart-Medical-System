@@ -6,6 +6,7 @@ data class UserModel(
     val email: String = "",
     val userId: String = "",
     val gender: String = "",
-    val role: String = "Patient"
+    val role: String = "Patient",
+    val specialization: String = ""
 )
 

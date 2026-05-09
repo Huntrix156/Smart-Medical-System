@@ -1,6 +1,5 @@
 package com.example.smartmedicalsystem.ui.theme.screens.screens.Onboarding.screen
 
-//package com.example.healthapp.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -161,7 +160,7 @@ fun OnboardingSlider(navController: NavController,
                     .padding(bottom = 50.dp),
                 shape = RoundedCornerShape(15.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF4A8CFF)
+                    containerColor = Color(0xFF004D40)
                 )
             ) {
                 Text(
@@ -181,7 +180,7 @@ fun Dot(isActive: Boolean) {
             .height(8.dp)
             .width(if (isActive) 20.dp else 8.dp)
             .background(
-                if (isActive) Color(0xFF4A8CFF) else Color(0xFF2C3E50),
+                if (isActive) Color(0xFF004D40) else Color(0xFF004D40),
                 shape = RoundedCornerShape(50)
             )
     )

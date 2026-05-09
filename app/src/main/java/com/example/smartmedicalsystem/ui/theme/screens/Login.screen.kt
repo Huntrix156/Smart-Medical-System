@@ -1,4 +1,5 @@
 package com.example.smartmedicalsystem.ui.theme.screens
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -79,7 +80,7 @@ fun LoginScreen(
         ) {
             Spacer(modifier = Modifier.height(60.dp))
 
-            Text("Smart Medical System", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color(0xFF0D47A1))
+            Text("Smart Medical System", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color(0xFF004D40))
             Text("Login to continue", fontSize = 14.sp, color = Color.DarkGray)
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -172,7 +173,7 @@ fun LoginScreen(
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             text = "Sign Up",
-                            color = Color(0xFF1976D2),
+                            color = Color(0xFF004D40),
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.clickable { navController.navigate(ROUTE_REGISTER) }
                         )
@@ -182,3 +183,5 @@ fun LoginScreen(
         }
     }
 }
+
+
