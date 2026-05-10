@@ -33,14 +33,28 @@ fun MedicationScreen(navController: NavController,  onLogout: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                actions = {
-                    IconButton(onClick = {   navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
+
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White
+                        )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = HospitalTeal),
-                title = { Text("Medication Management", fontWeight = FontWeight.Bold, color = Color.White) },
 
+                title = {
+                    Text(
+                        "Medication Management",
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                },
+
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = HospitalTeal
+                )
             )
         }
     ) { innerPadding ->

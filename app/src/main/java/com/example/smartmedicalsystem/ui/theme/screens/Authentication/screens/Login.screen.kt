@@ -1,4 +1,4 @@
-package com.example.smartmedicalsystem.ui.theme.screens
+package com.example.smartmedicalsystem.ui.theme.screens.Authentication.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

@@ -30,15 +30,29 @@ fun GenerateReportScreen(navController: NavController
     Scaffold(
         topBar = {
             TopAppBar(
-                actions = {
-                    IconButton(onClick = {   navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
+
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White
+                        )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = HospitalTeal),
-                title = { Text("Report Management", fontWeight = FontWeight.Bold, color = Color.White) },
 
+                title = {
+                    Text(
+                        "Report Management",
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                },
+
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = HospitalTeal
                 )
+            )
         }
     ) { innerPadding ->
         Column(
@@ -57,20 +71,20 @@ fun GenerateReportScreen(navController: NavController
             )
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                GenerateReportMenuCard("Add Medication", "Create new entry", Modifier.weight(1f)) {
-                    navController.navigate(ROUTE_ADD_MEDICINE)
+                GenerateReportMenuCard("Admin Analytics,", "Create new entry", Modifier.weight(1f)) {
+                    navController.navigate(ROUTE_ADMIN_ANALYTICS_REPORT)
                 }
-                GenerateReportMenuCard("Reminders", "Set alerts", Modifier.weight(1f)) {
-                    navController.navigate(ROUTE_REMINDER)
+                GenerateReportMenuCard("Admin Hospital Reports", "Set alerts", Modifier.weight(1f)) {
+                    navController.navigate(ROUTE_ADMIN_HOSPITAL_REPORT)
                 }
             }
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                GenerateReportMenuCard("Medicine List", "View stock", Modifier.weight(1f)) {
-                    navController.navigate(ROUTE_MEDICINE_LIST)
+                GenerateReportMenuCard("Department Trending Diseases", "View stock", Modifier.weight(1f)) {
+                    navController.navigate(ROUTE_DEPT_TRENDING_DISEASES)
                 }
-                GenerateReportMenuCard("Update Medication", "Search meds", Modifier.weight(1f)) {
-                    navController.navigate(ROUTE_UPDATE_MEDICATION)
+                GenerateReportMenuCard("Trending Diseases", "Search meds", Modifier.weight(1f)) {
+                    navController.navigate(ROUTE_REPORT_TRENDING_DISEASE)
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.example.smartmedicalsystem.ui.theme.screens
+package com.example.smartmedicalsystem.ui.theme.screens.Authentication.screens
 
 import android.util.Patterns
 import android.widget.Toast

@@ -1,11 +1,9 @@
-
-package com.example.smartmedicalsystem.viewmodel  // ✅ fix package name (not .data.Reminder)
+package com.example.smartmedicalsystem.data.Reminder
 
 import android.Manifest
 import android.app.Application
 import androidx.annotation.RequiresPermission
 import androidx.lifecycle.AndroidViewModel
-import com.example.smartmedicalsystem.data.Reminder.AlarmScheduler
 import com.example.smartmedicalsystem.models.Reminder
 
 class ReminderViewModel(application: Application) : AndroidViewModel(application) {

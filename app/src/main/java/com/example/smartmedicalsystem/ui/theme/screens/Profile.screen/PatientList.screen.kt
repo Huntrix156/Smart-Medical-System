@@ -25,9 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
-// ----------------------------------------------------
-// DATA MODEL
-// ----------------------------------------------------
+
 
 data class Patient(
     val id: String,
@@ -38,17 +36,13 @@ data class Patient(
     val condition: String
 )
 
-// ----------------------------------------------------
-// MAIN SCREEN
-// ----------------------------------------------------
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PatientListScreen(navController: NavController) {
 
-    // ----------------------------------------------------
-    // SAMPLE PATIENT DATA
-    // ----------------------------------------------------
+
 
     val patientList = remember {
 
@@ -92,9 +86,7 @@ fun PatientListScreen(navController: NavController) {
         )
     }
 
-    // ----------------------------------------------------
-    // SEARCH + FILTER STATES
-    // ----------------------------------------------------
+
 
     var searchText by remember {
         mutableStateOf("")
@@ -110,9 +102,7 @@ fun PatientListScreen(navController: NavController) {
         "Female"
     )
 
-    // ----------------------------------------------------
-    // FILTER LOGIC
-    // ----------------------------------------------------
+
 
     val filteredPatients = patientList.filter { patient ->
 
@@ -127,9 +117,7 @@ fun PatientListScreen(navController: NavController) {
         matchesSearch && matchesFilter
     }
 
-    // ----------------------------------------------------
-    // UI
-    // ----------------------------------------------------
+
 
     Column(
         modifier = Modifier
@@ -139,9 +127,6 @@ fun PatientListScreen(navController: NavController) {
 
     ) {
 
-        // ----------------------------------------------------
-        // TITLE
-        // ----------------------------------------------------
 
         Text(
             text = "Patient List",
@@ -151,9 +136,7 @@ fun PatientListScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // ----------------------------------------------------
-        // SEARCH FIELD
-        // ----------------------------------------------------
+
 
         OutlinedTextField(
             value = searchText,
@@ -178,9 +161,7 @@ fun PatientListScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // ----------------------------------------------------
-        // FILTER CHIPS
-        // ----------------------------------------------------
+
 
         Row(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -202,9 +183,7 @@ fun PatientListScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // ----------------------------------------------------
-        // PATIENT LIST
-        // ----------------------------------------------------
+
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(14.dp)
@@ -215,16 +194,13 @@ fun PatientListScreen(navController: NavController) {
                 PatientCard(
                     patient = patient,
 
-                    // OPEN PROFILE
                     onViewProfile = {
 
-                        // Example route
                         navController.navigate(
                             "patient_profile/${patient.id}"
                         )
                     },
 
-                    // OPEN PRESCRIPTION SCREEN
                     onWritePrescription = {
 
                         navController.navigate(
@@ -241,9 +217,7 @@ fun PatientListScreen(navController: NavController) {
     }
 }
 
-// ----------------------------------------------------
-// PATIENT CARD
-// ----------------------------------------------------
+
 
 @Composable
 fun PatientCard(
@@ -263,9 +237,7 @@ fun PatientCard(
                 .padding(18.dp)
         ) {
 
-            // ----------------------------------------------------
-            // TOP ROW
-            // ----------------------------------------------------
+
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -321,9 +293,7 @@ fun PatientCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // ----------------------------------------------------
-            // DETAILS
-            // ----------------------------------------------------
+
 
             Text("Age: ${patient.age}")
             Text("Blood Group: ${patient.bloodGroup}")
@@ -331,9 +301,7 @@ fun PatientCard(
 
             Spacer(modifier = Modifier.height(18.dp))
 
-            // ----------------------------------------------------
-            // ACTION BUTTONS
-            // ----------------------------------------------------
+
 
             Row(
                 horizontalArrangement =

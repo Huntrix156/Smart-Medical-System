@@ -1,5 +1,4 @@
 package com.example.smartmedicalsystem.ui.theme.screens.Appointments
-
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

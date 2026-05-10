@@ -8,14 +8,14 @@ import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.s
 
 @Composable
 fun MedicationReminderComponent() {
-    val context = LocalContext.current // Get the context here
+    val context = LocalContext.current
     val reminder = MedicationReminder(
         name = "Paracetamol",
         dosage = "500mg",
         times = listOf("08:00", "14:00"),
         frequency = "DAILY",
         startDate = System.currentTimeMillis(),
-        endDate = System.currentTimeMillis() + 604800000 // Example: 7 days from now
+        endDate = System.currentTimeMillis() + 604800000
     )
 
     scheduleMedicationReminder(context, reminder)

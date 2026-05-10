@@ -1,7 +1,5 @@
 package com.example.smartmedicalsystem.ui.theme.screens.Inventory.InvertoryUtils
 
-//package com.yourapp.pharmacy.utils
-
 import androidx.compose.ui.graphics.Color
 import java.time.temporal.ChronoUnit
 import java.time.LocalDate

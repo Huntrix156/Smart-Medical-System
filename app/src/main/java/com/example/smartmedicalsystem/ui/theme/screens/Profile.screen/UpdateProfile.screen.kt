@@ -1,4 +1,5 @@
 package com.example.smartmedicalsystem.ui.theme.screens.Profile.screen
+
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -122,13 +123,11 @@ fun UpdateProfileScreen(navController: NavController,userId:String) {
 
     Scaffold(
 
-        // ✔ FIX: TopAppBar must be placed inside Scaffold parameter correctly
         topBar = {
             TopAppBar(
-                title = { Text(text = "Nexora") },
+                title = { Text(text = "Update Profile") },
                 actions = {
                     IconButton(onClick = { /* logout logic */ }) {
-                        //Top right exit icon//
                         Icon(
                             Icons.Default.ExitToApp,
                             contentDescription = "Logout",
@@ -143,12 +142,10 @@ fun UpdateProfileScreen(navController: NavController,userId:String) {
             )
         },
 
-        // ✔ FIX: bottomBar must use NavigationBar, NOT NavController (you used wrong type)
         bottomBar = {
             NavigationBar(containerColor = Color.Black) {
 
                 NavigationBarItem(
-//                    selected = selectedItem.value == 0,
                     selected = currentRoute == ROUTE_PROFILE,
                     onClick = {
                         navController.navigate(ROUTE_PROFILE) {
@@ -163,10 +160,6 @@ fun UpdateProfileScreen(navController: NavController,userId:String) {
                     label = { Text("Settings") }
                 )
                 NavigationBarItem(
-//                    selected = selectedItem.value == 1, // ✔ FIX: was incorrectly 0 again
-//                    onClick = { selectedItem.value = 1 },
-
-
                     selected = currentRoute == ROUTE_ADD_MEDICINE,
                     onClick = {
                         navController.navigate(ROUTE_ADD_MEDICINE) {
@@ -180,10 +173,6 @@ fun UpdateProfileScreen(navController: NavController,userId:String) {
                     label = { Text("Add") }
                 )
                 NavigationBarItem(
-//                    selected = selectedItem.value == 1, // ✔ FIX: was incorrectly 0 again
-//                    onClick = { selectedItem.value = 1 },
-
-
                     selected = currentRoute == ROUTE_PROFILE,
                     onClick = {
                         navController.navigate(ROUTE_PROFILE) {
@@ -197,20 +186,12 @@ fun UpdateProfileScreen(navController: NavController,userId:String) {
                     label = { Text("Profile") }
                 )
 
-//                NavigationBarItem(
-//                    selected = selectedItem.value == 2, // ✔ FIX: was incorrectly 0 again
-//                    onClick = { selectedItem.value = 2
-//                        activity?.finish()},//Closes the app
-//                    icon = {
-//                        Icon(Icons.Filled.ExitToApp, contentDescription = "Exit")
-//                    },
-//                    label = { Text("Exit") }
-//                )
+
                 NavigationBarItem(
                     selected = selectedItem.value == 2,
                     onClick = {
                         selectedItem.value = 2
-                        showExitDialog = true // 👈 trigger dialog
+                        showExitDialog = true
                     },
                     icon = {
                         Icon(Icons.Filled.ExitToApp, contentDescription = "Exit")

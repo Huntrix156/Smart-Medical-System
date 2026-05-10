@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.FilePresent
@@ -18,40 +17,43 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.smartmedicalsystem.data.AppointmentViewModel
 import com.example.smartmedicalsystem.data.DashboardStatsViewModel
 import com.example.smartmedicalsystem.data.DashboardViewModel
-import com.example.smartmedicalsystem.navigation.ROUTE_ADMIN_APPOINTMENTS
+import com.example.smartmedicalsystem.models.Appointment
 import com.example.smartmedicalsystem.navigation.ROUTE_DOCTOR_APPOINTMENTS
-import com.example.smartmedicalsystem.navigation.ROUTE_INVENTORY_SCREEN
+import com.example.smartmedicalsystem.navigation.ROUTE_DOCTOR_REPORT_HUB
 import com.example.smartmedicalsystem.navigation.ROUTE_MEDICINE_LIST
 import com.example.smartmedicalsystem.navigation.ROUTE_PATIENT_DASHBOARD
+import com.example.smartmedicalsystem.navigation.ROUTE_REPORT_TRENDING_DISEASE
 import com.example.smartmedicalsystem.navigation.ROUTE_SETTINGS
 import com.example.smartmedicalsystem.navigation.ROUTE_UPCOMING_APPOINTMENT
-import com.example.smartmedicalsystem.navigation.ROUTE_WRITE_PRESCRIPTION
-import com.example.smartmedicalsystem.ui.theme.screens.screens.StatCard
+import com.example.smartmedicalsystem.navigation.writePrescriptionRoute
 import com.google.firebase.auth.FirebaseAuth
 
-
 class colors {
-    val PrimaryGreen = Color(0xFF00604E)
+    val PrimaryGreen   = Color(0xFF00604E)
     val SecondaryGreen = Color(0xFF004D40)
     val BackgroundColor = Color(0xFFF5F7F6)
-    val IconBgColor = Color(0xFFE0F2F1)
+    val IconBgColor    = Color(0xFFE0F2F1)
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DoctorDashboard(
     navController: NavController,
     username: String,
     viewModel: DashboardViewModel,
-
     statsViewModel: DashboardStatsViewModel,
     onLogout: () -> Unit
 ) {
     val currentRoute = navController.currentBackStackEntryAsState()
         .value?.destination?.route
+
+    val appointmentViewModel: AppointmentViewModel = viewModel()
 
     LaunchedEffect(username) {
         viewModel.setUser(username, "Doctor")
@@ -60,63 +62,111 @@ fun DoctorDashboard(
     LaunchedEffect(Unit) {
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return@LaunchedEffect
         statsViewModel.listenDoctorPendingAppointments(uid)
+        appointmentViewModel.listenDoctorAppointments(uid)
     }
 
-    val greeting = viewModel.greeting.value
+    val greeting              = viewModel.greeting.value
+    val pendingAppointments   by statsViewModel.pendingAppointments
+    // NEW: live booked count and unique patient count
+    val bookedAppointmentCount by statsViewModel.bookedAppointmentCount
+    val uniquePatientCount     by statsViewModel.uniquePatientCount
 
-    val pendingAppointments by statsViewModel.pendingAppointments
-
-
-    var showLogoutDialog by remember {
-        mutableStateOf(false)
+    // Latest confirmed/assigned appointment to pre-fill prescription
+    val doctorAppointments by appointmentViewModel.doctorAppointments
+    val latestPatientAppointment: Appointment? = remember(doctorAppointments) {
+        doctorAppointments
+            .filter { it.status.equals("assigned", ignoreCase = true) ||
+                    it.status.equals("confirmed", ignoreCase = true) ||
+                    it.status.equals("upcoming", ignoreCase = true) }
+            .maxByOrNull { it.date + it.time }
     }
+
+    var showLogoutDialog by remember { mutableStateOf(false) }
+
+    // Dialog to let doctor pick which patient to write a prescription for
+    var showPickPatientDialog by remember { mutableStateOf(false) }
 
     if (showLogoutDialog) {
+        AlertDialog(
+            onDismissRequest = { showLogoutDialog = false },
+            title   = { Text("Logout") },
+            text    = { Text("Are you sure you want to logout?") },
+            confirmButton = {
+                TextButton(onClick = { showLogoutDialog = false; onLogout() }) { Text("Yes") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showLogoutDialog = false }) { Text("Cancel") }
+            }
+        )
+    }
+
+    // Patient picker dialog: shows doctor's confirmed patients, doctor picks one
+    if (showPickPatientDialog) {
+        val eligibleAppointments = remember(doctorAppointments) {
+            doctorAppointments
+                .filter {
+                    it.status.equals("assigned", ignoreCase = true) ||
+                            it.status.equals("confirmed", ignoreCase = true) ||
+                            it.status.equals("upcoming", ignoreCase = true) ||
+                            it.status.equals("completed", ignoreCase = true)
+                }
+                .distinctBy { it.patientId }
+        }
 
         AlertDialog(
-            onDismissRequest = {
-                showLogoutDialog = false
-            },
-
-            title = {
-                Text(
-                    text = "Logout"
-                )
-            },
-
-            text = {
-                Text(
-                    text = "Are you sure you want to logout?"
-                )
-            },
-
-            confirmButton = {
-
-                TextButton(
-                    onClick = {
-
-                        showLogoutDialog = false
-                        onLogout() }
-                ) {
-
+            onDismissRequest = { showPickPatientDialog = false },
+            title = { Text("Select Patient", fontWeight = FontWeight.Bold) },
+            text  = {
+                if (eligibleAppointments.isEmpty()) {
                     Text(
-                        text = "Yes"
+                        "No confirmed patients yet. Patients will appear here after they book an appointment with you.",
+                        color = Color.Gray
                     )
-                }
-            },
-
-            dismissButton = {
-
-                TextButton(
-                    onClick = {
-                        showLogoutDialog = false
+                } else {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(
+                            "Choose the patient you want to write a prescription for:",
+                            fontSize = 13.sp,
+                            color    = Color.Gray
+                        )
+                        eligibleAppointments.forEach { appt ->
+                            Card(
+                                onClick = {
+                                    showPickPatientDialog = false
+                                    navController.navigate(
+                                        writePrescriptionRoute(
+                                            patientId      = appt.patientId,
+                                            patientName    = appt.patientName,
+                                            appointmentId  = appt.appointmentId
+                                        )
+                                    )
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                                colors   = CardDefaults.cardColors(
+                                    containerColor = Color(0xFFE0F2F1)
+                                )
+                            ) {
+                                Column(modifier = Modifier.padding(12.dp)) {
+                                    Text(appt.patientName, fontWeight = FontWeight.SemiBold)
+                                    Text(
+                                        "Appt: ${appt.date} at ${appt.time}",
+                                        fontSize = 12.sp,
+                                        color    = Color.Gray
+                                    )
+                                    Text(
+                                        "Reason: ${appt.reason}",
+                                        fontSize = 12.sp,
+                                        color    = Color.Gray
+                                    )
+                                }
+                            }
+                        }
                     }
-                ) {
-
-                    Text(
-                        text = "Cancel"
-                    )
                 }
+            },
+            confirmButton = {},
+            dismissButton = {
+                TextButton(onClick = { showPickPatientDialog = false }) { Text("Cancel") }
             }
         )
     }
@@ -130,152 +180,120 @@ fun DoctorDashboard(
                     .background(colors().PrimaryGreen)
                     .padding(horizontal = 16.dp, vertical = 12.dp)
             ) {
-
                 Row(
                     modifier = Modifier.fillMaxSize(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment     = Alignment.CenterVertically
                 ) {
-
                     Text(
-                        text = "Doctor Dashboard",
-                        color = Color.White,
-                        fontSize = 28.sp,
+                        text       = "Doctor Dashboard",
+                        color      = Color.White,
+                        fontSize   = 28.sp,
                         fontWeight = FontWeight.Bold
                     )
-
-                    IconButton(onClick = {showLogoutDialog = true}) {
-
+                    IconButton(onClick = { showLogoutDialog = true }) {
                         Icon(
-                            imageVector = Icons.Default.ExitToApp,
+                            imageVector   = Icons.Default.ExitToApp,
                             contentDescription = "Logout",
-                            tint = Color.White
+                            tint          = Color.White
                         )
                     }
                 }
             }
         },
-
         bottomBar = {
             NavigationBar(containerColor = Color(0xFF004D40)) {
                 NavigationBarItem(
                     selected = currentRoute == ROUTE_SETTINGS,
-                    onClick = {
+                    onClick  = {
                         navController.navigate(ROUTE_SETTINGS) {
-                            popUpTo(ROUTE_PATIENT_DASHBOARD)
-                            launchSingleTop = true
+                            popUpTo(ROUTE_PATIENT_DASHBOARD); launchSingleTop = true
                         }
                     },
-                    icon = { Icon(Icons.Filled.Settings, contentDescription = "Settings") },
+                    icon  = { Icon(Icons.Filled.Settings, contentDescription = "Settings") },
                     label = { Text("Settings") }
                 )
                 NavigationBarItem(
                     selected = currentRoute == ROUTE_MEDICINE_LIST,
-                    onClick = {
+                    onClick  = {
                         navController.navigate(ROUTE_MEDICINE_LIST) {
-                            popUpTo(ROUTE_PATIENT_DASHBOARD)
-                            launchSingleTop = true
+                            popUpTo(ROUTE_PATIENT_DASHBOARD); launchSingleTop = true
                         }
                     },
-                    icon = { Icon(Icons.Filled.FilePresent, contentDescription = "Records") },
+                    icon  = { Icon(Icons.Filled.FilePresent, contentDescription = "Records") },
                     label = { Text("Records") }
                 )
                 NavigationBarItem(
                     selected = currentRoute == ROUTE_UPCOMING_APPOINTMENT,
-                    onClick = {
+                    onClick  = {
                         navController.navigate(ROUTE_UPCOMING_APPOINTMENT) {
-                            popUpTo(ROUTE_PATIENT_DASHBOARD)
-                            launchSingleTop = true
+                            popUpTo(ROUTE_PATIENT_DASHBOARD); launchSingleTop = true
                         }
                     },
-                    icon = { Icon(Icons.Filled.CalendarToday, contentDescription = "Appointments") },
+                    icon  = { Icon(Icons.Filled.CalendarToday, contentDescription = "Appointments") },
                     label = { Text("Appointments") }
                 )
-//                NavigationBarItem(
-//                    selected = currentRoute == ROUTE_INVENTORY_SCREEN,
-//                    onClick = {
-//                        navController.navigate(ROUTE_INVENTORY_SCREEN) {
-//                            popUpTo(ROUTE_PATIENT_DASHBOARD)
-//                            launchSingleTop = true
-//                        }
-//                    },
-//                    icon = { Icon(Icons.Filled.AccountBox, contentDescription = "Profile") },
-//                    label = { Text("Profile") }
-//                )
             }
         }
     ) { padding ->
 
         Column(
             modifier = Modifier
-                    .fillMaxSize()
+                .fillMaxSize()
                 .background(colors().IconBgColor)
                 .padding(padding)
                 .padding(4.dp)
                 .verticalScroll(rememberScrollState())
-
         ) {
 
             Text(
-                text = "$greeting, Doctor $username ⚕️",
+                text  = "$greeting, Doctor $username ⚕️",
                 style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier,
                 color = Color.Black
             )
-
             Text(
-                text = "Manage your patients and medical records",
+                text  = "Manage your patients and medical records",
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier,
                 color = Color.Black
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text("Welcome, Dr. $username", fontSize = 20.sp, fontWeight = FontWeight.Bold,
-                modifier = Modifier,
-                color = Color.Black)
-            Text("Cardiology", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text("Welcome, Dr. $username", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.Black)
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                StatCard("Today", "8", Modifier.weight(1f))
 
                 LiveStatCard(
-                    label = "Pending",
-                    value = pendingAppointments.toString(),
+                    label    = "Booked",
+                    value    = bookedAppointmentCount.toString(),
                     modifier = Modifier.weight(1f)
                 )
 
-                StatCard("Total", "132", Modifier.weight(1f))
-            }
+                LiveStatCard(
+                    label    = "Pending",
+                    value    = pendingAppointments.toString(),
+                    modifier = Modifier.weight(1f)
+                )
 
-//            Spacer(modifier = Modifier.height(20.dp))
-//
-//            Text("Today's Appointments", fontWeight = FontWeight.SemiBold, fontSize = 16.sp,
-//                modifier = Modifier,
-//                color = Color.Black)
-//
-//            Spacer(modifier = Modifier.height(8.dp))
-//
-//            Card(modifier = Modifier.fillMaxWidth()) {
-//                Column(
-//                    modifier = Modifier.padding(16.dp),
-//                    verticalArrangement = Arrangement.spacedBy(12.dp)
-//                ) {
-//                    AppointmentRow("John Doe", "10:00 AM · Follow-up", "Confirmed")
-//                    HorizontalDivider()
-//                    AppointmentRow("Mary Njeri", "11:30 AM · New patient", "Pending")
-//                }
-//            }
+
+                LiveStatCard(
+                    label    = "My Patients",
+                    value    = uniquePatientCount.toString(),
+                    modifier = Modifier.weight(1f)
+                )
+            }
 
             Spacer(modifier = Modifier.height(20.dp))
 
+
             Button(
-                onClick = {navController.navigate(ROUTE_WRITE_PRESCRIPTION)
-                          },
-                modifier = Modifier.fillMaxWidth()
+                onClick  = { showPickPatientDialog = true },
+                modifier = Modifier.fillMaxWidth(),
+                colors   = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF004D40),
+                    contentColor   = Color.White)
             ) {
                 Text("Write Prescription")
             }
@@ -283,17 +301,43 @@ fun DoctorDashboard(
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedButton(
-                onClick = {navController.navigate((ROUTE_DOCTOR_APPOINTMENTS))},
-                modifier = Modifier.fillMaxWidth()
+                onClick  = { navController.navigate(ROUTE_DOCTOR_APPOINTMENTS) },
+                modifier = Modifier.fillMaxWidth(),
+                colors   = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF004D40),
+                    contentColor   = Color.White)
             ) {
                 Text("View Appointments")
             }
             OutlinedButton(
-                onClick = {},
-                modifier = Modifier.fillMaxWidth()
+                onClick  = {navController.navigate(ROUTE_REPORT_TRENDING_DISEASE)},
+                modifier = Modifier.fillMaxWidth(),
+                colors   = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF004D40),
+                    contentColor   = Color.White)
+            ) {
+                Text("View Trending Diseases Report")
+            }
+
+            OutlinedButton(
+                onClick  = {navController.navigate("doctor_dashboard/{username}")},
+                modifier = Modifier.fillMaxWidth(),
+                colors   = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF004D40),
+                    contentColor   = Color.White)
             ) {
                 Text("View Patient Records")
             }
+            OutlinedButton(
+                onClick  = {navController.navigate(ROUTE_DOCTOR_REPORT_HUB)},
+                modifier = Modifier.fillMaxWidth(),
+                colors   = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF004D40),
+                    contentColor   = Color.White)
+            ) {
+                Text("View Report Hub")
+            }
+
         }
     }
 }
