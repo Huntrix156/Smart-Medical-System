@@ -23,9 +23,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.smartmedicalsystem.data.DashboardStatsViewModel
 import com.example.smartmedicalsystem.data.DashboardViewModel
 import com.example.smartmedicalsystem.navigation.ROUTE_EMERGENCY_SOS
-import com.example.smartmedicalsystem.navigation.ROUTE_INVENTORY_SCREEN
 import com.example.smartmedicalsystem.navigation.ROUTE_MEDICATION_SCREEN
 import com.example.smartmedicalsystem.navigation.ROUTE_PATIENT_DASHBOARD
+import com.example.smartmedicalsystem.navigation.ROUTE_PROFILE
 import com.example.smartmedicalsystem.navigation.ROUTE_SETTINGS
 import com.example.smartmedicalsystem.navigation.ROUTE_UPCOMING_APPOINTMENT
 import com.example.smartmedicalsystem.ui.theme.screens.screens.StatCard
@@ -37,7 +37,6 @@ fun PatientDashboard(
     navController: NavController,
     username: String,
     viewModel: DashboardViewModel,
-    // ✅ NEW: inject the stats ViewModel
     statsViewModel: DashboardStatsViewModel,
     onLogout: () -> Unit
 ) {
@@ -48,75 +47,27 @@ fun PatientDashboard(
         viewModel.setUser(username, "Patient")
     }
 
-    // ✅ Start listening for live patient stats.
-    // Uses the Firebase Auth UID of the currently logged-in user so each
-    // patient only sees their own appointment and visit counts.
     LaunchedEffect(Unit) {
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return@LaunchedEffect
         statsViewModel.listenPatientStats(uid)
     }
 
-    val greeting = viewModel.greeting.value
+    val greeting              by viewModel.greeting
+    val upcomingAppointments  by statsViewModel.upcomingAppointments
+    val appVisits             by statsViewModel.appVisits
 
-    // ✅ Observe live counts — update automatically from Firebase
-    val upcomingAppointments by statsViewModel.upcomingAppointments
-    val appVisits by statsViewModel.appVisits
-
-
-
-    var showLogoutDialog by remember {
-        mutableStateOf(false)
-    }
+    var showLogoutDialog by remember { mutableStateOf(false) }
 
     if (showLogoutDialog) {
-
         AlertDialog(
-            onDismissRequest = {
-                showLogoutDialog = false
-            },
-
-            title = {
-                Text(
-                    text = "Logout"
-                )
-            },
-
-            text = {
-                Text(
-                    text = "Are you sure you want to logout?"
-                )
-            },
-
+            onDismissRequest = { showLogoutDialog = false },
+            title = { Text("Logout") },
+            text  = { Text("Are you sure you want to logout?") },
             confirmButton = {
-
-                TextButton(
-                    onClick = {
-
-                        showLogoutDialog = false
-
-                        // Execute logout
-                        onLogout()
-                    }
-                ) {
-
-                    Text(
-                        text = "Yes"
-                    )
-                }
+                TextButton(onClick = { showLogoutDialog = false; onLogout() }) { Text("Yes") }
             },
-
             dismissButton = {
-
-                TextButton(
-                    onClick = {
-                        showLogoutDialog = false
-                    }
-                ) {
-
-                    Text(
-                        text = "Cancel"
-                    )
-                }
+                TextButton(onClick = { showLogoutDialog = false }) { Text("Cancel") }
             }
         )
     }
@@ -130,76 +81,63 @@ fun PatientDashboard(
                     .background(colors().PrimaryGreen)
                     .padding(horizontal = 16.dp, vertical = 12.dp)
             ) {
-
                 Row(
                     modifier = Modifier.fillMaxSize(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-
                     Text(
                         text = "Patient Dashboard",
                         color = Color.White,
-                        fontSize = 28.sp,
+                        fontSize = 22.sp,
                         fontWeight = FontWeight.Bold
                     )
-
-                    IconButton(onClick =  {showLogoutDialog = true}) {
-
-                        Icon(
-                            imageVector = Icons.Default.ExitToApp,
-                            contentDescription = "Logout",
-                            tint = Color.White
-                        )
+                    IconButton(onClick = { showLogoutDialog = true }) {
+                        Icon(Icons.Default.ExitToApp, contentDescription = "Logout", tint = Color.White)
                     }
                 }
             }
         },
-
         bottomBar = {
             NavigationBar(containerColor = Color(0xFF004D40)) {
                 NavigationBarItem(
                     selected = currentRoute == ROUTE_SETTINGS,
-                    onClick = {
+                    onClick  = {
                         navController.navigate(ROUTE_SETTINGS) {
-                            popUpTo(ROUTE_PATIENT_DASHBOARD)
-                            launchSingleTop = true
+                            popUpTo(ROUTE_PATIENT_DASHBOARD); launchSingleTop = true
                         }
                     },
-                    icon = { Icon(Icons.Filled.Settings, contentDescription = "Settings") },
+                    icon  = { Icon(Icons.Filled.Settings, contentDescription = "Settings") },
                     label = { Text("Settings") }
                 )
                 NavigationBarItem(
                     selected = currentRoute == ROUTE_EMERGENCY_SOS,
-                    onClick = {
+                    onClick  = {
                         navController.navigate(ROUTE_EMERGENCY_SOS) {
-                            popUpTo(ROUTE_PATIENT_DASHBOARD)
-                            launchSingleTop = true
+                            popUpTo(ROUTE_PATIENT_DASHBOARD); launchSingleTop = true
                         }
                     },
-                    icon = { Icon(Icons.Filled.Emergency, contentDescription = "Emergency") },
+                    icon  = { Icon(Icons.Filled.Emergency, contentDescription = "Emergency") },
                     label = { Text("Emergency") }
                 )
                 NavigationBarItem(
                     selected = currentRoute == ROUTE_UPCOMING_APPOINTMENT,
-                    onClick = {
+                    onClick  = {
                         navController.navigate(ROUTE_UPCOMING_APPOINTMENT) {
-                            popUpTo(ROUTE_PATIENT_DASHBOARD)
-                            launchSingleTop = true
+                            popUpTo(ROUTE_PATIENT_DASHBOARD); launchSingleTop = true
                         }
                     },
-                    icon = { Icon(Icons.Filled.CalendarToday, contentDescription = "Appointments") },
-                    label = { Text("Appointments") }
+                    icon  = { Icon(Icons.Filled.CalendarToday, contentDescription = "Appointments") },
+                    label = { Text("Appts") }
                 )
                 NavigationBarItem(
-                    selected = currentRoute == ROUTE_INVENTORY_SCREEN,
-                    onClick = {
-                        navController.navigate(ROUTE_INVENTORY_SCREEN) {
-                            popUpTo(ROUTE_PATIENT_DASHBOARD)
-                            launchSingleTop = true
+                    selected = currentRoute == ROUTE_PROFILE,
+                    onClick  = {
+                        navController.navigate(ROUTE_PROFILE) {
+                            popUpTo(ROUTE_PATIENT_DASHBOARD); launchSingleTop = true
                         }
                     },
-                    icon = { Icon(Icons.Filled.AccountBox, contentDescription = "Profile") },
+                    icon  = { Icon(Icons.Filled.AccountBox, contentDescription = "Profile") },
                     label = { Text("Profile") }
                 )
             }
@@ -213,90 +151,61 @@ fun PatientDashboard(
                 .padding(padding)
                 .padding(4.dp)
                 .verticalScroll(rememberScrollState())
-
-        )
-        {
+        ) {
 
             Text(
-                text = "$greeting, Patient $username ⚕️",
+                text  = "$greeting, $username ⚕️",
                 style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier,
                 color = Color.Black
             )
-
             Text(
-                text = "Your health overview is ready",
+                text  = "Your health overview is ready",
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier,
                 color = Color.Black
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text("Welcome back, $username", fontSize = 20.sp, fontWeight = FontWeight.Bold,
-                modifier = Modifier,
-                color = Color.Black)
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-
-                // ✅ LIVE COUNT: upcoming appointments booked by this patient
                 LiveStatCard(
-                    label = "Upcoming",
-                    value = upcomingAppointments.toString(),
+                    label    = "Upcoming",
+                    value    = upcomingAppointments.toString(),
                     modifier = Modifier.weight(1f)
                 )
-
-                // ✅ LIVE COUNT: total number of times this patient visited the app
                 LiveStatCard(
-                    label = "App Visits",
-                    value = appVisits.toString(),
+                    label    = "App Visits",
+                    value    = appVisits.toString(),
                     modifier = Modifier.weight(1f)
                 )
-
                 StatCard("Prescriptions", "3", Modifier.weight(1f))
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Text("Next Appointment", fontWeight = FontWeight.SemiBold, fontSize = 16.sp,
-                modifier = Modifier,
-                color = Color.Black)
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Dr. Amina Osei — Cardiology", fontWeight = FontWeight.Medium)
-                    Text(
-                        "Mon, 5 May 2025 · 10:00 AM",
-                        fontSize = 13.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
             Button(
-                onClick = { navController.navigate(ROUTE_UPCOMING_APPOINTMENT) },
-                modifier = Modifier.fillMaxWidth()
+                onClick  = { navController.navigate(ROUTE_UPCOMING_APPOINTMENT) },
+                modifier = Modifier.fillMaxWidth(),
+                colors   = ButtonDefaults.buttonColors(containerColor = Color(0xFF00604E))
             ) {
                 Text("Book Appointment")
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            // Takes patient directly to the My Appointments tab (tab index 1)
             OutlinedButton(
-                onClick = {},
+                onClick  = { navController.navigate(ROUTE_UPCOMING_APPOINTMENT) },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("View My Records")
+                Icon(Icons.Filled.CalendarToday, contentDescription = null, modifier = Modifier.size(16.dp))
+                Spacer(modifier = Modifier.width(6.dp))
+                Text("View My Appointments")
             }
 
+            Spacer(modifier = Modifier.height(8.dp))
+
             OutlinedButton(
-                onClick = { navController.navigate(ROUTE_MEDICATION_SCREEN) },
+                onClick  = { navController.navigate(ROUTE_MEDICATION_SCREEN) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Quick Action")

@@ -39,6 +39,7 @@ import androidx.compose.runtime.setValue
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -51,6 +52,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 import com.example.smartmedicalsystem.data.AuthViewModel
+import com.example.smartmedicalsystem.navigation.ROUTE_FORGOT_PASSWORD
 import com.example.smartmedicalsystem.navigation.ROUTE_REGISTER
 import com.example.smartmedicalsystem.ui.theme.SecondaryGreen
 
@@ -140,7 +142,16 @@ fun LoginScreen(
                         Text(text = errorMessage, color = Color.Red, fontSize = 12.sp)
                     }
 
-                    // LOGIN BUTTON
+
+                    Text(
+                        text = "Forgot Password?",
+                        color = Color(0xFF004D40),
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier .clip(RoundedCornerShape(20.dp))
+                            .clickable { navController.navigate(ROUTE_FORGOT_PASSWORD) },
+
+
+                    )
                     Button(
                         onClick = {
                             if (email.isBlank() || password.isBlank()) {
@@ -179,7 +190,9 @@ fun LoginScreen(
                             text = "Sign Up",
                             color = Color(0xFF004D40),
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.clickable { navController.navigate(ROUTE_REGISTER) }
+                            modifier = Modifier .clip(RoundedCornerShape(20.dp))
+                                .clickable { navController.navigate(ROUTE_REGISTER) },
+
                         )
                     }
                 }

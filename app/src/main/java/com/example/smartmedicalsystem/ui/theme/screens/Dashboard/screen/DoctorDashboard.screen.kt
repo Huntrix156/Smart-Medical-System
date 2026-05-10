@@ -191,17 +191,17 @@ fun DoctorDashboard(
                     icon = { Icon(Icons.Filled.CalendarToday, contentDescription = "Appointments") },
                     label = { Text("Appointments") }
                 )
-                NavigationBarItem(
-                    selected = currentRoute == ROUTE_INVENTORY_SCREEN,
-                    onClick = {
-                        navController.navigate(ROUTE_INVENTORY_SCREEN) {
-                            popUpTo(ROUTE_PATIENT_DASHBOARD)
-                            launchSingleTop = true
-                        }
-                    },
-                    icon = { Icon(Icons.Filled.AccountBox, contentDescription = "Profile") },
-                    label = { Text("Profile") }
-                )
+//                NavigationBarItem(
+//                    selected = currentRoute == ROUTE_INVENTORY_SCREEN,
+//                    onClick = {
+//                        navController.navigate(ROUTE_INVENTORY_SCREEN) {
+//                            popUpTo(ROUTE_PATIENT_DASHBOARD)
+//                            launchSingleTop = true
+//                        }
+//                    },
+//                    icon = { Icon(Icons.Filled.AccountBox, contentDescription = "Profile") },
+//                    label = { Text("Profile") }
+//                )
             }
         }
     ) { padding ->
@@ -251,24 +251,24 @@ fun DoctorDashboard(
                 StatCard("Total", "132", Modifier.weight(1f))
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Text("Today's Appointments", fontWeight = FontWeight.SemiBold, fontSize = 16.sp,
-                modifier = Modifier,
-                color = Color.Black)
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    AppointmentRow("John Doe", "10:00 AM · Follow-up", "Confirmed")
-                    HorizontalDivider()
-                    AppointmentRow("Mary Njeri", "11:30 AM · New patient", "Pending")
-                }
-            }
+//            Spacer(modifier = Modifier.height(20.dp))
+//
+//            Text("Today's Appointments", fontWeight = FontWeight.SemiBold, fontSize = 16.sp,
+//                modifier = Modifier,
+//                color = Color.Black)
+//
+//            Spacer(modifier = Modifier.height(8.dp))
+//
+//            Card(modifier = Modifier.fillMaxWidth()) {
+//                Column(
+//                    modifier = Modifier.padding(16.dp),
+//                    verticalArrangement = Arrangement.spacedBy(12.dp)
+//                ) {
+//                    AppointmentRow("John Doe", "10:00 AM · Follow-up", "Confirmed")
+//                    HorizontalDivider()
+//                    AppointmentRow("Mary Njeri", "11:30 AM · New patient", "Pending")
+//                }
+//            }
 
             Spacer(modifier = Modifier.height(20.dp))
 

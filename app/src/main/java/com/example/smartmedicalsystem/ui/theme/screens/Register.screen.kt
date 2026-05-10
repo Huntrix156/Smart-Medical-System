@@ -638,7 +638,8 @@ fun RegisterScreen(navController: NavController) {
                             text = "Sign In",
                             color = Color(0xFF004D40),
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.clickable { navController.navigate(ROUTE_LOGIN) }
+                            modifier = Modifier .clip(RoundedCornerShape(20.dp)).
+                            clickable { navController.navigate(ROUTE_LOGIN) }
                         )
                     }
                 }
