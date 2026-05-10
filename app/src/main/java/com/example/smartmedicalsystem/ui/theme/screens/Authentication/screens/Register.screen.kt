@@ -92,6 +92,7 @@ private val ROLES = listOf(
     )
 )
 private val SPECIALIZATIONS = listOf(
+    "General Practice",
     "Cardiology",
     "Dermatology",
     "Emergency Medicine",

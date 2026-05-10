@@ -41,11 +41,7 @@ class AppointmentViewModel : ViewModel() {
     private var adminApptListener: ValueEventListener? = null
     private var doctorListListener: ValueEventListener? = null
 
-    // ── Book appointment ──────────────────────────────────────────────────────
-    // Patient selects a doctor directly. Written to:
-    //   appointments/{patientId}/{appointmentId}       – patient sees it
-    //   doctorAppointments/{doctorId}/{appointmentId}  – doctor sees it
-    //   adminAppointments/{appointmentId}              – admin manages it
+
     fun bookAppointment(
         patientId: String,
         patientName: String,
@@ -115,8 +111,6 @@ class AppointmentViewModel : ViewModel() {
             }
     }
 
-    // ── Doctor: Accept appointment ────────────────────────────────────────────
-    // Doctor clicks "Accept" → status becomes "accepted", patient gets notified.
     fun acceptAppointment(
         appointment: Appointment,
         onSuccess: () -> Unit = {},
@@ -152,10 +146,7 @@ class AppointmentViewModel : ViewModel() {
             }
     }
 
-    // ── Doctor: Referral to another doctor (same specialization) ─────────────
-    // Doctor picks a specific doctor in the same specialization.
-    // The referred doctor's details are saved so the patient can see them.
-    // Status → "referred". The referred doctor also gets the appointment.
+
     fun referralToDoctor(
         appointment: Appointment,
         referredDoctor: DoctorProfile,
@@ -184,13 +175,12 @@ class AppointmentViewModel : ViewModel() {
         val updates = mutableMapOf<String, Any>(
             "adminAppointments/${appointment.appointmentId}"                               to updatedAppointment,
             "appointments/${appointment.patientId}/${appointment.appointmentId}"           to updatedAppointment,
-            // New doctor gets the appointment
+
             "doctorAppointments/${referredDoctor.uid}/${appointment.appointmentId}"        to updatedAppointment
         )
 
         db.updateChildren(updates)
             .addOnSuccessListener {
-                // Remove from old doctor's queue if different
                 if (appointment.doctorId.isNotBlank() && appointment.doctorId != referredDoctor.uid) {
                     db.child("doctorAppointments")
                         .child(appointment.doctorId)
@@ -212,8 +202,7 @@ class AppointmentViewModel : ViewModel() {
             }
     }
 
-    // ── Doctor: Reschedule appointment ────────────────────────────────────────
-    // Doctor changes date/time. Patient is notified with the new schedule.
+
     fun rescheduleAppointment(
         appointment: Appointment,
         newDate: String,
@@ -265,7 +254,6 @@ class AppointmentViewModel : ViewModel() {
             }
     }
 
-    // ── Admin: Listen to all appointments ────────────────────────────────────
     fun listenAdminAppointments() {
         if (adminApptListener != null) return
         adminApptListener = object : ValueEventListener {
@@ -299,7 +287,6 @@ class AppointmentViewModel : ViewModel() {
         db.child("adminAppointments").addValueEventListener(adminApptListener!!)
     }
 
-    // ── Admin: Assign / reassign doctor ──────────────────────────────────────
     fun assignDoctorToAppointment(
         appointment: Appointment,
         doctor: DoctorProfile,
@@ -342,7 +329,6 @@ class AppointmentViewModel : ViewModel() {
             }
     }
 
-    // ── Doctor: Listen to own appointments ───────────────────────────────────
     fun listenDoctorAppointments(doctorId: String) {
         if (doctorApptListener != null) return
         doctorApptListener = object : ValueEventListener {
@@ -373,7 +359,6 @@ class AppointmentViewModel : ViewModel() {
             .addValueEventListener(doctorApptListener!!)
     }
 
-    // ── Patient: Listen to own appointments ──────────────────────────────────
     fun listenPatientAppointments(patientId: String) {
         if (patientApptListener != null) return
         patientApptListener = object : ValueEventListener {
@@ -392,7 +377,6 @@ class AppointmentViewModel : ViewModel() {
             .addValueEventListener(patientApptListener!!)
     }
 
-    // ── Doctor: Proceed (mark in-progress) ───────────────────────────────────
     fun proceedWithAppointment(
         appointment: Appointment,
         onSuccess: () -> Unit = {},
@@ -451,7 +435,6 @@ class AppointmentViewModel : ViewModel() {
             }
     }
 
-    // ── Admin referral request (old flow – kept for compatibility) ────────────
     fun requestReferral(
         appointment: Appointment,
         referralNote: String,
@@ -472,7 +455,7 @@ class AppointmentViewModel : ViewModel() {
             .addOnFailureListener { _isLoading.value = false; onFailure(it.message ?: "Referral request failed") }
     }
 
-    // ── Doctor list (for booking + referral + admin assign) ──────────────────
+
     fun loadDoctors(specialization: String = "", excludeDoctorId: String = "") {
         if (doctorListListener != null) return
         doctorListListener = object : ValueEventListener {
@@ -501,7 +484,6 @@ class AppointmentViewModel : ViewModel() {
         loadDoctors(specialization, excludeDoctorId)
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
     private fun sendNotification(patientId: String, title: String, message: String) {
         val notifId = db.push().key ?: return
         val notification = AppointmentNotification(

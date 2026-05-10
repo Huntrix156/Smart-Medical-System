@@ -148,8 +148,24 @@ private fun BookAppointmentTab(
 
     val specializationOptions = listOf(
         "General Practice", "Cardiology", "Dermatology", "Neurology",
-        "Orthopedics", "Pediatrics", "Psychiatry", "Gynecology",
-        "Ophthalmology", "ENT"
+        "Orthopedics", "Pediatrics", "Psychiatry",
+         "ENT" ,
+
+        "Doctor",
+        "Emergency Medicine",
+        "Endocrinology",
+        "Family Medicine",
+        "Gastroenterology",
+        "General Surgery",
+        "Gynaecology & Obstetrics",
+        "Haematology",
+        "Internal Medicine",
+        "Nephrology",
+        "Oncology",
+        "Ophthalmology",
+        "Pulmonology",
+        "Radiology",
+        "Urology"
     )
 
     val successMessage by appointmentViewModel.successMessage

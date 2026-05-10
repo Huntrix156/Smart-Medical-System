@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.FilePresent
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -28,6 +29,7 @@ import com.example.smartmedicalsystem.navigation.ROUTE_DOCTOR_APPOINTMENTS
 import com.example.smartmedicalsystem.navigation.ROUTE_DOCTOR_REPORT_HUB
 import com.example.smartmedicalsystem.navigation.ROUTE_MEDICINE_LIST
 import com.example.smartmedicalsystem.navigation.ROUTE_PATIENT_DASHBOARD
+import com.example.smartmedicalsystem.navigation.ROUTE_PROFILE
 import com.example.smartmedicalsystem.navigation.ROUTE_REPORT_TRENDING_DISEASE
 import com.example.smartmedicalsystem.navigation.ROUTE_SETTINGS
 import com.example.smartmedicalsystem.navigation.ROUTE_UPCOMING_APPOINTMENT
@@ -67,11 +69,10 @@ fun DoctorDashboard(
 
     val greeting              = viewModel.greeting.value
     val pendingAppointments   by statsViewModel.pendingAppointments
-    // NEW: live booked count and unique patient count
+
     val bookedAppointmentCount by statsViewModel.bookedAppointmentCount
     val uniquePatientCount     by statsViewModel.uniquePatientCount
 
-    // Latest confirmed/assigned appointment to pre-fill prescription
     val doctorAppointments by appointmentViewModel.doctorAppointments
     val latestPatientAppointment: Appointment? = remember(doctorAppointments) {
         doctorAppointments
@@ -83,7 +84,6 @@ fun DoctorDashboard(
 
     var showLogoutDialog by remember { mutableStateOf(false) }
 
-    // Dialog to let doctor pick which patient to write a prescription for
     var showPickPatientDialog by remember { mutableStateOf(false) }
 
     if (showLogoutDialog) {
@@ -100,7 +100,6 @@ fun DoctorDashboard(
         )
     }
 
-    // Patient picker dialog: shows doctor's confirmed patients, doctor picks one
     if (showPickPatientDialog) {
         val eligibleAppointments = remember(doctorAppointments) {
             doctorAppointments
@@ -214,16 +213,6 @@ fun DoctorDashboard(
                     label = { Text("Settings") }
                 )
                 NavigationBarItem(
-                    selected = currentRoute == ROUTE_MEDICINE_LIST,
-                    onClick  = {
-                        navController.navigate(ROUTE_MEDICINE_LIST) {
-                            popUpTo(ROUTE_PATIENT_DASHBOARD); launchSingleTop = true
-                        }
-                    },
-                    icon  = { Icon(Icons.Filled.FilePresent, contentDescription = "Records") },
-                    label = { Text("Records") }
-                )
-                NavigationBarItem(
                     selected = currentRoute == ROUTE_UPCOMING_APPOINTMENT,
                     onClick  = {
                         navController.navigate(ROUTE_UPCOMING_APPOINTMENT) {
@@ -232,6 +221,16 @@ fun DoctorDashboard(
                     },
                     icon  = { Icon(Icons.Filled.CalendarToday, contentDescription = "Appointments") },
                     label = { Text("Appointments") }
+                )
+                NavigationBarItem(
+                    selected = currentRoute == ROUTE_PROFILE,
+                    onClick  = {
+                        navController.navigate(ROUTE_PROFILE) {
+                            popUpTo(ROUTE_PATIENT_DASHBOARD); launchSingleTop = true
+                        }
+                    },
+                    icon  = { Icon(Icons.Filled.Person, contentDescription = "Profile") },
+                    label = { Text("Profile") }
                 )
             }
         }
@@ -309,25 +308,7 @@ fun DoctorDashboard(
             ) {
                 Text("View Appointments")
             }
-            OutlinedButton(
-                onClick  = {navController.navigate(ROUTE_REPORT_TRENDING_DISEASE)},
-                modifier = Modifier.fillMaxWidth(),
-                colors   = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF004D40),
-                    contentColor   = Color.White)
-            ) {
-                Text("View Trending Diseases Report")
-            }
 
-            OutlinedButton(
-                onClick  = {navController.navigate("doctor_dashboard/{username}")},
-                modifier = Modifier.fillMaxWidth(),
-                colors   = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF004D40),
-                    contentColor   = Color.White)
-            ) {
-                Text("View Patient Records")
-            }
             OutlinedButton(
                 onClick  = {navController.navigate(ROUTE_DOCTOR_REPORT_HUB)},
                 modifier = Modifier.fillMaxWidth(),

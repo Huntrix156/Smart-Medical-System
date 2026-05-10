@@ -51,7 +51,7 @@ fun AdminDashboard(
     LaunchedEffect(Unit) {
         statsViewModel.listenDoctorCount()
         statsViewModel.listenPatientCount()
-        statsViewModel.listenTotalUserCount()   // NEW: count all users
+        statsViewModel.listenTotalUserCount()
     }
 
     val greeting = viewModel.greeting.value
@@ -118,16 +118,7 @@ fun AdminDashboard(
                     icon  = { Icon(Icons.Filled.Settings, contentDescription = "Settings") },
                     label = { Text("Settings") }
                 )
-                NavigationBarItem(
-                    selected = currentRoute == ROUTE_MEDICINE_LIST,
-                    onClick  = {
-                        navController.navigate(ROUTE_MEDICINE_LIST) {
-                            popUpTo(ROUTE_PATIENT_DASHBOARD); launchSingleTop = true
-                        }
-                    },
-                    icon  = { Icon(Icons.Filled.FilePresent, contentDescription = "Records") },
-                    label = { Text("Records") }
-                )
+
                 NavigationBarItem(
                     selected = currentRoute == ROUTE_UPCOMING_APPOINTMENT,
                     onClick  = {
@@ -184,8 +175,7 @@ fun AdminDashboard(
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                // ── CHANGED: was a static StatCard("Total Users","248")
-                //    Now a LiveStatCard that counts every user in /users node
+
                 LiveStatCard(
                     label    = "Total Users",
                     value    = totalUserCount.toString(),

@@ -12,16 +12,13 @@ data class Appointment(
     val specialization: String = "",
     val referralNote: String = "",
 
-    // Referral-to-another-doctor fields
     val referredDoctorId: String = "",
     val referredDoctorName: String = "",
     val referredDoctorSpecialization: String = "",
 
-    // Reschedule fields
     val rescheduledDate: String = "",
     val rescheduledTime: String = "",
 
-    // In-app notification message shown on patient's card
     val notificationMessage: String = ""
 )
 
