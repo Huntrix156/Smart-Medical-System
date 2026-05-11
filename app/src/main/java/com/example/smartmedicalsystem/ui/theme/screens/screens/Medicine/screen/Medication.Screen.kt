@@ -82,14 +82,16 @@ fun MedicationScreen(navController: NavController,  onLogout: () -> Unit) {
                 }
             }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                MedicationMenuCard("Medicine List", "View stock", Modifier.weight(1f)) {
+//            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                MedicationMenuCard("Medicine List", "View stock",
+//                    Modifier.weight(1f)
+                ) {
                     navController.navigate(ROUTE_MEDICINE_LIST)
                 }
-                MedicationMenuCard("Update Medication", "Search meds", Modifier.weight(1f)) {
-                    navController.navigate(ROUTE_UPDATE_MEDICATION)
-                }
-            }
+//                MedicationMenuCard("Update Medication", "Search meds", Modifier.weight(1f)) {
+//                    navController.navigate(ROUTE_UPDATE_MEDICATION)
+//                }
+//            }
         }
     }
 }

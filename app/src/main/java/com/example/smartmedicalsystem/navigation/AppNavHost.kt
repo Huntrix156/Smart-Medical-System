@@ -50,9 +50,9 @@ import com.example.smartmedicalsystem.ui.theme.screens.ReportsScreen.SystemAnaly
 import com.example.smartmedicalsystem.ui.theme.screens.ReportsScreen.TreatmentSummaryReportScreen
 import com.example.smartmedicalsystem.ui.theme.screens.ReportsScreen.TrendingDiseaseReportScreen
 import com.example.smartmedicalsystem.ui.theme.screens.medicine.screen.MedicineListScreen
-import com.example.smartmedicalsystem.ui.theme.screens.medicine.screen.UpdateMedicineScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.EmergencySOSScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.AddMedicineScreen
+import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.UpdateMedicineScreen
 import com.example.smartmedicalsystem.ui.theme.screens.screens.Medicine.screen.WritePrescriptionScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
